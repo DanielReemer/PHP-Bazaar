@@ -9,12 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -56,5 +55,9 @@ class User extends Authenticatable
         $numOfAdverts = $this->adverts()->where(Advert::ISRENTAL_COLUMN_NAME, (int) $isRental)->count();
 
         return $numOfAdverts;
+    }
+    public function role(): hasOne
+    {
+        return $this->hasOne(Role::class);
     }
 }
