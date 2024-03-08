@@ -15,6 +15,5 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         Role::create(['value' => 'Private']);
-        Role::create(['value' => 'Business']);
     }
 }

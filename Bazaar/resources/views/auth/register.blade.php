@@ -18,10 +18,9 @@
 
         <!-- Role -->
         <div class="mt-4">
-            <x-input-label for="role" :value="__('Role')" />
+            <x-input-label for="role" :value="__('Account Type')" />
             <x-select-role name="role" id="role" :roles="$roles" />
         </div>
-
 
         <!-- Password -->
         <div class="mt-4">

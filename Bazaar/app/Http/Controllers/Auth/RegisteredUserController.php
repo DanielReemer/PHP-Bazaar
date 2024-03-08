@@ -39,20 +39,26 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required']
         ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        $roleValue = $request->input('role');
-        $user->role()->create(['value' => $roleValue]);
-
+        
+        $user = $this->createUser($request);
+        $user->save();
+        
         event(new Registered($user));
 
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
+    }
+
+    private function createUser(Request $request): User {
+        $role = Role::find($request->role);
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role()->associate($role);
+
+        return $user;
     }
 }

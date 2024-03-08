@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
@@ -23,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -45,19 +44,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function adverts() : HasMany
-    {
-        return $this->hasMany(Advert::class, 'owner_id');
-    }
-
-    public function countAdverts(bool $isRental = false) : int
-    {
-        $numOfAdverts = $this->adverts()->where(Advert::ISRENTAL_COLUMN_NAME, (int) $isRental)->count();
-
-        return $numOfAdverts;
-    }
     public function role(): hasOne
     {
-        return $this->hasOne(Role::class);
+        return $this->belongsTo(Role::class);
     }
 }
