@@ -22,13 +22,6 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        $locale = App::currentLocale();
-
-        if (!(in_array($locale, ['en', 'nl']))) {
-            abort(400);
-        }
-        App::setLocale($locale);
-
         $roles = Role::all();
 
         return view('auth.register', ['roles' => $roles]);

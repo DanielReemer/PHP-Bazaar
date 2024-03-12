@@ -19,7 +19,8 @@
         <!-- Role -->
         <div class="mt-4">
             <x-input-label for="role" :value="__('registration.Roles')" />
-            <x-select-role :roles="$roles"  name="role" id="role" />
+            <x-select-role :roles="$roles" name="role" id="role" />
+            <x-input-error :messages="$errors->get('role')" class="mt-2" />
         </div>
 
         <!-- Password -->
