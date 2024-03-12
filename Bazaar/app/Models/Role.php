@@ -12,7 +12,8 @@ class Role extends Model
     protected $table = 'roles';
 
     protected $fillable = [
-        'value'
+        'value',
+        'translation_key'
     ];
 
     public function users(): HasMany

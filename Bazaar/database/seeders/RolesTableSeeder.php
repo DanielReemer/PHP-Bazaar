@@ -14,6 +14,10 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        Role::create(['value' => 'Private']);
+        $businessAdveriser = 'Roles.BusinessAdvertiser';
+        $privateAdvertiser = 'Roles.PrivateAdvertiser';
+        
+        Role::create(['value' => 'Private advertiser', 'translation_key' => $privateAdvertiser]);
+        Role::create(['value' => 'Business advertiser', 'translation_key' => $businessAdveriser]);
     }
 }

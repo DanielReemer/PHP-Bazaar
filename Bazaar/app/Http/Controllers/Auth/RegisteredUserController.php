@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\App;
 
 class RegisteredUserController extends Controller
 {
@@ -21,6 +22,13 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
+        $locale = App::currentLocale();
+
+        if (!(in_array($locale, ['en', 'nl']))) {
+            abort(400);
+        }
+        App::setLocale($locale);
+
         $roles = Role::all();
 
         return view('auth.register', ['roles' => $roles]);
