@@ -16,9 +16,7 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        //$locale = App::currentLocale();
-
-        $locale = 'nl';
+        $locale = App::currentLocale();
 
         if (in_array($locale, ['en', 'nl'])) {
             App::setLocale($locale);
