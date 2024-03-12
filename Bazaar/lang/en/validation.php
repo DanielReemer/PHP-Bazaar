@@ -132,15 +132,15 @@ return [
     'prohibited_unless' => 'The :attribute field is prohibited unless :other is in :values.',
     'prohibits' => 'The :attribute field prohibits :other from being present.',
     'regex' => 'The :attribute field format is invalid.',
-    'required' => 'The :attribute field is required.',
-    'required_array_keys' => 'The :attribute field must contain entries for: :values.',
-    'required_if' => 'The :attribute field is required when :other is :value.',
-    'required_if_accepted' => 'The :attribute field is required when :other is accepted.',
-    'required_unless' => 'The :attribute field is required unless :other is in :values.',
-    'required_with' => 'The :attribute field is required when :values is present.',
-    'required_with_all' => 'The :attribute field is required when :values are present.',
-    'required_without' => 'The :attribute field is required when :values is not present.',
-    'required_without_all' => 'The :attribute field is required when none of :values are present.',
+    'required' => 'The ":attribute" field is required.',
+    'required_array_keys' => 'The ":attribute" field must contain entries for: :values.',
+    'required_if' => 'The ":attribute" field is required when :other is :value.',
+    'required_if_accepted' => 'The ":attribute" field is required when :other is accepted.',
+    'required_unless' => 'The ":attribute" field is required unless :other is in :values.',
+    'required_with' => 'The ":attribute" field is required when :values is present.',
+    'required_with_all' => 'The ":attribute" field is required when :values are present.',
+    'required_without' => 'The ":attribute" field is required when :values is not present.',
+    'required_without_all' => 'The ":attribute" field is required when none of :values are present.',
     'same' => 'The :attribute field must match :other.',
     'size' => [
         'array' => 'The :attribute field must contain :size items.',
@@ -186,6 +186,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'role' => 'Account Type',
+    ],
 
 ];

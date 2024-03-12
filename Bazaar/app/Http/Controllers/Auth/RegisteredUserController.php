@@ -52,7 +52,7 @@ class RegisteredUserController extends Controller
     }
 
     private function createUser(Request $request): User {
-        $role = Role::find($request->role);
+        $role = Role::find($request->input('role'));
 
         $user = new User();
         $user->name = $request->name;

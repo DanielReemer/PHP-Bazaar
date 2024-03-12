@@ -132,15 +132,16 @@ return [
     'prohibited_unless' => 'Het veld :attribute is verboden tenzij :other in :values is.',
     'prohibits' => 'Het veld :attribute verbiedt :other aanwezig te zijn.',
     'regex' => 'Het veld :attribute formaat is ongeldig.',
-    'required' => 'Het veld :attribute is verplicht.',
-    'required_array_keys' => 'Het veld :attribute moet vermeldingen bevatten voor: :values.',
-    'required_if' => 'Het veld :attribute is verplicht als :other :value is.',
-    'required_if_accepted' => 'Het veld :attribute is verplicht als :other geaccepteerd is.',
-    'required_unless' => 'Het veld :attribute is verplicht tenzij :other in :values is.',
-    'required_with' => 'Het veld :attribute is verplicht wanneer :values aanwezig is.',
-    'required_with_all' => 'Het veld :attribute is verplicht wanneer :values aanwezig zijn.',
-    'required_without' => 'Het veld :attribute is verplicht wanneer :values niet aanwezig is.',
-    'required_without_all' => 'Het veld :attribute is verplicht wanneer geen van :values aanwezig zijn.',
+    'required' => 'Het veld ":attribute" is verplicht.',
+    'required_array_keys' => 'Het veld ":attribute" moet vermeldingen bevatten voor: :values.',
+    'required_if' => 'Het veld ":attribute" is verplicht als :other :value is.',
+    'required_if_accepted' => 'Het veld ":attribute" is verplicht als :other geaccepteerd is.',
+    'required_unless' => 'Het veld ":attribute" is verplicht tenzij :other in :values is.',
+    'required_with' => 'Het veld ":attribute" is verplicht wanneer :values aanwezig is.',
+    'required_with_all' => 'Het veld ":attribute" is verplicht wanneer :values aanwezig zijn.',
+    'required_without' => 'Het veld ":attribute" is verplicht wanneer :values niet aanwezig is.',
+    'required_without_all' => 'Het veld ":attribute" is verplicht wanneer geen van :values aanwezig zijn.',
+
     'same' => 'Het veld :attribute en :other moeten overeenkomen.',
     'size' => [
         'array' => 'Het veld :attribute moet :size items bevatten.',
@@ -186,6 +187,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'role' => 'Account Type',
+    ],
 
 ];
