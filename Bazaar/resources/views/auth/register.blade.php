@@ -1,4 +1,7 @@
 <x-guest-layout>
+    <header  class="mt-6 text-xl font-semibold text-gray-900 dark:text-white w-100 text-center">
+        {{ __('registration.Register') }}
+    </header>
     <form method="POST" action="{{ route('register') }}">
         @csrf
 

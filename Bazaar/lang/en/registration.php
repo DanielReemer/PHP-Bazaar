@@ -6,6 +6,7 @@
         'Confirm' => 'Confirm Password',
         'Email' => 'Email',
         'SelectOption' => 'Select an option',
+        'Register' => 'Register',
     ];
 
 ?>
