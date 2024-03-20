@@ -30,13 +30,12 @@ class AdvertController extends Controller
         $user = Auth::user();
 
         $advert = new Advert();
-        $advert->Title = $request->title;
-        $advert->Description = $request->description;
+        $advert->title = $request->title;
+        $advert->description = $request->description;
         $advert->owner()->associate($user);
         $advert->save();
-
         // TODO: Change to a sort of dashboard; 
-        return redirect(RouteServiceProvider::HOME);
+        return view('dashboard');
     }
 
     /**
