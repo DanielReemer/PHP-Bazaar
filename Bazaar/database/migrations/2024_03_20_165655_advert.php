@@ -4,26 +4,26 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up() : void
     {
         Schema::create('adverts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('description')->nullable();
-            $table->timestamps(); 
+            $table->boolean('is_rental')->default(0);
+            $table->timestamps();
         });
 
         Schema::table('adverts', function (Blueprint $table) {
             $table->foreignId('owner_id')
                 ->constrained('users')
                 ->index('adverts_creator_id');
-            
-           // Foreign key constraint for the current borrower of the post
+
+            // Foreign key constraint for the current borrower of the post
             $table->foreignId('current_borrower_id')
                 ->nullable()
                 ->constrained('users')
@@ -34,7 +34,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down() : void
     {
         Schema::dropIfExists('adverts');
     }

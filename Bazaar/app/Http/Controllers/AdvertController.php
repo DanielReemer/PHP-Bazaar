@@ -13,7 +13,7 @@ class AdvertController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View
+    public function create() : View
     {
         return view('adverts.new-advert');
     }
@@ -24,7 +24,7 @@ class AdvertController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:50'],
             'description' => ['string', 'max:255'],
         ]);
         $user = Auth::user();
@@ -32,8 +32,10 @@ class AdvertController extends Controller
         $advert = new Advert();
         $advert->title = $request->title;
         $advert->description = $request->description;
+        $advert->is_rental = $request->rental ?? 0;
         $advert->owner()->associate($user);
         $advert->save();
+
         // TODO: Change to a sort of dashboard; 
         return view('dashboard');
     }
@@ -41,7 +43,7 @@ class AdvertController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Advert $advert): View
+    public function edit(Advert $advert) : View
     {
         //
     }

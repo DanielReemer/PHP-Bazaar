@@ -11,7 +11,7 @@
     </section>
     <section class="w-full flex flex-col gap-5">
         <div class="flex items-center justify-start mt-4">
-            <!-- Apply to advert --> 
+            <!-- Apply to advert if its a rental;--> 
         </div>
     </section>
 </div>

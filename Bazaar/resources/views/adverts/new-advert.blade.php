@@ -21,6 +21,16 @@
                     <x-input-error :messages="$errors->get('description')" class="mt-2" />
                 </div>
 
+                <!-- Is rental advertisement -->
+                <div>
+                    <x-input-label for="rental" :value="__('Rental')" />
+                    <input type="checkbox" 
+                    id="rental" 
+                    name="rental" 
+                    value='1' 
+                    class="form-checkbox  border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" />
+                    <x-input-error :messages="$errors->get('rental')" class="mt-2" />
+
                 <!-- submit -->
                 <div class="flex items-center justify-start mt-4">
                     <x-primary-button class="">
