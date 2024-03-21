@@ -46,8 +46,15 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-     public function adverts(): HasMany
-     {
+    public function adverts() : HasMany
+    {
         return $this->hasMany(Advert::class, 'owner_id');
-     }
+    }
+
+    public function countAdverts(bool $isRental = false) : int
+    {
+        $numOfAdverts = $this->adverts()->where(Advert::ISRENTAL_COLUMN_NAME, (int) $isRental)->count();
+
+        return $numOfAdverts;
+    }
 }

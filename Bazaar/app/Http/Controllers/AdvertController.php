@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AdvertController extends Controller
 {
+    const MAX_ADVERT_NUM = 4;
+
     /**
      * Show the form for creating a new resource.
      */
@@ -23,17 +25,21 @@ class AdvertController extends Controller
      */
     public function store(Request $request)
     {
+        // Check wheter Post Limit Has Been reached;
+        if (! ($this->limitCheck(($request)))) {
+            return redirect()->back()->with('error', 'Maximum number of ads have been posted.');
+        }
+
         $request->validate([
             'title' => ['required', 'string', 'max:50'],
             'description' => ['string', 'max:255'],
         ]);
-        $user = Auth::user();
 
         $advert = new Advert();
         $advert->title = $request->title;
         $advert->description = $request->description;
         $advert->is_rental = $request->rental ?? 0;
-        $advert->owner()->associate($user);
+        $advert->owner()->associate($request->user() ?? Auth::user());
         $advert->save();
 
         // TODO: Change to a sort of dashboard; 
@@ -62,5 +68,27 @@ class AdvertController extends Controller
     public function destroy(Advert $advert)
     {
         //
+    }
+
+    private function isRental(Request $request) : bool
+    {
+        $rental = $request->rental;
+        if ($rental == 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function limitCheck($request)
+    {
+        $user = $request->user() ?? Auth::user();
+        $advertCount = $user->countAdverts($this->isRental($request));
+
+        if ($advertCount >= AdvertController::MAX_ADVERT_NUM) {
+            return false;
+        }
+
+        return true;
     }
 }

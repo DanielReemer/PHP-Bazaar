@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Advert extends Model
 {
     use HasFactory;
-
+    const ISRENTAL_COLUMN_NAME = "is_rental";
     /**
      * The attributes that are mass assignable.
      *
@@ -22,12 +22,12 @@ class Advert extends Model
         'current_borrower_id',
     ];
 
-    public function owner(): BelongsTo
+    public function owner() : BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function currentBorrower(): BelongsTo
+    public function currentBorrower() : BelongsTo
     {
         return $this->belongsTo(User::class, 'current_borrower_id');
     }
