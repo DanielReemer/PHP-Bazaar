@@ -1,4 +1,5 @@
 <?php
+
     return [
         'Roles' => 'Account Type',
         'Name' => 'Naam',
@@ -8,5 +9,3 @@
         'SelectOption' => 'Selecteer een optie',
         'Register' => "Registreren",
     ];
-
-?>

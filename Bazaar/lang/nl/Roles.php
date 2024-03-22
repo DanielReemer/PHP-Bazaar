@@ -4,5 +4,3 @@
         'PrivateAdvertiser' => 'Particuliere adverteerder',
         'Default' => 'Standaard',
     ];
-
-?>
