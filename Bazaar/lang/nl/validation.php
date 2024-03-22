@@ -171,8 +171,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'email' => [
+            'unique' => 'Dit :attribute is al in gebruik.',
         ],
     ],
 
@@ -189,6 +189,7 @@ return [
 
     'attributes' => [
         'role' => 'Account Type',
+        'email' => 'email adres'
     ],
 
 ];
