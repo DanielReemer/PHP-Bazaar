@@ -7,8 +7,4 @@
         'Email' => 'Email',
         'SelectOption' => 'Select an option',
         'Register' => 'Register',
-        'Remember' => 'Remember me',
-        'Login' => 'Inloggen',
     ];
-
-?>

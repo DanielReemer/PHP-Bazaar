@@ -15,6 +15,9 @@ return [
 
     'failed' => 'Deze referenties komen niet overeen met onze gegevens.',
     'password' => 'Het opgegeven wachtwoord is onjuist.',
-    'throttle' => 'Te veel inlogpogingen. Probeer het opnieuw in :seconds seconden.'
-
+    'throttle' => 'Te veel inlogpogingen. Probeer het opnieuw in :seconds seconden.',
+    'remember_checkbox' => 'Herinner me',
+    'login_button' => 'Inloggen',
+    'email_field'=> 'Email',
+    'password_field' => 'Wachtwoord',
 ];

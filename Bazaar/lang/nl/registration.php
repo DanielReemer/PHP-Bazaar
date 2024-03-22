@@ -8,6 +8,4 @@
         'Email' => 'Email',
         'SelectOption' => 'Selecteer een optie',
         'Register' => "Registreren",
-        'Remember' => 'Herinner me',
-        'Login' => 'Inloggen',
     ];
