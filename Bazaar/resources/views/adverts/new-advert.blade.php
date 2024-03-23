@@ -35,7 +35,7 @@
 
                 <!-- submit -->
                 <div class="mt-4 flex items-center justify-start">
-                    <x-primary-button class="">
+                    <x-primary-button class="" name="submitAdvertForm">
                         {{ __('advertPostForm.post') }}
                     </x-primary-button>
                 </div>
