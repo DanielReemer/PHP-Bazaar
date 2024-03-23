@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class AdvertController extends Controller
 {
     const MAX_ADVERT_NUM = 4;
+    const MAX_TITLE_LENGHT = 50;
 
     /**
      * Show the form for creating a new resource.
@@ -29,9 +30,11 @@ class AdvertController extends Controller
         if (! ($this->limitCheck(($request)))) {
             return redirect()->back()->with('error', 'Maximum number of ads have been posted.');
         }
-
+        $maxTitleString = 'max:';
+        $maxTitleString .= AdvertController::MAX_TITLE_LENGHT;
+        
         $request->validate([
-            'title' => ['required', 'string', 'max:50'],
+            'title' => ['required', 'string', $maxTitleString],
             'description' => ['string', 'max:255'],
         ]);
 
