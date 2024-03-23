@@ -189,7 +189,10 @@ return [
 
     'attributes' => [
         'role' => 'Account Type',
-        'email' => 'email adres'
+        'email' => 'Email Adres',
+        'password'=> 'Wachtwoord',
+        'title'=> 'Titel',
+        'description' => 'Omschrijving',
     ],
 
 ];
