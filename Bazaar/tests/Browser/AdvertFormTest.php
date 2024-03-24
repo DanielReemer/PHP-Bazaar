@@ -21,7 +21,7 @@ class AdvertFormTest extends DuskTestCase
     {
         parent::setUp();
         $this->testUser = User::find(2);
-        $this->maximunNumberOfPostReachMessage = 'Maximum number of ads have been posted.';
+        $this->maximumNumberOfPostReachMessage = 'Maximum number of ads have been posted.';
     }
 
     /**
@@ -91,6 +91,7 @@ class AdvertFormTest extends DuskTestCase
     public function testCannotCreateMoreThanFourRentalPosts()
     {
         $testCase = $this->maximumNumberOfPostReachMessage;
+        dump($testCase);
         $numberOfPosts = AdvertController::MAX_ADVERT_NUM + 1;
 
         $this->browse(function (Browser $browser) use ($testCase, $numberOfPosts) {
