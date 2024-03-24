@@ -136,6 +136,16 @@ class AdvertFormTest extends DuskTestCase
         });
     }
 
+    public function testRedirectToLoginWhenNotSignedIn()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->testUser);
+            $browser->logout();
+            $browser->visit('/new-advert')
+                ->assertRouteIs('login');
+        });
+    }
+
     private function makeValidPost(int $amount, bool $isRental) : void
     {
         for ($i = 0; $i < $amount; $i++) {
