@@ -12,21 +12,38 @@ class RegistrationFormTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
-    public function setUp(): void
+    protected $pageName;
+    protected $nameField;
+    protected $emailField;
+    protected $passwordField;
+    protected $roleSelect;
+    protected $passwordConfirmationField;
+    protected $submitButton;
+    protected $disableClientSideValidationScript;
+
+    public function setUp() : void
     {
         parent::setUp();
 
+        $this->pageName = 'register';
+        $this->nameField = 'name';
+        $this->emailField = 'email';
+        $this->passwordField = 'password';
+        $this->roleSelect = 'role';
+        $this->passwordConfirmationField = 'password_confirmation';
+        $this->submitButton = 'registerUser';
+        $this->disableClientSideValidationScript = "document.querySelector('form').noValidate = true";
     }
 
     public function testWhetherAllInputsAreVisible()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('register')->assertInputPresent('name');
-            $browser->visit('register')->assertInputPresent('email');
-            $browser->visit('register')->assertInputPresent('password');
-            $browser->visit('register')->assertInputPresent('password_confirmation');
-            $browser->visit('register')->assertInputPresent('role');
-            $browser->visit('register')->assertPresent('button[name="registerUser"]');
+            $browser->visit($this->pageName)->assertInputPresent($this->nameField);
+            $browser->visit($this->pageName)->assertInputPresent($this->emailField);
+            $browser->visit($this->pageName)->assertInputPresent($this->passwordField);
+            $browser->visit($this->pageName)->assertInputPresent($this->passwordConfirmationField);
+            $browser->visit($this->pageName)->assertInputPresent($this->roleSelect);
+            $browser->visit($this->pageName)->assertPresent('button[name="registerUser"]');
         });
     }
 
@@ -34,7 +51,7 @@ class RegistrationFormTest extends DuskTestCase
     {
         $roleIds = Role::all()->pluck('id')->toArray();
         $this->browse(function (Browser $browser) use ($roleIds) {
-            $browser->visit('register')->waitForInput('role')->assertSelectHasOptions('role', $roleIds);
+            $browser->visit($this->pageName)->waitForInput($this->roleSelect)->assertSelectHasOptions($this->roleSelect, $roleIds);
         });
     }
 
@@ -42,15 +59,13 @@ class RegistrationFormTest extends DuskTestCase
     {
         $fakeUser = User::factory()->makeOne();
         $role = Role::all()->find(1);
-        
+
         $this->browse(function (Browser $browser) use ($fakeUser, $role) {
-            $browser->visit('register')
-                ->type('name', $fakeUser->name)
-                ->type('email', $fakeUser->email)
-                ->type('password', $fakeUser->password)
-                ->type('password_confirmation', $fakeUser->password)
-                ->select('role', $role->id)
-                ->press('registerUser')
+            $browser->visit($this->pageName);
+
+            $this->fillForm($browser, $fakeUser, $role);
+
+            $browser->press($this->submitButton)
                 ->assertRouteIs('dashboard');
         });
     }
@@ -62,13 +77,13 @@ class RegistrationFormTest extends DuskTestCase
         $errorMessage = 'The "name" field is required.';
 
         $this->browse(function (Browser $browser) use ($fakeUser, $role, $errorMessage) {
-            $browser->visit('register')
-                ->script("document.querySelector('form').noValidate = true");
-            $browser->type('email', $fakeUser->email)
-                ->type('password', $fakeUser->password)
-                ->type('password_confirmation', $fakeUser->password)
-                ->select('role', $role->id)
-                ->press('registerUser')
+            $browser->visit($this->pageName)
+                ->script($this->disableClientSideValidationScript);
+
+            $this->fillForm($browser, $fakeUser, $role);
+
+            $browser->clear($this->nameField)
+                ->press($this->submitButton)
                 ->assertSee($errorMessage);
         });
     }
@@ -80,13 +95,13 @@ class RegistrationFormTest extends DuskTestCase
         $errorMessage = 'The "email" field is required.';
 
         $this->browse(function (Browser $browser) use ($fakeUser, $role, $errorMessage) {
-            $browser->visit('register')
-                ->script("document.querySelector('form').noValidate = true");
-            $browser->type('name', $fakeUser->name)
-                ->type('password', $fakeUser->password)
-                ->type('password_confirmation', $fakeUser->password)
-                ->select('role', $role->id)
-                ->press('registerUser')
+            $browser->visit($this->pageName)
+                ->script($this->disableClientSideValidationScript);
+
+            $this->fillForm($browser, $fakeUser, $role);
+
+            $browser->clear($this->emailField)
+                ->press($this->submitButton)
                 ->assertSee($errorMessage);
         });
     }
@@ -97,13 +112,14 @@ class RegistrationFormTest extends DuskTestCase
         $errorMessage = 'The "Account Type" field is required.';
 
         $this->browse(function (Browser $browser) use ($fakeUser, $errorMessage) {
-            $browser->visit('register')
-                ->script("document.querySelector('form').noValidate = true");
-            $browser->type('name', $fakeUser->name)
-                ->type('email', $fakeUser->email)
-                ->type('password', $fakeUser->password)
-                ->type('password_confirmation', $fakeUser->password)
-                ->press('registerUser')
+            $browser->visit($this->pageName)
+                ->script($this->disableClientSideValidationScript);
+
+            $browser->type($this->nameField, $fakeUser->name)
+                ->type($this->emailField, $fakeUser->email)
+                ->type($this->passwordField, $fakeUser->password)
+                ->type($this->passwordConfirmationField, $fakeUser->password)
+                ->press($this->submitButton)
                 ->assertSee($errorMessage);
         });
     }
@@ -115,31 +131,31 @@ class RegistrationFormTest extends DuskTestCase
         $errorMessage = 'The "password" field is required.';
 
         $this->browse(function (Browser $browser) use ($fakeUser, $role, $errorMessage) {
-            $browser->visit('register')
-                ->script("document.querySelector('form').noValidate = true");
-            $browser->type('name', $fakeUser->name)
-                ->type('email', $fakeUser->email)
-                ->type('password_confirmation', $fakeUser->password)
-                ->select('role', $role->id)
-                ->press('registerUser')
+            $browser->visit($this->pageName)
+                ->script($this->disableClientSideValidationScript);
+
+            $this->fillForm($browser, $fakeUser, $role);
+
+            $browser->clear($this->passwordField)
+                ->press($this->submitButton)
                 ->assertSee($errorMessage);
         });
     }
 
-    public function testWhetherPasswordConfirmationHasToMatchPasswordIsRequired()
+    public function testWhetherPasswordConfirmationHasToMatchPassword()
     {
         $fakeUser = User::factory()->makeOne();
         $role = Role::all()->find(1);
         $errorMessage = 'The password field confirmation does not match.';
 
         $this->browse(function (Browser $browser) use ($fakeUser, $role, $errorMessage) {
-            $browser->visit('register')
-                ->script("document.querySelector('form').noValidate = true");
-            $browser->type('name', $fakeUser->name)
-                ->type('email', $fakeUser->email)
-                ->type('password', $fakeUser->password)
-                ->select('role', $role->id)
-                ->press('registerUser')
+            $browser->visit($this->pageName)
+                ->script($this->disableClientSideValidationScript);
+
+            $this->fillForm($browser, $fakeUser, $role);
+
+            $browser->clear($this->passwordConfirmationField)->type($this->passwordConfirmationField, 'this obviously does not match')
+                ->press($this->submitButton)
                 ->assertSee($errorMessage);
         });
     }
@@ -151,14 +167,13 @@ class RegistrationFormTest extends DuskTestCase
         $errorMessage = 'The email field must be a valid email address.';
 
         $this->browse(function (Browser $browser) use ($fakeUser, $role, $errorMessage) {
-            $browser->visit('register')
-                ->script("document.querySelector('form').noValidate = true");
-            $browser->type('name', $fakeUser->name)
-                ->type('email', 'This is an invalid Email')
-                ->type('password', $fakeUser->password)
-                ->type('password_confirmation', $fakeUser->password)
-                ->select('role', $role->id)
-                ->press('registerUser')
+            $browser->visit($this->pageName)
+                ->script($this->disableClientSideValidationScript);
+
+            $this->fillForm($browser, $fakeUser, $role);
+
+            $browser->clear($this->emailField)->type($this->emailField, 'this is an invalid email')
+                ->press($this->submitButton)
                 ->assertSee($errorMessage);
         });
     }
@@ -171,17 +186,23 @@ class RegistrationFormTest extends DuskTestCase
         $testUser = User::find(1);
 
         $this->browse(function (Browser $browser) use ($fakeUser, $role, $errorMessage, $testUser) {
-            $browser->visit('register')
-                ->script("document.querySelector('form').noValidate = true");
-            
-            $browser->type('name', $fakeUser->name)
-                ->type('email', $testUser->email)
-                ->type('password', $fakeUser->password)
-                ->type('password_confirmation', $fakeUser->password)
-                ->select('role', $role->id)
-                ->press('registerUser')
+            $browser->visit($this->pageName)
+                ->script($this->disableClientSideValidationScript);
+
+            $this->fillForm($browser, $fakeUser, $role);
+            $browser->clear($this->emailField)->type($this->emailField, $testUser->email)
+                ->press($this->submitButton)
                 ->assertSee($errorMessage);
         });
+    }
+
+    private function fillForm(Browser $browser, User $user, Role $role) : void
+    {
+        $browser->type($this->nameField, $user->name)
+            ->type($this->emailField, $user->email)
+            ->type($this->passwordField, $user->password)
+            ->type($this->passwordConfirmationField, $user->password)
+            ->select($this->roleSelect, $role->id);
     }
 
 }
