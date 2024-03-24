@@ -15,11 +15,13 @@ class AdvertFormTest extends DuskTestCase
     use DatabaseMigrations;
 
     protected $testUser;
+    protected $maximumNumberOfPostReachMessage;
 
     public function setUp() : void
     {
         parent::setUp();
         $this->testUser = User::find(2);
+        $this->maximunNumberOfPostReachMessage = 'Maximum number of ads have been posted.';
     }
 
     /**
@@ -88,7 +90,7 @@ class AdvertFormTest extends DuskTestCase
 
     public function testCannotCreateMoreThanFourRentalPosts()
     {
-        $testCase = 'Maximum number of ads have been posted.';
+        $testCase = $this->maximumNumberOfPostReachMessage;
         $numberOfPosts = AdvertController::MAX_ADVERT_NUM + 1;
 
         $this->browse(function (Browser $browser) use ($testCase, $numberOfPosts) {
@@ -100,7 +102,7 @@ class AdvertFormTest extends DuskTestCase
 
     public function testCannotCreateMoreThanFourNormalPosts()
     {
-        $testCase = 'Maximum number of ads have been posted.';
+        $testCase = $this->maximumNumberOfPostReachMessage;
         $numberOfPosts = AdvertController::MAX_ADVERT_NUM + 1;
 
         $this->browse(function (Browser $browser) use ($testCase, $numberOfPosts) {
@@ -112,7 +114,7 @@ class AdvertFormTest extends DuskTestCase
 
     public function testStillPostRentalAfterReachingNormalPostLimit()
     {
-        $testCase = 'Maximum number of ads have been posted.';
+        $testCase = $this->maximumNumberOfPostReachMessage;
         $numberOfNormalPosts = AdvertController::MAX_ADVERT_NUM;
 
         $this->browse(function (Browser $browser) use ($testCase, $numberOfNormalPosts) {
@@ -125,16 +127,11 @@ class AdvertFormTest extends DuskTestCase
 
     public function testStillPostNormalAfterReachingRentalPostLimit()
     {
-
-    }
-
-    public function testCanCreateForPosts()
-    {
-        $testCase = 'Maximum number of ads have been posted.';
-        $numberOfPosts = AdvertController::MAX_ADVERT_NUM;
-        $this->browse(function (Browser $browser) use ($numberOfPosts, $testCase) {
-            $this->makeValidPost($numberOfPosts, false);
-
+        $testCase = $this->maximumNumberOfPostReachMessage;
+        $numberOfRentalPosts = AdvertController::MAX_ADVERT_NUM;
+        $this->browse(function (Browser $browser) use ($testCase, $numberOfRentalPosts) {
+            $this->makeValidPost($numberOfRentalPosts, true);
+            $this->makeValidPost(1, false);
             $browser->assertDontSee($testCase);
         });
     }
