@@ -16,34 +16,35 @@ class AdvertFormTest extends DuskTestCase
 
     protected $testUser;
     protected $maximumNumberOfPostReachMessage;
+    protected $newAdvertPath;
+    protected $descriptionFieldName;
+    protected $titleFieldName;
+    protected $submitButtonName;
+    protected $dashboardRouteName;
+    protected $loginRouteName;
 
     public function setUp() : void
     {
         parent::setUp();
         $this->testUser = User::find(2);
         $this->maximumNumberOfPostReachMessage = 'Maximum number of ads have been posted.';
-    }
-
-    /**
-     * A Dusk test example.
-     */
-    public function testExample() : void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                ->assertSee('Laravel');
-        });
+        $this->newAdvertPath = '/new-advert';
+        $this->descriptionFieldName = 'description';
+        $this->titleFieldName = 'title';
+        $this->submitButtonName = 'submitAdvertForm';
+        $this->dashboardRouteName = 'dashboard';
+        $this->loginRouteName = 'login';
     }
 
     public function testRedirectedToDashboard()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->testUser)
-                ->visit('/new-advert')
-                ->type('title', 'This is my title')
-                ->type('description', 'This is my description')
-                ->press('submitAdvertForm')
-                ->assertRouteIs('dashboard');
+                ->visit($this->newAdvertPath)
+                ->type($this->titleFieldName, 'This is my title')
+                ->type($this->descriptionFieldName, 'This is my description')
+                ->press($this->submitButtonName)
+                ->assertRouteIs($this->dashboardRouteName);
         });
     }
 
@@ -51,10 +52,10 @@ class AdvertFormTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->testUser)
-                ->visit('/new-advert')
-                ->type('description', 'this is my description')
-                ->press('submitAdvertForm')
-                ->assertPathIs('/new-advert');
+                ->visit($this->newAdvertPath)
+                ->type($this->descriptionFieldName, 'this is my description')
+                ->press($this->submitButtonName)
+                ->assertPathIs($this->newAdvertPath);
         });
     }
 
@@ -62,10 +63,10 @@ class AdvertFormTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->testUser)
-                ->visit('/new-advert')
-                ->type('title', 'this is my title')
-                ->press('submitAdvertForm')
-                ->assertPathIs('/new-advert');
+                ->visit($this->newAdvertPath)
+                ->type($this->titleFieldName, 'this is my title')
+                ->press($this->submitButtonName)
+                ->assertPathIs($this->newAdvertPath);
         });
     }
 
@@ -80,10 +81,10 @@ class AdvertFormTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($testCase, $titleInput) {
             $browser->loginAs($this->testUser)
-                ->visit('/new-advert')
-                ->type('title', $titleInput)
-                ->type('description', "This is my description")
-                ->press('submitAdvertForm')
+                ->visit($this->newAdvertPath)
+                ->type($this->titleFieldName, $titleInput)
+                ->type($this->descriptionFieldName, "This is my description")
+                ->press($this->submitButtonName)
                 ->assertSee($testCase);
         });
     }
@@ -93,6 +94,7 @@ class AdvertFormTest extends DuskTestCase
         $testCase = $this->maximumNumberOfPostReachMessage;
         $numberOfPosts = AdvertController::MAX_ADVERT_NUM + 1;
 
+        $this->makeSureUserDoesntHaveAnyRentalPosts($this->testUser);
         $this->browse(function (Browser $browser) use ($testCase, $numberOfPosts) {
             $this->makeValidPost($numberOfPosts, true);
 
@@ -105,6 +107,7 @@ class AdvertFormTest extends DuskTestCase
         $testCase = $this->maximumNumberOfPostReachMessage;
         $numberOfPosts = AdvertController::MAX_ADVERT_NUM + 1;
 
+        $this->makeSureUserDoesntHaveAnyNormalPosts($this->testUser);
         $this->browse(function (Browser $browser) use ($testCase, $numberOfPosts) {
             $this->makeValidPost($numberOfPosts, false);
 
@@ -117,6 +120,7 @@ class AdvertFormTest extends DuskTestCase
         $testCase = $this->maximumNumberOfPostReachMessage;
         $numberOfNormalPosts = AdvertController::MAX_ADVERT_NUM;
 
+        $this->makeSureUserDoesntHaveAnyPosts($this->testUser);
         $this->browse(function (Browser $browser) use ($testCase, $numberOfNormalPosts) {
             $this->makeValidPost($numberOfNormalPosts, false);
             $this->makeValidPost(1, true);
@@ -129,6 +133,8 @@ class AdvertFormTest extends DuskTestCase
     {
         $testCase = $this->maximumNumberOfPostReachMessage;
         $numberOfRentalPosts = AdvertController::MAX_ADVERT_NUM;
+        
+        $this->makeSureUserDoesntHaveAnyPosts($this->testUser);
         $this->browse(function (Browser $browser) use ($testCase, $numberOfRentalPosts) {
             $this->makeValidPost($numberOfRentalPosts, true);
             $this->makeValidPost(1, false);
@@ -141,7 +147,7 @@ class AdvertFormTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->testUser);
             $browser->logout();
-            $browser->visit('/new-advert')
+            $browser->visit($this->newAdvertPath)
                 ->assertRouteIs('login');
         });
     }
@@ -151,16 +157,37 @@ class AdvertFormTest extends DuskTestCase
         for ($i = 0; $i < $amount; $i++) {
             $this->browse(function (Browser $browser) use ($isRental) {
                 $browser->loginAs($this->testUser)
-                    ->visit('new-advert')
-                    ->type('title', 'This is my title')
-                    ->type('description', 'This is my description');
+                    ->visit($this->newAdvertPath)
+                    ->type($this->titleFieldName, 'This is my title')
+                    ->type($this->descriptionFieldName, 'This is my description');
 
                 if ($isRental) {
                     $browser->check('rental');
                 }
                 
-                $browser->press('submitAdvertForm');
+                $browser->press($this->submitButtonName);
             });
         }
+    }
+
+    private function makeSureUserDoesntHaveAnyPosts(User $testUser) : void
+    {
+        $testUser->deleteAllAdverts();
+
+        return;
+    }
+
+    private function makeSureUserDoesntHaveAnyNormalPosts(User $testUser) : void
+    {
+        $testUser->deleteNormalAdverts();
+
+        return;
+    }
+
+    private function makeSureUserDoesntHaveAnyRentalPosts(User $testUser) : void
+    {
+        $testUser->deleteRentalAdverts();
+
+        return;
     }
 }
