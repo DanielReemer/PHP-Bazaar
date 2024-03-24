@@ -91,7 +91,6 @@ class AdvertFormTest extends DuskTestCase
     public function testCannotCreateMoreThanFourRentalPosts()
     {
         $testCase = $this->maximumNumberOfPostReachMessage;
-        dump($testCase);
         $numberOfPosts = AdvertController::MAX_ADVERT_NUM + 1;
 
         $this->browse(function (Browser $browser) use ($testCase, $numberOfPosts) {
