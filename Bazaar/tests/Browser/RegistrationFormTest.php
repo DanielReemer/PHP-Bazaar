@@ -82,9 +82,9 @@ class RegistrationFormTest extends DuskTestCase
 
             $this->fillForm($browser, $fakeUser, $role);
 
-            $browser->clear($this->nameField)
-                ->press($this->submitButton)
-                ->assertSee($errorMessage);
+            $browser->clear($this->nameField);
+
+            $this->submitFormAndAssertText($browser, $errorMessage);
         });
     }
 
@@ -100,9 +100,9 @@ class RegistrationFormTest extends DuskTestCase
 
             $this->fillForm($browser, $fakeUser, $role);
 
-            $browser->clear($this->emailField)
-                ->press($this->submitButton)
-                ->assertSee($errorMessage);
+            $browser->clear($this->emailField);
+
+            $this->submitFormAndAssertText($browser, $errorMessage);
         });
     }
 
@@ -118,9 +118,9 @@ class RegistrationFormTest extends DuskTestCase
             $browser->type($this->nameField, $fakeUser->name)
                 ->type($this->emailField, $fakeUser->email)
                 ->type($this->passwordField, $fakeUser->password)
-                ->type($this->passwordConfirmationField, $fakeUser->password)
-                ->press($this->submitButton)
-                ->assertSee($errorMessage);
+                ->type($this->passwordConfirmationField, $fakeUser->password);
+            
+            $this->submitFormAndAssertText($browser, $errorMessage);
         });
     }
 
@@ -136,9 +136,9 @@ class RegistrationFormTest extends DuskTestCase
 
             $this->fillForm($browser, $fakeUser, $role);
 
-            $browser->clear($this->passwordField)
-                ->press($this->submitButton)
-                ->assertSee($errorMessage);
+            $browser->clear($this->passwordField);
+
+            $this->submitFormAndAssertText($browser, $errorMessage);
         });
     }
 
@@ -154,9 +154,9 @@ class RegistrationFormTest extends DuskTestCase
 
             $this->fillForm($browser, $fakeUser, $role);
 
-            $browser->clear($this->passwordConfirmationField)->type($this->passwordConfirmationField, 'this obviously does not match')
-                ->press($this->submitButton)
-                ->assertSee($errorMessage);
+            $browser->clear($this->passwordConfirmationField)->type($this->passwordConfirmationField, 'this obviously does not match');
+
+            $this->submitFormAndAssertText($browser, $errorMessage);
         });
     }
 
@@ -172,9 +172,9 @@ class RegistrationFormTest extends DuskTestCase
 
             $this->fillForm($browser, $fakeUser, $role);
 
-            $browser->clear($this->emailField)->type($this->emailField, 'this is an invalid email')
-                ->press($this->submitButton)
-                ->assertSee($errorMessage);
+            $browser->clear($this->emailField)->type($this->emailField, 'this is an invalid email');
+
+            $this->submitFormAndAssertText($browser, $errorMessage);
         });
     }
 
@@ -190,9 +190,9 @@ class RegistrationFormTest extends DuskTestCase
                 ->script($this->disableClientSideValidationScript);
 
             $this->fillForm($browser, $fakeUser, $role);
-            $browser->clear($this->emailField)->type($this->emailField, $testUser->email)
-                ->press($this->submitButton)
-                ->assertSee($errorMessage);
+            $browser->clear($this->emailField)->type($this->emailField, $testUser->email);
+
+            $this->submitFormAndAssertText($browser, $errorMessage);
         });
     }
 
@@ -203,6 +203,12 @@ class RegistrationFormTest extends DuskTestCase
             ->type($this->passwordField, $user->password)
             ->type($this->passwordConfirmationField, $user->password)
             ->select($this->roleSelect, $role->id);
+    }
+
+    private function submitFormAndAssertText(Browser $browser, string $message) : void
+    {
+        $browser->press($this->submitButton)
+                ->assertSee($message);
     }
 
 }
