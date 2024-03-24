@@ -43,7 +43,7 @@ class AdvertController extends Controller
         $advert->save();
 
         // TODO: Change to a sort of dashboard; 
-        return view('dashboard');
+        return redirect()->route('dashboard');
     }
 
     /**
