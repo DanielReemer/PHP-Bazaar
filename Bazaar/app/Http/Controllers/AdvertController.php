@@ -48,12 +48,7 @@ class AdvertController extends Controller
         if (! ($this->limitCheck($isRental))) {
             return redirect()->back()->with('error', 'Maximum number of ads have been posted.');
         }
-
-        $advert = new Advert();
-        $advert->title = $request->title;
-        $advert->description = $request->description;
-        $advert->is_rental = (int) $isRental;
-        $advert->owner()->associate($request->user() ?? Auth::user());
+        $advert = $this->createNewAdvert($request->title, $request->description, (int)$isRental);
         $advert->save();
 
         // TODO: Change to a sort of dashboard; 
