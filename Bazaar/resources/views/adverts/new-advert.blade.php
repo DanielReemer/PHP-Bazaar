@@ -73,13 +73,14 @@
                 @csrf
 
                 <!-- Csv input -->
+                <x-input-label for="csv_file" :value="$uploadFileLabel" />
                 <input
-                    class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none"
+                    class="w-full appearance-none rounded border px-3 py-2 leading-tight text-white focus:border-blue-500 focus:outline-none"
                     id="csvFile" name="csv_file" type="file" accept=".csv">
                 <!-- submit -->
                 <div class="mt-4 flex items-center justify-start">
                     <x-primary-button class="" name="submitCsv">
-                        {{ __('advertPostForm.post') }}
+                        {{ $uploadButtonText }}
                     </x-primary-button>
                 </div>
             </form>
