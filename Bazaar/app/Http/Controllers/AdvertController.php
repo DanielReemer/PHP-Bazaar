@@ -6,8 +6,10 @@ use App\Abstracts\AbstractAdvertCsvHandler;
 use App\Abstracts\AbstractQueue;
 use App\Interfaces\ICsvHandler;
 use App\Models\Advert;
+
 use App\Models\LandingspageUrl;
 use App\Models\Role;
+
 use App\Models\AdvertQueue;
 use Exception;
 use Illuminate\Http\Request;
@@ -17,7 +19,9 @@ use Illuminate\Support\Facades\Auth;
 class AdvertController extends Controller
 {
     const MAX_ADVERT_NUM = 4;
+
     const MAX_TITLE_LENGHT = 50;
+
     private ICsvHandler $csvHandler;
     private AbstractQueue $advertQueue;
 
@@ -66,9 +70,14 @@ class AdvertController extends Controller
 
         // Check wheter Post Limit Has Been reached;
         if (! ($this->limitCheck($isRental))) {
-            return redirect()->back()->with('error', trans()->get('advertPostForm.maximumReached'));
+            return redirect()->back()->with('error', 'Maximum number of ads have been posted.');
         }
-        $advert = $this->createNewAdvert($request->title, $request->description, (int) $isRental);
+
+        $advert = new Advert();
+        $advert->title = $request->title;
+        $advert->description = $request->description;
+        $advert->is_rental = (int) $isRental;
+        $advert->owner()->associate($request->user() ?? Auth::user());
         $advert->save();
 
         if ($request->customUrl && Auth::user()->role()->value('value') === Role::ROLE_BUSINESS_ADVERTISER) {
@@ -96,6 +105,29 @@ class AdvertController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         } finally {
+            $this->advertQueue->reset();
+        }
+
+        return redirect()->route('dashboard');
+    }
+
+    public function storeCsv(Request $request)
+    {
+        $request->validate([
+            'csv_file' => 'required|file|mimes:csv,txt|max:2048',
+        ]);
+
+        $file = $request->file('csv_file');
+
+        try {
+            $fileData = $this->csvHandler->parseCsvFile($file);
+            $this->processFileData($fileData);
+            $this->saveAdvertsFromQueue();
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+        finally
+        {
             $this->advertQueue->reset();
         }
 
@@ -170,18 +202,12 @@ class AdvertController extends Controller
 
     private function processRecord($record, int &$currentNumberOfNormalPosts, int &$currentNumberOfRentals) : void
     {
-        $failedMessage = trans()->get('advertPostForm.uploadFailed');
-        $maxNumPostMessage = trans()->get('advertPostForm.maximumReached');
-        $title = $record['Title'] ?? throw new Exception($failedMessage);
-        $description = $record['Description'] ?? throw new Exception($failedMessage);
-        $is_rental = filter_var($record['Is_Rental'], FILTER_VALIDATE_BOOL) ?? throw new Exception($failedMessage);
+        $title = $record['Title'] ?? throw new Exception('Could not find title');
+        $description = $record['Description'] ?? throw new Exception('Could not find description');
+        $is_rental = filter_var($record['Is_Rental'], FILTER_VALIDATE_BOOL) ?? throw new Exception('Could not determine whether the post is a rental');
 
-        if (($currentNumberOfNormalPosts >= AdvertController::MAX_ADVERT_NUM && ! ($is_rental)) || ($currentNumberOfRentals >= AdvertController::MAX_ADVERT_NUM && $is_rental)) {
-            throw new Exception($maxNumPostMessage);
-        }
-        if (empty($title))
-        {
-            throw new Exception($failedMessage);
+        if (($currentNumberOfNormalPosts >= AdvertController::MAX_ADVERT_NUM && !($is_rental)) || ($currentNumberOfRentals >= AdvertController::MAX_ADVERT_NUM && $is_rental)) {
+            throw new Exception("Reached Maximum Number Of Posts");
         }
 
         $advert = $this->createNewAdvert($title, $description, $is_rental);
