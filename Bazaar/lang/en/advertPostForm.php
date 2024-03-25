@@ -19,5 +19,7 @@
     "create"=> "Create New Advert",
     "csvFile"=> "Upload CSV file",
     "upload"=> "Upload",
+    "maximumReached" => "Reached Maximum.",
+    "uploadFailed"=> "The upload has failed.",
 
     ];
