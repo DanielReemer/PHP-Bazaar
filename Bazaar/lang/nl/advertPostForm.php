@@ -17,6 +17,8 @@
     "is_rental"=> "Is Verhuurbaar Artikel",
     "post"=> "Posten",
     "create"=> "Creëer Nieuwe Advertentie",
+    "csvFile"=> "Upload CSV file",
+    "upload"=> "Upload",
 
     ];
 

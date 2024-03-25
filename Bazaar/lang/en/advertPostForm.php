@@ -17,5 +17,7 @@
     "is_rental"=> "Is Rental",
     "post"=> "Post",
     "create"=> "Create New Advert",
+    "csvFile"=> "Upload CSV file",
+    "upload"=> "Upload",
 
     ];
