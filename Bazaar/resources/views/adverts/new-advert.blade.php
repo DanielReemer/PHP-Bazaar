@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 sm:justify-center sm:pt-0">
         <header class="w-100 mt-6 text-center text-xl font-semibold text-gray-900 dark:text-white">
-           {{  __('advertPostForm.create') }}
+            {{ __('advertPostForm.create') }}
         </header>
         <div class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md dark:bg-gray-800 sm:max-w-md sm:rounded-lg">
             <form class="flex flex-col gap-5" method="POST" action="{{ route('new-advert') }}">
@@ -40,6 +40,23 @@
                     </x-primary-button>
                 </div>
             </form>
+
+            <form class="flex flex-col gap-5" method="POST" action="{{ route('new-advert-csv') }}"
+                enctype="multipart/form-data">
+                @csrf
+
+                <!-- Csv input -->
+                <input
+                    class="w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:outline-none"
+                    id="csvFile" name="csv_file" type="file" accept=".csv">
+                <!-- submit -->
+                <div class="mt-4 flex items-center justify-start">
+                    <x-primary-button class="" name="submitCsv">
+                        {{ __('advertPostForm.post') }}
+                    </x-primary-button>
+                </div>
+            </form>
+
 
             @if (Session::has('error'))
                 <div class="mt-2 space-y-1 text-sm text-red-600 dark:text-red-400">

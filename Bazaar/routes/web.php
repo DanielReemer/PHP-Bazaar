@@ -27,6 +27,7 @@ Route::get('new-advert', [AdvertController::class, 'create'])
     ->name('new-advert');
     
 Route::post('new-advert', [AdvertController::class, 'store']);
+Route::post('new-advert-csv' , [AdvertController::class,'storeCsv'])->name('new-advert-csv');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
