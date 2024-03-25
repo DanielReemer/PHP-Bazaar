@@ -18,6 +18,9 @@
     "post"=> "Posten",
     "create"=> "Creëer Nieuwe Advertentie",
     "customUrl"=> "Aangepaste URL",
+    "csvFile"=> "Upload CSV file",
+    "upload"=> "Upload",
+
     ];
 
     

@@ -11,6 +11,7 @@ use App\Models\Role;
 use App\Models\AdvertQueue;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,6 +36,13 @@ class AdvertController extends Controller
         $account = Auth::user();
         $isBusinessAccount = $account->role()->value('value') === Role::ROLE_BUSINESS_ADVERTISER;
         $data = [
+            'createLabel' => trans()->get('advertPostForm.create'),
+            'titleLabel' => trans()->get('advertPostForm.title'),
+            'descriptionLabel' => trans()->get('advertPostForm.description'),
+            'isRentalLabel' => trans()->get('advertPostForm.is_rental'),
+            'postButtonText' => trans()->get('advertPostForm.post'),
+            'uploadFileLabel' => trans()->get('advertPostForm.csvFile'),
+            'uploadButtonText' => trans()->get('advertPostForm.upload'),
             'showUrlInput' => $isBusinessAccount,
         ];
 
@@ -61,7 +69,7 @@ class AdvertController extends Controller
         if (! ($this->limitCheck($isRental))) {
             return redirect()->back()->with('error', 'Maximum number of ads have been posted.');
         }
-        $advert = $this->createNewAdvert($request->title, $request->description, (int)$isRental);
+        $advert = $this->createNewAdvert($request->title, $request->description, (int) $isRental);
         $advert->save();
 
         if ($request->customUrl && Auth::user()->role()->value('value') === Role::ROLE_BUSINESS_ADVERTISER) {
@@ -88,9 +96,7 @@ class AdvertController extends Controller
             $this->saveAdvertsFromQueue();
         } catch (Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
-        }
-        finally
-        {
+        } finally {
             $this->advertQueue->reset();
         }
 
@@ -169,7 +175,7 @@ class AdvertController extends Controller
         $description = $record['Description'] ?? throw new Exception('Could not find description');
         $is_rental = filter_var($record['Is_Rental'], FILTER_VALIDATE_BOOL) ?? throw new Exception('Could not determine whether the post is a rental');
 
-        if (($currentNumberOfNormalPosts >= AdvertController::MAX_ADVERT_NUM && !($is_rental)) || ($currentNumberOfRentals >= AdvertController::MAX_ADVERT_NUM && $is_rental)) {
+        if (($currentNumberOfNormalPosts >= AdvertController::MAX_ADVERT_NUM && ! ($is_rental)) || ($currentNumberOfRentals >= AdvertController::MAX_ADVERT_NUM && $is_rental)) {
             throw new Exception("Reached Maximum Number Of Posts");
         }
 

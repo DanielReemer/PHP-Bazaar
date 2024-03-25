@@ -18,4 +18,7 @@
     "post"=> "Post",
     "create"=> "Create New Advert",
     "customUrl"=> "Custom URL",
+    "csvFile"=> "Upload CSV file",
+    "upload"=> "Upload",
+
     ];
