@@ -72,7 +72,7 @@ class AdvertController extends Controller
 
         // Check wheter Post Limit Has Been reached;
         if (! ($this->limitCheck($isRental))) {
-            return redirect()->back()->with('error', 'Maximum number of ads have been posted.');
+            return redirect()->back()->with('error', trans()->get('advertPostForm.maximumReached'));
         }
         $advert = $this->createNewAdvert($request->title, $request->description, (int) $isRental);
         $advert->save();
@@ -197,12 +197,18 @@ class AdvertController extends Controller
 
     private function processRecord($record, int &$currentNumberOfNormalPosts, int &$currentNumberOfRentals) : void
     {
-        $title = $record['Title'] ?? throw new Exception('Could not find title');
-        $description = $record['Description'] ?? throw new Exception('Could not find description');
-        $is_rental = filter_var($record['Is_Rental'], FILTER_VALIDATE_BOOL) ?? throw new Exception('Could not determine whether the post is a rental');
+        $failedMessage = trans()->get('advertPostForm.uploadFailed');
+        $maxNumPostMessage = trans()->get('advertPostForm.maximumReached');
+        $title = $record['Title'] ?? throw new Exception($failedMessage);
+        $description = $record['Description'] ?? throw new Exception($failedMessage);
+        $is_rental = filter_var($record['Is_Rental'], FILTER_VALIDATE_BOOL) ?? throw new Exception($failedMessage);
 
         if (($currentNumberOfNormalPosts >= AdvertController::MAX_ADVERT_NUM && ! ($is_rental)) || ($currentNumberOfRentals >= AdvertController::MAX_ADVERT_NUM && $is_rental)) {
-            throw new Exception("Reached Maximum Number Of Posts");
+            throw new Exception($maxNumPostMessage);
+        }
+        if (empty($title))
+        {
+            throw new Exception($failedMessage);
         }
 
         $advert = $this->createNewAdvert($title, $description, $is_rental);
