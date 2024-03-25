@@ -20,7 +20,8 @@
     "customUrl"=> "Aangepaste URL",
     "csvFile"=> "Upload CSV file",
     "upload"=> "Upload",
-
+    "maximumReached" => "Maximale aantal advertenties overschreden.",
+    "uploadFailed"=> "Er ging iets mis bij de upload",
     ];
 
     

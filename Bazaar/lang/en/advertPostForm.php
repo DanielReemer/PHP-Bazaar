@@ -20,5 +20,7 @@
     "customUrl"=> "Custom URL",
     "csvFile"=> "Upload CSV file",
     "upload"=> "Upload",
+    "maximumReached" => "Reached Maximum.",
+    "uploadFailed"=> "The upload has failed.",
 
     ];
