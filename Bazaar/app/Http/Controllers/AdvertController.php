@@ -21,7 +21,6 @@ class AdvertController extends Controller
     const MAX_ADVERT_NUM = 4;
 
     const MAX_TITLE_LENGHT = 50;
-
     private ICsvHandler $csvHandler;
     private AbstractQueue $advertQueue;
 
@@ -60,6 +59,7 @@ class AdvertController extends Controller
     {
         $maxTitleString = 'max:';
         $maxTitleString .= AdvertController::MAX_TITLE_LENGHT;
+
 
         $request->validate([
             'title' => ['required', 'string', $maxTitleString],
