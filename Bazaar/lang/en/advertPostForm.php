@@ -21,5 +21,5 @@
     "upload"=> "Upload",
     "maximumReached" => "Reached Maximum.",
     "uploadFailed"=> "The upload has failed.",
-
+    "invalidHeaders"=> "Csv file headers do not match expected format",
     ];
