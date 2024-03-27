@@ -49,7 +49,8 @@ class AdvertController extends Controller
     public function store(Request $request)
     {
         $maxTitleString = 'max:';
-        $maxTitleLength .= AdvertController::MAX_TITLE_LENGTh;
+        $maxTitleString .= AdvertController::MAX_TITLE_LENGTH;
+        
         $request->validate([
             'title' => ['required', 'string', $maxTitleString],
             'description' => ['string', 'max:255'],
