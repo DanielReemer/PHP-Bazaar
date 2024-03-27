@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 class AdvertController extends Controller
 {
     const MAX_ADVERT_NUM = 4;
+    const MAX_TITLE_LENGTH = 50;
     private ICsvHandler $csvHandler;
     private AbstractQueue $advertQueue;
 
@@ -47,6 +48,8 @@ class AdvertController extends Controller
      */
     public function store(Request $request)
     {
+        $maxTitleString = 'max:';
+        $maxTitleLength .= AdvertController::MAX_TITLE_LENGTh;
         $request->validate([
             'title' => ['required', 'string', $maxTitleString],
             'description' => ['string', 'max:255'],
