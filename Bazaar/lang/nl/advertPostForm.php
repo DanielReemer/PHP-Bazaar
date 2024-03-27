@@ -22,6 +22,14 @@
     "upload"=> "Upload",
     "maximumReached" => "Maximale aantal advertenties overschreden.",
     "uploadFailed"=> "Er ging iets mis bij de upload",
+    "invalidHeaders" => "CSV-bestandskoppen komen niet overeen met het verwachte formaat."
+
+
+
+
+
+
+    ,
     ];
 
     

@@ -29,7 +29,7 @@ class AdvertCsvHandler extends AbstractAdvertCsvHandler
         $headers = $reader->getHeader();
 
         if ($headers !== $expectedHeaders) {
-            throw new Exception('Csv file headers do not match expected format');
+            throw new Exception(trans()->get('advertPostForm.invalidHeaders'));
         }
 
         // Handle data;
