@@ -11,6 +11,8 @@ class Role extends Model
 {
     use HasFactory;
 
+    const ROLE_BUSINESS_ADVERTISER = 'Business advertiser';
+
     protected $table = 'roles';
 
     protected $fillable = [

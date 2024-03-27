@@ -73,13 +73,19 @@ class User extends Authenticatable
 
     public function deleteNormalAdverts() : void
     {
-        $this->adverts()->where(Advert::ISRENTAL_COLUMN_NAME,0)->delete();
+        $this->adverts()->where(Advert::ISRENTAL_COLUMN_NAME, 0)->delete();
 
         return;
     }
 
-    public function role(): BelongsTo
+    public function role() : BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function hasPostRights() : bool
+    {
+        $role = $this->role()->first();
+        return $role ? (bool)$role->hasPostRights : false;
     }
 }
