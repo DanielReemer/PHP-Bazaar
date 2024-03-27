@@ -24,6 +24,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('new-advert', [AdvertController::class, 'create'])
+    ->middleware('auth', 'verified')
     ->name('new-advert');
     
 Route::post('new-advert', [AdvertController::class, 'store']);
