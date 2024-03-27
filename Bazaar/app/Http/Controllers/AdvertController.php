@@ -48,10 +48,6 @@ class AdvertController extends Controller
      */
     public function store(Request $request)
     {
-        // Check wheter Post Limit Has Been reached;
-        if (! ($this->limitCheck(($request)))) {
-            return redirect()->back()->with('error', 'Maximum number of ads have been posted.');
-        }
         $maxTitleString = 'max:';
         $maxTitleString .= AdvertController::MAX_TITLE_LENGHT;
         
