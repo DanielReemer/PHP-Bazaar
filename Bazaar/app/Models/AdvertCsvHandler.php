@@ -30,7 +30,6 @@ class AdvertCsvHandler extends AbstractAdvertCsvHandler
 
         if ($headers !== $expectedHeaders) {
             throw new Exception(trans()->get('advertPostForm.invalidHeaders'));
-
         }
 
         // Handle data;
