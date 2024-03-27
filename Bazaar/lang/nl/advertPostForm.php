@@ -17,7 +17,7 @@
     "is_rental"=> "Is Verhuurbaar Artikel",
     "post"=> "Posten",
     "create"=> "Creëer Nieuwe Advertentie",
-
+    "customUrl"=> "Aangepaste URL",
     ];
 
     

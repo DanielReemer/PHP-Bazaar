@@ -37,7 +37,7 @@
                     <div>
                         <x-input-label for="customUrl" :value="__('advertPostForm.customUrl')" />
                         <x-text-input class="mt-1 block w-full" id="customUrl" name="customUrl" type="text"
-                            :value="old('customUrl')" required autofocus autocomplete="customUrl" />
+                            :value="old('customUrl')" autofocus autocomplete="customUrl" />
                         <x-input-error class="mt-2" :messages="$errors->get('customUrl')" />
                     </div>
                 @endif
