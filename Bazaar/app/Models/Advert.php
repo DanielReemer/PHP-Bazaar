@@ -11,6 +11,7 @@ class Advert extends Model
 {
     use HasFactory;
     const ISRENTAL_COLUMN_NAME = "is_rental";
+    private const DAYS_UNTIL_EXPIRATION = 30;
     /**
      * The attributes that are mass assignable.
      *
@@ -21,7 +22,17 @@ class Advert extends Model
         'Description',
         'owner_id',
         'current_borrower_id',
+        'expiration_date'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($advert) {
+            $advert->expiration_date = now()->addDays(Advert::DAYS_UNTIL_EXPIRATION);
+        });
+    }
 
     public function owner() : BelongsTo
     {
