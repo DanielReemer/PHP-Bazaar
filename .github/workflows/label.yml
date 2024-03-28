@@ -12,12 +12,11 @@ jobs:
     - name: Check PR title for keywords
       id: check_keywords
       run: |
-        title="${{ github.event.pull_request.title }}"
-        contains_feat=$(echo "$title" | grep -c 'feat/')
-        contains_bug=$(echo "$title" | grep -c 'bug/')
-        contains_docs=$(echo "$title" | grep -c 'docs/')
-        contains_refactor=$(echo "$title" | grep -c 'refactor/')
-        contains_test=$(echo "$title" | grep -c 'test/')
+        contains_feat=$(echo "${{ github.event.pull_request.title }}" | grep -c 'feat/')
+        contains_bug=$(echo "${{ github.event.pull_request.title }}" | grep -c 'bug/')
+        contains_docs=$(echo "${{ github.event.pull_request.title }}" | grep -c 'docs/')
+        contains_refactor=$(echo "${{ github.event.pull_request.title }}" | grep -c 'refactor/')
+        contains_test=$(echo "${{ github.event.pull_request.title }}" | grep -c 'test/')
         echo "::set-output name=contains_feat::$contains_feat"
         echo "::set-output name=contains_bug::$contains_bug"
         echo "::set-output name=contains_docs::$contains_docs"
