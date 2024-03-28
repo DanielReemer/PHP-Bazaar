@@ -18,7 +18,7 @@ jobs:
       uses: actions/github-script@v5
       with:
         script: |
-          const { context, github } = require("@actions/github");
+          const { github } = require("@actions/github");
           const prNumber = context.payload.pull_request.number;
           const prTitle = context.payload.pull_request.title;
           const prBody = context.payload.pull_request.body;
