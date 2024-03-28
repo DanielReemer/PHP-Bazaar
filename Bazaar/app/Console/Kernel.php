@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Models\Advert;
+use App\Models\PostStatus;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -12,7 +14,19 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            $expiredStatus = PostStatus::where("name", "expired")->first();
+            $adverts = Advert::where('expiration_date', '<=', now())
+                             ->whereHas('postStatus', function ($query) {
+                                 $query->where('name', 'available');
+                             })
+                             ->get();
+
+            $adverts->each(function (Advert $advert) use ($expiredStatus) {
+                $advert->postStatus()->associate($expiredStatus);
+                $advert->save();
+            });
+        })->daily();
     }
 
     /**
