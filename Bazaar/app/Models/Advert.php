@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Advert extends Model
 {
@@ -30,5 +31,15 @@ class Advert extends Model
     public function currentBorrower() : BelongsTo
     {
         return $this->belongsTo(User::class, 'current_borrower_id');
+    }
+
+    public function hasCustomUrl() : bool
+    {
+        return $this->landingspageUrl()->exists();
+    }
+
+    public function landingspageUrl() : HasOne
+    {
+        return $this->hasOne(LandingspageUrl::class);
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Advert;
+use App\Models\LandingspageUrl;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Providers\RouteServiceProvider;
 use Illuminate\View\View;
@@ -18,7 +20,13 @@ class AdvertController extends Controller
      */
     public function create() : View
     {
-        return view('adverts.new-advert');
+        $account = Auth::user();
+        $isBusinessAccount = $account->role()->value('value') === Role::ROLE_BUSINESS_ADVERTISER;
+        $data = [
+            'showUrlInput' => $isBusinessAccount,
+        ];
+
+        return view('adverts.new-advert', $data);
     }
 
     /**
@@ -26,26 +34,33 @@ class AdvertController extends Controller
      */
     public function store(Request $request)
     {
-        // Check wheter Post Limit Has Been reached;
-        if (! ($this->limitCheck(($request)))) {
-            return redirect()->back()->with('error', 'Maximum number of ads have been posted.');
-        }
         $maxTitleString = 'max:';
         $maxTitleString .= AdvertController::MAX_TITLE_LENGHT;
-        
+
         $request->validate([
             'title' => ['required', 'string', $maxTitleString],
             'description' => ['string', 'max:255'],
+            'customUrl' => ['nullable', 'url'],
         ]);
+
+        if (! $this->limitCheck($request)) {
+            return redirect()->back()->with('error', 'Maximum aantal advertenties is bereikt.');
+        }
 
         $advert = new Advert();
         $advert->title = $request->title;
         $advert->description = $request->description;
         $advert->is_rental = $request->rental ?? 0;
-        $advert->owner()->associate($request->user() ?? Auth::user());
+        $advert->owner()->associate($request->user());
         $advert->save();
 
-        // TODO: Change to a sort of dashboard; 
+        if ($request->customUrl && Auth::user()->role()->value('value') === Role::ROLE_BUSINESS_ADVERTISER) {
+            $landingPageUrl = new LandingspageUrl();
+            $landingPageUrl->url = $request->customUrl;
+            $landingPageUrl->advert()->associate($advert);
+            $landingPageUrl->save();
+        }
+
         return redirect()->route('dashboard');
     }
 

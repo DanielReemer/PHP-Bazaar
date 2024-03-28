@@ -17,5 +17,5 @@
     "is_rental"=> "Is Rental",
     "post"=> "Post",
     "create"=> "Create New Advert",
-
+    "customUrl"=> "Custom URL",
     ];
