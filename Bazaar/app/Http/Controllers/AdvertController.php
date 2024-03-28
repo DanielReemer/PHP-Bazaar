@@ -58,7 +58,7 @@ class AdvertController extends Controller
     public function store(Request $request)
     {
         $maxTitleString = 'max:';
-        $maxTitleString .= AdvertController::MAX_TITLE_LENGTH;
+        $maxTitleString .= AdvertController::MAX_TITLE_LENGHT;
         
         $request->validate([
             'title' => ['required', 'string', $maxTitleString],
@@ -80,27 +80,6 @@ class AdvertController extends Controller
             $landingPageUrl->url = $request->customUrl;
             $landingPageUrl->advert()->associate($advert);
             $landingPageUrl->save();
-        }
-
-        return redirect()->route('dashboard');
-    }
-
-    public function storeCsv(Request $request)
-    {
-        $request->validate([
-            'csv_file' => 'required|file|mimes:csv,txt|max:2048',
-        ]);
-
-        $file = $request->file('csv_file');
-
-        try {
-            $fileData = $this->csvHandler->parseCsvFile($file);
-            $this->processFileData($fileData);
-            $this->saveAdvertsFromQueue();
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-        } finally {
-            $this->advertQueue->reset();
         }
 
         return redirect()->route('dashboard');
