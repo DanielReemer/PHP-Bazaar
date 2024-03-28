@@ -32,7 +32,7 @@
                     <x-input-error class="mt-2" :messages="$errors->get('rental')" />
                 </div>
 
-                @if($showUrlInput)
+                @if($isBusiness)
                     <!-- Custom url -->
                     <div>
                         <x-input-label for="customUrl" :value="__('advertPostForm.customUrl')" />
@@ -49,24 +49,25 @@
                     </x-primary-button>
                 </div>
             </form>
-            <div class="mx-auto w-full border-t-2 border-white-300 my-4"></div>
-            <form class="flex flex-col gap-5" method="POST" action="{{ route('new-advert-csv') }}"
-                enctype="multipart/form-data">
-                @csrf
+            @if($isBusiness)
+                <div class="mx-auto w-full border-t-2 border-white-300 my-4"></div>
+                <form class="flex flex-col gap-5" method="POST" action="{{ route('new-advert-csv') }}"
+                    enctype="multipart/form-data">
+                    @csrf
 
-                <!-- Csv input -->
-                <x-input-label for="csv_file" :value="$uploadFileLabel" />
-                <input
-                    class="w-full appearance-none rounded border px-3 py-2 leading-tight text-white focus:border-blue-500 focus:outline-none"
-                    id="csvFile" name="csv_file" type="file" accept=".csv">
-                <!-- submit -->
-                <div class="mt-4 flex items-center justify-start">
-                    <x-primary-button class="" name="submitCsv">
-                        {{ $uploadButtonText }}
-                    </x-primary-button>
-                </div>
-            </form>
-            
+                    <!-- Csv input -->
+                    <x-input-label for="csv_file" :value="$uploadFileLabel" />
+                    <input
+                        class="w-full appearance-none rounded border px-3 py-2 leading-tight text-white focus:border-blue-500 focus:outline-none"
+                        id="csvFile" name="csv_file" type="file" accept=".csv">
+                    <!-- submit -->
+                    <div class="mt-4 flex items-center justify-start">
+                        <x-primary-button class="" name="submitCsv">
+                            {{ $uploadButtonText }}
+                        </x-primary-button>
+                    </div>
+                </form>
+            @endif
             @if (Session::has('error'))
                 <div class="mt-2 space-y-1 text-sm text-red-600 dark:text-red-400">
                     {{ Session::get('error') }}

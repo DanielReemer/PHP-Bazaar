@@ -46,7 +46,7 @@ class AdvertController extends Controller
             'postButtonText' => trans()->get('advertPostForm.post'),
             'uploadFileLabel' => trans()->get('advertPostForm.csvFile'),
             'uploadButtonText' => trans()->get('advertPostForm.upload'),
-            'showUrlInput' => $isBusinessAccount,
+            'isBusiness' => $isBusinessAccount,
         ];
 
         return view('adverts.new-advert', $data);
