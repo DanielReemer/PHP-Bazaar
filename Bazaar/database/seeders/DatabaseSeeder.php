@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
          // Call the RolesTableSeeder
-         $this->call([UserSeeder::class, AdvertSeeder::class, RolesTableSeeder::class]);
+         $this->call([PostStatusSeeder::class, UserSeeder::class, AdvertSeeder::class, RolesTableSeeder::class]);
         
         // \App\Models\User::factory(10)->create();
 
