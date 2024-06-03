@@ -7,6 +7,8 @@ use App\Abstracts\AbstractQueue;
 use App\Interfaces\ICsvHandler;
 use App\Models\Advert;
 
+use App\Models\AdvertReview;
+use App\Models\FavoriteAdvert;
 use App\Models\LandingspageUrl;
 use App\Models\Role;
 
@@ -28,6 +30,25 @@ class AdvertController extends Controller
     {
         $this->csvHandler = $csvHandler;
         $this->advertQueue = new AdvertQueue();
+    }
+
+    public function show($id) {
+        $advert = Advert::where('id', $id)
+            ->first();
+
+        $reviews = AdvertReview::where('advert_id', $id)
+            ->with('advert')
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $data = [
+            'advert' => $advert,
+            'reviews' => $reviews,
+            'favorited' => FavoriteAdvert::isFavorited($id),
+        ];
+
+        return view('adverts.advert', compact('data'));
     }
 
     /**
@@ -59,7 +80,7 @@ class AdvertController extends Controller
     {
         $maxTitleString = 'max:';
         $maxTitleString .= AdvertController::MAX_TITLE_LENGHT;
-        
+
         $request->validate([
             'title' => ['required', 'string', $maxTitleString],
             'description' => ['string', 'max:255'],
