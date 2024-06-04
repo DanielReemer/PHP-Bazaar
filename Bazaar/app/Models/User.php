@@ -88,4 +88,9 @@ class User extends Authenticatable
         $role = $this->role()->first();
         return $role ? (bool)$role->hasPostRights : false;
     }
+
+    public function userReviews()
+    {
+        return $this->hasMany(UserReview::class);
+    }
 }
