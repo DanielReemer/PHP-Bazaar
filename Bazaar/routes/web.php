@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdvertReviewController;
 use App\Http\Controllers\FavoriteAdvertController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdvertController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,8 @@ Route::post('advert/{id}/comment', [AdvertReviewController::class, 'store'])->na
 Route::post('advert/{id}/favorite', [FavoriteAdvertController::class, 'update'])->name('favoriteAdvert.update');
 
 Route::get('favorites', [FavoriteAdvertController::class, 'show'])->name('favorites.show');
+
+Route::get('products/{type?}', [ProductController::class, 'show'])->name('products.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

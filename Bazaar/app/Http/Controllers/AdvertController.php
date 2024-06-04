@@ -47,11 +47,13 @@ class AdvertController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        $favoritedColor = FavoriteAdvert::isFavorited($id) ? 'yellow' : 'gray';
+
         $data = [
             'advert' => $advert,
             'qrcode' => $qrCode,
             'reviews' => $reviews,
-            'favorited' => FavoriteAdvert::isFavorited($id),
+            'favorited' => $favoritedColor,
         ];
 
         return view('adverts.advert', compact('data'));

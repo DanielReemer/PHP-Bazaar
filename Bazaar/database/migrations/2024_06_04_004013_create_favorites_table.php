@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFavoritesTable extends Migration
+return new class  extends Migration
 {
     /**
      * Run the migrations.
@@ -32,4 +32,4 @@ class AddFavoritesTable extends Migration
     {
         Schema::dropIfExists('favorite_adverts');
     }
-}
+};

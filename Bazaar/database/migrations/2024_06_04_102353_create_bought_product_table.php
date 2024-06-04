@@ -4,35 +4,28 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddReviewsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('advert_reviews', function (Blueprint $table) {
+        Schema::create('bought_products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('advert_id')
                 ->constrained('adverts');
             $table->foreignId('user_id')
                 ->constrained('users');
-            $table->string('title')->nullable();
-            $table->mediumText('comment')->nullable();
-            $table->integer('rating');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('bought_products');
     }
-}
+};
