@@ -10,7 +10,9 @@
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 m-3">{{ __('public-profile.adverts') }}</h2>
                 <div class="w-3/4">
                     @foreach($data['user']['adverts'] as $advert)
-                        <x-advert-card :advert="$advert"/>
+                        <div class="mt-5">
+                            <x-advert-card :advert="$advert"/>
+                        </div>
                     @endforeach
                 </div>
             </div>
