@@ -57,7 +57,7 @@
                     </p>
                 @else
                     @foreach ($data['reviews'] as $review)
-                        <x-review :review="$review"></x-review>
+                        <x-advert-review :review="$review"></x-advert-review>
                     @endforeach
                 @endif
             </div>
