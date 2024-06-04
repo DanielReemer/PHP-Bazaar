@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('adverts', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description')->nullable();
+            $table->mediumText('description')->nullable();
             $table->boolean('is_rental')->default(0);
             $table->timestamps();
         });
