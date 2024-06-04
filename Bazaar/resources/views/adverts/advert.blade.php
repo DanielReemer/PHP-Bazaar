@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="max-w-7xl mx-auto p-6 lg:p-8 flex">
+    <div class="max-w-7xl mx-auto p-6 lg:p-8 flex gap-20">
         <div class="flex-1">
             <div class="flex">
                 <form method="POST" action="{{ route('favoriteAdvert.update', ['id' => $data['advert']->id]) }}">
