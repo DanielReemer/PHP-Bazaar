@@ -12,16 +12,19 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                        {{ __('nav.home') }}
+                    </x-nav-link>
                     @if(auth()->user())
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
+                            {{ __('nav.dashboard') }}
                         </x-nav-link>
                     @else
                         <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
-                            Login
+                            {{ __('nav.login') }}
                         </x-nav-link>
                         <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
-                            Register
+                            {{ __('nav.register') }}
                         </x-nav-link>
                     @endif
                 </div>

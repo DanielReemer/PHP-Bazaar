@@ -8,16 +8,15 @@ return [
     |--------------------------------------------------------------------------
     |
     | The following lines are used to display the various elements to the user.
-    | In Dutch;
+    | In English;
     |
     */
 
-    "my_profile"=> "Mijn Poriel",
-    "favorites"=> "Favorieten",
-    "my_products"=> "Mijn Producten",
-    "home"=> "Thuispagina",
-    "dashboard"=> "Dashboard",
-    "login"=> "Inloggen",
-    "register"=> "Registreren",
+    "adverts"=> "Advertisements",
+    "reviews"=> "Reviews",
+    "no_reviews"=> "There are no reviews on this user",
+    "login_to_comment"=> "Log in in order to place a review!",
+    "title"=> "Title",
+    "review"=> "Review",
 ];
 

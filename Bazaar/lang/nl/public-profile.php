@@ -12,12 +12,11 @@ return [
     |
     */
 
-    "my_profile"=> "Mijn Poriel",
-    "favorites"=> "Favorieten",
-    "my_products"=> "Mijn Producten",
-    "home"=> "Thuispagina",
-    "dashboard"=> "Dashboard",
-    "login"=> "Inloggen",
-    "register"=> "Registreren",
+    "adverts"=> "Advertenties",
+    "reviews"=> "Beoordelingen",
+    "no_reviews"=> "Er zijn geen reviews op deze gebruiker",
+    "login_to_comment"=> "Log eerst in voordat je een beoordeling kan plaatsen!",
+    "title"=> "Titel",
+    "review"=> "Review",
 ];
 

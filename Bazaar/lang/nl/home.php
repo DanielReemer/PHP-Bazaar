@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Advert From Language Lines
+    | Home
     |--------------------------------------------------------------------------
     |
     | The following lines are used to display the various elements to the user.
@@ -12,12 +12,6 @@ return [
     |
     */
 
-    "my_profile"=> "Mijn Poriel",
-    "favorites"=> "Favorieten",
-    "my_products"=> "Mijn Producten",
-    "home"=> "Thuispagina",
-    "dashboard"=> "Dashboard",
-    "login"=> "Inloggen",
-    "register"=> "Registreren",
+    "recent_adverts"=> "Recente Advertenties",
 ];
 
