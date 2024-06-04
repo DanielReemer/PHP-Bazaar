@@ -45,11 +45,15 @@
 
                         <x-slot name="content">
                             <x-dropdown-link :href="route('profile.edit')">
-                                {{ __('Profile') }}
+                                {{ __('nav.my_profile') }}
                             </x-dropdown-link>
 
                             <x-dropdown-link :href="route('favorites.show')">
-                                {{ __('Favorites') }}
+                                {{ __('nav.favorites') }}
+                            </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('products.show')">
+                                {{ __('nav.my_products') }}
                             </x-dropdown-link>
 
                             <!-- Authentication -->
