@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('advert/{id}', [AdvertController::class, 'show'])->name('advert.show');
 Route::post('advert/{id}/comment', [AdvertReviewController::class, 'store'])->name('advertReview.store');
