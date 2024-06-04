@@ -71,7 +71,15 @@
             </div>
         </div>
         <div class="flex-1">
-            {{ $data['qrcode'] }}
+            <div class="w-1/2 p-5">
+                <div class="flex justify-center">
+                    {{ $data['qrcode'] }}
+                </div>
+                <hr class="mt-5 mb-5">
+                <div>
+                    {{-- Add buttons like hire or something here --}}
+                </div>
+            </div>
         </div>
     </div>
 </x-app-layout>

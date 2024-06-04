@@ -37,7 +37,8 @@ class AdvertController extends Controller
         $advert = Advert::where('id', $id)
             ->first();
 
-        $qrCode = QrCode::size(300)->generate(route('advert.show', ['id' => $id]));
+        $qrCode = QrCode::size(200)
+            ->generate(route('advert.show', ['id' => $id]));
 
         $reviews = AdvertReview::where('advert_id', $id)
             ->with('advert')
