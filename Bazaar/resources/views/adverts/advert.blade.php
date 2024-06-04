@@ -16,7 +16,10 @@
                     </h1>
                 </form>
             </div>
-            <p class="mt-6 text-base text-gray-600 dark:text-gray-400">
+            <p class="text-sm text-gray-500 dark:text-gray-500">
+                {{ __('advert.since') }} {{ $data['advert']->created_at }}
+            </p>
+            <p class="mt-4 text-base text-gray-600 dark:text-gray-400">
                 {{ $data['advert']->description }}
             </p>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mt-6">
@@ -76,7 +79,9 @@
                     {{ $data['qrcode'] }}
                 </div>
                 <hr class="mt-5 mb-5">
-                <div>
+                <div class="m-5">
+                    <p class="text-base font-bold text-gray-800 dark:text-gray-200">{{ __('advert.advert_by') }}</p>
+                    <p class="text-base text-gray-700 dark:text-gray-300">{{ $data['advert']->owner->name }}</p>
                     {{-- Add buttons like hire or something here --}}
                 </div>
             </div>

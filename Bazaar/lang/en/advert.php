@@ -19,5 +19,7 @@ return [
     "review"=> "Review",
     "submit_review"=> "Submit review",
     "login_to_comment"=> "Log in in order to place a review!",
+    "advert_by"=> "Advertisement by",
+    "since"=> "Since",
 ];
 

@@ -35,6 +35,7 @@ class AdvertController extends Controller
 
     public function show($id) {
         $advert = Advert::where('id', $id)
+            ->with('owner')
             ->first();
 
         $qrCode = QrCode::size(200)
