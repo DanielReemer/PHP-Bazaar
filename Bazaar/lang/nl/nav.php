@@ -15,5 +15,9 @@ return [
     "my_profile"=> "Mijn Poriel",
     "favorites"=> "Favorieten",
     "my_products"=> "Mijn Producten",
+    "home"=> "Thuispagina",
+    "dashboard"=> "Dashboard",
+    "login"=> "Inloggen",
+    "register"=> "Registreren",
 ];
 

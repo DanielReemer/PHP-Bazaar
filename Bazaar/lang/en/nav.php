@@ -15,5 +15,9 @@ return [
     "my_profile"=> "My Profile",
     "favorites"=> "Favorites",
     "my_products"=> "My Products",
+    "home"=> "Home",
+    "dashboard"=> "Dashboard",
+    "login"=> "Login",
+    "register"=> "Register",
 ];
 
