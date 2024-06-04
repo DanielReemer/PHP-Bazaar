@@ -18,6 +18,6 @@ return [
     "title"=> "Titel",
     "review"=> "Beoordeling",
     "submit_review"=> "Plaats beoordeling",
-    "login_to_comment"=> "Log eerst in voordat je een opmerking kan plaatsen!",
+    "login_to_comment"=> "Log eerst in voordat je een beoordeling kan plaatsen!",
 ];
 

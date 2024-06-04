@@ -17,6 +17,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AdvertController extends Controller
 {
@@ -36,6 +37,8 @@ class AdvertController extends Controller
         $advert = Advert::where('id', $id)
             ->first();
 
+        $qrCode = QrCode::size(300)->generate(route('advert.show', ['id' => $id]));
+
         $reviews = AdvertReview::where('advert_id', $id)
             ->with('advert')
             ->with('user')
@@ -44,6 +47,7 @@ class AdvertController extends Controller
 
         $data = [
             'advert' => $advert,
+            'qrcode' => $qrCode,
             'reviews' => $reviews,
             'favorited' => FavoriteAdvert::isFavorited($id),
         ];

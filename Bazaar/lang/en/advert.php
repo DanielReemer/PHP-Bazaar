@@ -18,6 +18,6 @@ return [
     "title"=> "Title",
     "review"=> "Review",
     "submit_review"=> "Submit review",
-    "login_to_comment"=> "Log in in order to place a comment!",
+    "login_to_comment"=> "Log in in order to place a review!",
 ];
 

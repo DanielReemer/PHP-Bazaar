@@ -71,7 +71,7 @@
             </div>
         </div>
         <div class="flex-1">
-
+            {{ $data['qrcode'] }}
         </div>
     </div>
 </x-app-layout>
