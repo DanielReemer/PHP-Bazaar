@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AdvertReviewController;
+use App\Http\Controllers\FavoriteAdvertController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdvertController;
 use Illuminate\Support\Facades\Route;
@@ -15,9 +18,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index']);
+
+Route::get('advert/{id}', [AdvertController::class, 'show'])->name('advert.show');
+Route::post('advert/{id}/comment', [AdvertReviewController::class, 'store'])->name('advertReview.store');
+Route::post('advert/{id}/favorite', [FavoriteAdvertController::class, 'update'])->name('favoriteAdvert.update');
+
+Route::get('favorites', [FavoriteAdvertController::class, 'show'])->name('favorites.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -26,7 +33,7 @@ Route::get('/dashboard', function () {
 Route::get('new-advert', [AdvertController::class, 'create'])
     ->middleware('auth', 'verified', 'postingRights')
     ->name('new-advert');
-    
+
 Route::post('new-advert', [AdvertController::class, 'store']);
 Route::post('new-advert-csv' , [AdvertController::class,'storeCsv'])->name('new-advert-csv');
 
