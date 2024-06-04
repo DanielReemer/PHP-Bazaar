@@ -27,7 +27,9 @@ Route::post('advert/{id}/favorite', [FavoriteAdvertController::class, 'update'])
 
 Route::get('favorites', [FavoriteAdvertController::class, 'show'])->name('favorites.show');
 
-Route::get('products/{type?}', [ProductController::class, 'show'])->name('products.show');
+Route::get('products/{type?}', [ProductController::class, 'show'])
+    ->middleware(['auth', 'verified'])
+    ->name('products.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
