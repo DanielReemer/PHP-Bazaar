@@ -48,7 +48,7 @@ class RegisteredUserController extends Controller
             $landing_page = LandingPage::create([]);
             $user->landing_page_id = $landing_page->id;
         }
-        
+
         $user->save();
 
         event(new Registered($user));
