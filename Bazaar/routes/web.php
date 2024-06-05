@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdvertController;
 use App\Http\Controllers\AdvertReviewController;
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\FavoriteAdvertController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -49,7 +50,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware('auth', 'admin')->group(function () {
+    Route::get('/admin/contract', [ContractController::class, 'show'])->name('admin.contract.show');
+    Route::POST('/admin/contract', [ContractController::class, 'store'])->name('admin.contract.store');
+    Route::get('/admin/contract/{rawFile}', [ContractController::class, 'downloadFile'])->name('admin.contract.download');
+});
 Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
 Route::post('/profile/{id}', [UserReviewController::class, 'store'])->name('userReview.store');
+
 
 require __DIR__.'/auth.php';
