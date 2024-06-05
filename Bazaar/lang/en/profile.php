@@ -8,19 +8,14 @@ return [
     |--------------------------------------------------------------------------
     |
     | The following lines are used to display the various elements to the user.
-    | In Dutch;
+    | In English;
     |
     */
 
-    "my_profile"=> "Mijn Poriel",
-    "favorites"=> "Favorieten",
-    "my_products"=> "Mijn Producten",
-    "home"=> "Thuispagina",
-    "dashboard"=> "Dashboard",
-    "login"=> "Inloggen",
-    "register"=> "Registreren",
-    "contract"=> "Contract",
-    "logout"=> "Uitloggen",
-    "profile"=> "Profiel",
+    "profile"=> "Profile",
+    "custom_url"=> "Custom URL",
+    "custom_url_desc"=> "Change the URL to your business page",
+    "url" => "URL",
+    "save"=> "Save",
 ];
 
