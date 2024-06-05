@@ -12,13 +12,11 @@ return [
     |
     */
 
-    "my_profile"=> "My Profile",
-    "favorites"=> "Favorites",
-    "my_products"=> "My Products",
-    "home"=> "Home",
-    "dashboard"=> "Dashboard",
-    "login"=> "Login",
-    "register"=> "Register",
-    "contract"=> "Contract",
+    "upload_contract"=> "Upload Contract",
+    "select_file"=> "Select a file",
+    "upload"=> "Upload",
+    "export_contract"=> "Export Contract",
+    "file_name"=> "File Name",
+    "download"=> "Download",
 ];
 

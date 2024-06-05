@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             'name' => 'John Doe',
             'email' => 'johndoe@test.com',
             'password' => 'password',
+            'is_admin' => true,
             'role_id' => 3, // 3 = Roles.BusinessAdvertiser
         ]);
     }

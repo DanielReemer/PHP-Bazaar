@@ -8,17 +8,15 @@ return [
     |--------------------------------------------------------------------------
     |
     | The following lines are used to display the various elements to the user.
-    | In English;
+    | In Dutch;
     |
     */
 
-    "my_profile"=> "My Profile",
-    "favorites"=> "Favorites",
-    "my_products"=> "My Products",
-    "home"=> "Home",
-    "dashboard"=> "Dashboard",
-    "login"=> "Login",
-    "register"=> "Register",
-    "contract"=> "Contract",
+    "upload_contract"=> "Upload contract",
+    "select_file"=> "Selecteer een bestand",
+    "upload"=> "Upload",
+    "export_contract"=> "Exporteer Contract",
+    "file_name"=> "Bestandsnaam",
+    "download"=> "Download",
 ];
 

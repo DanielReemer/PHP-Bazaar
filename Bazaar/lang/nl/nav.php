@@ -19,5 +19,6 @@ return [
     "dashboard"=> "Dashboard",
     "login"=> "Inloggen",
     "register"=> "Registreren",
+    "contract"=> "Contract",
 ];
 
