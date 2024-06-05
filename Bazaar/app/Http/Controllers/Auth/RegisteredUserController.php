@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\LandingPage;
 use App\Models\User;
 use App\models\Role;
 use App\Providers\RouteServiceProvider;
@@ -40,10 +41,16 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required']
         ]);
-        
+
         $user = $this->createUser($request);
-        $user->save();
+
+        if($user->role_id == 3) {
+            $landing_page = LandingPage::create([]);
+            $user->landing_page_id = $landing_page->id;
+        }
         
+        $user->save();
+
         event(new Registered($user));
 
         Auth::login($user);

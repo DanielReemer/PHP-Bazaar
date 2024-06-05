@@ -12,6 +12,15 @@
                     @include('profile.partials.show-accounttype')
                 </div>
             </div>
+
+            @if(auth()->user()->role_id == 3)
+                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <div class="max-w-xl">
+                        @include('profile.partials.update-custom-url-form')
+                    </div>
+                </div>
+            @endif
+
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     @include('profile.partials.update-profile-information-form')
