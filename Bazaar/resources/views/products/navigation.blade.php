@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="max-w-7xl mx-auto p-6 lg:p-8 flex gap-20">
+    <div class="w-2/3 mx-auto p-6 lg:p-8 flex gap-20">
         <aside class="mt-24">
             <x-nav-link :href="route('products.show', ['type' => 'hired'])" :active="$data['type'] == 'hired'" class="m-5 text-xl">
                 {{ __('products.hired') }}

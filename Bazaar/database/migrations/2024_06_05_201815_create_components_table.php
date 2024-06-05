@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('landing_pages', function (Blueprint $table) {
+        Schema::create('components', function (Blueprint $table) {
             $table->id();
-            $table->string('url')->nullable();
-            $table->string('primary_light')->default('#FFFFFF');
-            $table->string('primary_dark')->default('#222937');
+            $table->foreignId('landing_page_id')
+                ->constrained('landing_pages');
+            $table->string('type');
+            $table->json('arguments');
+            $table->integer('order');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('landing_pages');
+        Schema::dropIfExists('components');
     }
 };

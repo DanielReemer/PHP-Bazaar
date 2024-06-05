@@ -60,7 +60,11 @@ Route::middleware('auth', 'admin')->group(function () {
 Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
 Route::post('/profile/{id}', [UserReviewController::class, 'store'])->name('userReview.store');
 
-Route::get('/page/{slug}', [PageController::class, 'show'])->name('page.show');
+Route::middleware('auth', 'auth.editor')->group(function () {
+    Route::get('/page/{slug}/edit', [PageController::class, 'showEdit'])->name('page.showEdit');
+    Route::post('/page/{slug}/edit', [PageController::class, 'update'])->name('page.update');
+});
+Route::get('/page/{slug}', [PageController::class, 'show'])->name('page');
 Route::post('/profile', [PageController::class, 'updateURL'])->name('url.update');
 
 

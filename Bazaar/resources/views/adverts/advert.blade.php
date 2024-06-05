@@ -1,6 +1,6 @@
 <x-app-layout>
-    <div class="max-w-7xl mx-auto p-6 lg:p-8 flex gap-20">
-        <div class="flex-1">
+    <div class="w-3/4 mx-auto p-6 lg:p-8 flex gap-20">
+        <div class="w-3/5">
             <div class="flex">
                 <form method="POST" action="{{ route('favoriteAdvert.update', ['id' => $data['advert']->id]) }}">
                     @csrf
@@ -29,7 +29,7 @@
             </h2>
 
             @if(auth()->user())
-                <form method="POST" action="{{ route('advertReview.store', ['id' => $data['advert']->id]) }}">
+                <form method="POST" action="{{ route('advertReview.store', ['id' => $data['advert']->id]) }}" class="w-3/4">
                     @csrf
                     <div class="flex mt-3 mb-3 gap-5">
                         <div class="basis-5/6">
@@ -64,8 +64,8 @@
                 @endif
             </div>
         </div>
-        <div class="flex-1">
-            <div class="w-1/2 p-5">
+        <div class="w-2/5">
+            <div class="p-5 w-3/4">
                 <div class="flex justify-center">
                     {{ $data['qrcode'] }}
                 </div>
