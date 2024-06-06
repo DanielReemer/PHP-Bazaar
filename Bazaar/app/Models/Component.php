@@ -13,5 +13,6 @@ class Component extends Model
         'landing_page_id',
         'type',
         'arguments',
+        'order',
     ];
 }

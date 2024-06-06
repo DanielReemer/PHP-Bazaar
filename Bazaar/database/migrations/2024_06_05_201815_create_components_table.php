@@ -17,7 +17,7 @@ return new class extends Migration
                 ->constrained('landing_pages');
             $table->string('type');
             $table->json('arguments');
-            $table->integer('order');
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

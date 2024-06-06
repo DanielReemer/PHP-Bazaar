@@ -10,6 +10,7 @@
                         @include('business-page.partials.text')
                     @else
                         @include('business-page.partials.text-edit')
+
                         <hr class="mt-10 w-2/3">
                     @endif
                     @break

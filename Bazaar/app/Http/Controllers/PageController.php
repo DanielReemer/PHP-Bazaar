@@ -59,7 +59,13 @@ class PageController extends Controller
     public function update($slug, Request $request) : RedirectResponse
     {
         if(isset($request->action)) {
-            return self::addComponent($slug, $request->action);
+            $splitAction = explode('-', $request->action);
+            if($splitAction[0] === 'delete') {
+                self::deleteComponent($splitAction[1]);
+            }
+            self::addComponent($slug, $request->action);
+
+            return to_route('page.showEdit', ['slug' => $slug]);
         }
 
         $landing_page = LandingPage::where('url', $slug)
@@ -72,6 +78,13 @@ class PageController extends Controller
         self::updateComponents($request, $landing_page);
 
         return to_route('page.showEdit', ['slug' => $slug]);
+    }
+
+    private function deleteComponent($id) {
+        $component = Component::where('id', $id)
+            ->first();
+
+        $component->delete();
     }
 
     private function updateComponents(Request $request, LandingPage $landing_page) {
@@ -100,27 +113,29 @@ class PageController extends Controller
         $component->save();
     }
 
-    public function addComponent($slug, $action) : RedirectResponse
-    {
-        switch ($action) {
-            case 'text':
-                 self::addTextComponent($slug);
-                 break;
-        }
-
-        return to_route('page.showEdit', ['slug' => $slug]);
-    }
-
-    public function addTextComponent($slug)
+    public function addComponent($slug, $action)
     {
         $landing_page = LandingPage::where('url', $slug)
             ->first();
 
+        $orderNumber = count(Component::where('landing_page_id', $landing_page->id)->get())+1;
+
+        switch ($action) {
+            case 'text':
+                 self::addTextComponent($landing_page, $orderNumber);
+                 break;
+        }
+    }
+
+    public function addTextComponent($landing_page, $orderNumber)
+    {
         $component = Component::create([
             'landing_page_id' => $landing_page->id,
             'type' => 'text',
             'arguments' => '{"header":"","body":""}',
+            'order' => $orderNumber,
         ]);
+
         $component->save();
     }
 
