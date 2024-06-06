@@ -26,6 +26,9 @@ return [
         "text"=> "Text",
         "header"=> "Header",
         "body"=> "Body",
+        "image"=> "Image",
+        "upload_file"=> "Upload File",
+        "alt"=> "Alternative text",
     ]
 ];
 

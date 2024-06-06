@@ -26,6 +26,9 @@ return [
         "text"=> "Tekst",
         "header"=> "Koptekst",
         "body"=> "Alinea",
+        "image"=> "Afbeelding",
+        "upload_file"=> "Bestand uploaden",
+        "alt"=> "Alternatieve text",
     ]
 ];
 

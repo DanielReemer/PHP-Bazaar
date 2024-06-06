@@ -15,7 +15,13 @@
                     @endif
                     @break
                 @case('image')
-                    test
+                    @if($public)
+                        @include('business-page.partials.image')
+                    @else
+                        @include('business-page.partials.image-edit')
+
+                        <hr class="mt-10 w-2/3">
+                    @endif
                     @break
                 @case('adverts')
                     test

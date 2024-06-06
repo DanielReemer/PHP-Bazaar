@@ -1,5 +1,5 @@
 <x-app-layout>
-    <form class="flex w-full" action="{{ route('page.update', ['slug' => $page->url]) }}" method="post">
+    <form class="flex w-full" action="{{ route('page.update', ['slug' => $page->url]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <aside class="w-1/4 p-14 bg-gray-300 dark:bg-gray-700 border border-gray-200 dark:border-gray-600">
             @include('business-page.sidebar')

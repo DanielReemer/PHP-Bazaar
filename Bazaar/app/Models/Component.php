@@ -15,4 +15,9 @@ class Component extends Model
         'arguments',
         'order',
     ];
+
+    public function landing_page()
+    {
+        return $this->belongsTo(LandingPage::class);
+    }
 }

@@ -7,6 +7,8 @@ use App\Models\LandingPage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use function PHPUnit\Framework\isType;
 
 class PageController extends Controller
 {
@@ -93,13 +95,16 @@ class PageController extends Controller
 
             switch ($splitValue[0]) {
                 case 'text':
-                        self::updateText($splitValue[2], $splitValue[1], $request->get($key));
+                        self::updateValue($splitValue[2], $splitValue[1], $request->get($key));
+                    break;
+                case 'image':
+                    self::updateImage($splitValue[2], $splitValue[1], $request, $key);
                     break;
             }
         }
     }
 
-    private function updateText($id, $type, $value) {
+    private function updateValue($id, $type, $value) {
         $component = Component::where('id', $id)
             ->first();
 
@@ -113,6 +118,25 @@ class PageController extends Controller
         $component->save();
     }
 
+    private function updateImage($id, $type, $request, $key) {
+        if($type != 'url') {
+            self::updateValue($id, $type, $request->get($key));
+            return;
+        }
+
+        $component = Component::where('id', $id)->first();
+        $landing_page = $component->landing_page;
+        $file = $request->file($key);
+
+        $originalFileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $newFileName = $originalFileName.'.'.$file->getClientOriginalExtension();
+        $storePath = 'public/pages/'.$landing_page->id.'/img';
+
+        $file->storeAs($storePath, $newFileName, 'local');
+
+        self::updateValue($id, $type, 'storage/pages/'.$landing_page->id.'/img/'.$file->getClientOriginalName());
+    }
+
     public function addComponent($slug, $action)
     {
         $landing_page = LandingPage::where('url', $slug)
@@ -124,6 +148,9 @@ class PageController extends Controller
             case 'text':
                  self::addTextComponent($landing_page, $orderNumber);
                  break;
+            case 'image':
+                self::addImageComponent($landing_page, $orderNumber);
+                break;
         }
     }
 
@@ -133,6 +160,18 @@ class PageController extends Controller
             'landing_page_id' => $landing_page->id,
             'type' => 'text',
             'arguments' => '{"header":"","body":""}',
+            'order' => $orderNumber,
+        ]);
+
+        $component->save();
+    }
+
+    public function addImageComponent($landing_page, $orderNumber)
+    {
+        $component = Component::create([
+            'landing_page_id' => $landing_page->id,
+            'type' => 'image',
+            'arguments' => '{"url":"","alt":""}',
             'order' => $orderNumber,
         ]);
 
