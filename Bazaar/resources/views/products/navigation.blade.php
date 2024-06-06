@@ -12,6 +12,9 @@
             <x-nav-link class="m-5 text-xl" :href="route('products.show', ['type' => 'hired_out'])" :active="$data['type'] == 'hired_out'">
                 {{ __('products.hired_out') }}
             </x-nav-link>
+            <x-nav-link class="m-5 text-xl" :href="route('products.show', ['type' => 'my_product'])" :active="$data['type'] == 'my_product'">
+                {{ __('products.my_product') }}
+            </x-nav-link>
         </aside>
         <section class="w-full">
             <div class="w-full">
@@ -21,18 +24,8 @@
                 <hr class="border-gray-500">
             </div>
 
-            <div class="flex flex-col gap-10 pt-6">
-                @foreach ($data['products'] as $product)
-                    @if ($data['type'] == 'bought')
-                        <x-products.bought :product="$product"></x-products.bought>
-                    @elseif($data['type'] == 'hired')
-                        <x-products.hired :product="$product"></x-products.hired>
-                    @elseif($data['type'] == 'hired_out')
-                        <x-products.hired-out :product="$product"></x-products.hired-out>
-                    @endif
-                @endforeach
-
-            </div>
+            @livewire('products-component', ['data' => $data ])
+        
         </section>
     </div>
 </x-app-layout>
