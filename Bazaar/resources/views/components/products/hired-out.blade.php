@@ -7,12 +7,15 @@
         <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
             <span class="font-bold">{{ __('products.hired_at') }}</span> {{ $product->created_at }}
         </p>
+        <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+            <span class="font-bold">{{ __('products.hired_by') }}</span> {{ $product->user->name }}
+        </p>
     </div>
     <div class="border-l-2 border-l-gray-600 dark:border-l-gray-400"></div>
     <div class="w-1/3 text-sm text-gray-600 dark:text-gray-400">
         <p class="mt-4 font-bold">{{ __('products.from') }}</p>
-        <p>{{ $product->from }}</p>
+        <p>{{ $product->formatted_from }}</p>
         <p class="mt-4 font-bold">{{ __('products.to') }}</p>
-        <p>{{ $product->to->format('d-m-Y') }}</p>
+        <p>{{ $product->formatted_to }}</p>
     </div>
 </a>

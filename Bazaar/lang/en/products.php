@@ -14,11 +14,16 @@ return [
 
     "bought"=> "Purchased",
     "hired"=> "Hired",
-    "bought_products"=> "Purchased products",
-    "hired_products"=> "Hired products",
+    "hired_out" => "Hired out",
     "bought_at"=> "Bought at",
     "hired_at"=> "Hired at",
     "from"=> "From",
     "to"=> "To",
+
+    
+    "bought_products"=> "Purchased products",
+    "hired_products"=> "Hired products",
+    "hired_out_products" => "Hired out products",
+    "hired_by" => "Hired by",
 ];
 
