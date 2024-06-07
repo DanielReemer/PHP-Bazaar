@@ -41,5 +41,12 @@ return [
     "ex_date_desc" => "Vervaldatum: aflopend",
     "ex_date_asc" => "Expire date: oplopend",
     "sort" => "Sorteer op datum",
+
+    "giving" => "Weggeven",
+    "recieving" => "Terugkrijgen",
+    "from_date_asc" => "'Van'-datum: oplopend",
+    "from_date_desc" => "'Van'-datum: aflopend",
+    "to_date_asc" => "'Tot'-datum: oplopend",
+    "to_date_desc" => "'Tot'-datum: aflopend",
 ];
 

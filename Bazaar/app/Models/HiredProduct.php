@@ -33,4 +33,16 @@ class HiredProduct extends Model
     {
         return Carbon::parse($this->from)->format('d-m-Y');
     }
+
+    public function scopeGiving($query)
+    {
+        return $query->whereDate('to', '<', now())
+            ->orWhereDate('from', '>', now());
+    }
+
+    public function scopeRecieving($query)
+    {
+        return $query->whereDate('from', '<=', now())
+            ->whereDate('to', '>=', now());
+    }
 }

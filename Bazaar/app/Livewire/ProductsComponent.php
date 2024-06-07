@@ -63,8 +63,22 @@ class ProductsComponent extends Component
                     $advert->whereBelongsTo($user, 'owner');
                 })
                     ->with('user')
-                    ->with('advert')
-                    ->paginate(ProductsComponent::NUMBER_OF_ADVERTS);
+                    ->with('advert');
+
+                AdvertFilter::apply($products, $this->filter);
+
+                
+                if ($this->myProductsSort == 'from_asc') {
+                    $products->orderBy('from', 'asc');
+                } elseif ($this->myProductsSort == 'from_desc') {
+                    $products->orderBy('from', 'desc');
+                } elseif ($this->myProductsSort == 'to_desc') {
+                    $products->orderBy('to', 'desc');
+                } elseif ($this->myProductsSort == 'to') {
+                    $products->orderBy('to', 'desc');
+                } 
+
+                $products = $products->paginate(ProductsComponent::NUMBER_OF_ADVERTS);
                 break;
             case 'my_product':
                 $query = Advert::whereBelongsTo($user, 'owner')->with('owner');

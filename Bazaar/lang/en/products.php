@@ -42,5 +42,12 @@ return [
     "ex_date_desc" => "Expire date: Descending",
     "ex_date_asc" => "Expire date: Ascending",
     "sort" => "Sort date",
+
+    "giving" => "Giving out",
+    "recieving" => "Recieving from",
+    "from_date_asc" => "'From'-date: ascending",
+    "from_date_desc" => "'From'-date: descending",
+    "to_date_asc" => "'To'-date: descending",
+    "to_date_desc" => "'To'-date: descending",
 ];
 
