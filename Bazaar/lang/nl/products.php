@@ -37,5 +37,9 @@ return [
     "rentals" => "Verhuurbare producten",
     "non_rentals" => "Niet verhuurbarde producten",
     "filter" => "Filter",
+
+    "ex_date_desc" => "Vervaldatum: aflopend",
+    "ex_date_asc" => "Expire date: oplopend",
+    "sort" => "Sorteer op datum",
 ];
 

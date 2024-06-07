@@ -38,5 +38,9 @@ return [
     "rentals" => "Rentals",
     "non_rentals" => "Non-rentals",
     "filter" => "Filter",
+
+    "ex_date_desc" => "Expire date: Descending",
+    "ex_date_asc" => "Expire date: Ascending",
+    "sort" => "Sort date",
 ];
 

@@ -20,16 +20,16 @@ class ProductsComponent extends Component
     public $data;
     public $filter;
     public $isChanged;
+    public $myProductsSort;
 
     public function mount()
     {
         $this->filter = '';
-        $this->isChanged = false;
+        $this->myProductsSort = 'asc';
     }
-    
+
     public function updatedFilter()
     {
-        $this->isChanged = true;
         $this->resetPage();
     }
 
@@ -56,7 +56,7 @@ class ProductsComponent extends Component
                 $products = BoughtProduct::where('user_id', Auth::id())
                     ->with('user')
                     ->with('advert')
-                    ->paginate(ProductsComponent::NUMBER_OF_ADVERTS); 
+                    ->paginate(ProductsComponent::NUMBER_OF_ADVERTS);
                 break;
             case 'hired_out':
                 $products = HiredProduct::whereHas('advert', function ($advert) use ($user) {
@@ -64,12 +64,19 @@ class ProductsComponent extends Component
                 })
                     ->with('user')
                     ->with('advert')
-                    ->paginate(ProductsComponent::NUMBER_OF_ADVERTS); 
+                    ->paginate(ProductsComponent::NUMBER_OF_ADVERTS);
                 break;
             case 'my_product':
                 $query = Advert::whereBelongsTo($user, 'owner')->with('owner');
                 AdvertFilter::apply($query, $this->filter);
-                $products = $query->paginate(ProductsComponent::NUMBER_OF_ADVERTS); 
+
+                if ($this->myProductsSort == 'asc') {
+                    $query->orderBy('expiration_date', 'asc');
+                } elseif ($this->myProductsSort == 'desc') {
+                    $query->orderBy('expiration_date', 'desc');
+                }
+
+                $products = $query->paginate(ProductsComponent::NUMBER_OF_ADVERTS);
                 break;
             default:
                 abort(404);
