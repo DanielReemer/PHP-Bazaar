@@ -4,6 +4,7 @@ namespace Database\Seeders\test;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Str;
 
 class UserSeeder extends Seeder
 {
@@ -20,6 +21,8 @@ class UserSeeder extends Seeder
             'password' => 'password',
             'is_admin' => true,
             'role_id' => 3, // 3 = Roles.BusinessAdvertiser
+            'remember_token' => Str::random(10),
+            'api_key' => bin2hex(random_bytes(30)),
         ]);
     }
 }

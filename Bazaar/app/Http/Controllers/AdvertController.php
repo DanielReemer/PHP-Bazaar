@@ -6,6 +6,7 @@ use App\Abstracts\AbstractAdvertCsvHandler;
 use App\Abstracts\AbstractQueue;
 use App\Interfaces\ICsvHandler;
 use App\Models\Advert;
+use App\Models\User;
 
 use App\Models\AdvertReview;
 use App\Models\FavoriteAdvert;
@@ -14,6 +15,7 @@ use App\Models\Role;
 
 use App\Models\AdvertQueue;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -79,6 +81,21 @@ class AdvertController extends Controller
         ];
 
         return view('adverts.new-advert', $data);
+    }
+
+    public function getAdvertsInJson(Request $request, $key) : JsonResponse
+    {
+        $apiKey = $key;
+        
+        // Valideer de API key
+        $user = User::where('api_key', $apiKey)->first();
+        if (!$user) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $adverts = $user->adverts;
+
+        return response()->json($adverts);
     }
 
     /**
