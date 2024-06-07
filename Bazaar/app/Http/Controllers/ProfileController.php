@@ -13,7 +13,7 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    public function show($id): View
+    public function show($id) : View
     {
         $userData = User::where('id', $id)
             ->with('adverts')
@@ -39,7 +39,7 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function edit(Request $request) : View
     {
         $role = $request->user()->role;
         return view('profile.edit', [
@@ -51,7 +51,7 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request) : RedirectResponse
     {
         $request->user()->fill($request->validated());
 
@@ -59,6 +59,16 @@ class ProfileController extends Controller
             $request->user()->email_verified_at = null;
         }
 
+        $user = $request->user();
+        if ($request->has('api')) {
+            if (! $user->api_key) {
+                $user->api_key = User::generateApiKey();
+            }
+        } else {
+            if ($user->api_key) {
+                $user->api_key = null;
+            }
+        }
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
@@ -67,7 +77,7 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request) : RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],

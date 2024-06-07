@@ -22,7 +22,6 @@ class UserSeeder extends Seeder
             'is_admin' => true,
             'role_id' => 3, // 3 = Roles.BusinessAdvertiser
             'remember_token' => Str::random(10),
-            'api_key' => bin2hex(random_bytes(30)),
         ]);
     }
 }

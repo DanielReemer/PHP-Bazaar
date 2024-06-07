@@ -20,9 +20,13 @@ class User extends Authenticatable
         static::creating(function ($user) {
             if ($user->role->value == Role::ROLE_BUSINESS_ADVERTISER) {
                 $user->is_admin = true;
-                $user->api_key = bin2hex(random_bytes(30));
             }
         });
+    }
+
+    public static function generateApiKey() : string
+    {
+        return bin2hex(random_bytes(30));
     }
 
     /**
