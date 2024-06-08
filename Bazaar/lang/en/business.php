@@ -21,6 +21,7 @@ return [
         "primary-light" => "Primary light",
         "primary-dark" => "Primary dark",
         "save" => "Save",
+        "preview" => "preview",
     ],
     "construct" => [
         "text"=> "Text",

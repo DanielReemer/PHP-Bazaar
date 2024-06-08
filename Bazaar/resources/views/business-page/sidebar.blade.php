@@ -51,6 +51,12 @@
     </div>
 </div>
 
-<div class="mt-5 w-fit bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-300 hover:border-transparent rounded">
-    <button type="submit">{{ __('business.sidebar.save') }}</button>
+<div class="flex gap-5">
+    <div class="mt-5 w-fit bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-300 hover:border-transparent rounded">
+        <button type="submit">{{ __('business.sidebar.save') }}</button>
+    </div>
+
+    <div class="mt-5 w-fit bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-300 hover:border-transparent rounded">
+        <a href="{{ route('page', ["slug" => $page->url]) }}" target="_blank">{{ __('business.sidebar.preview') }}</a>
+    </div>
 </div>

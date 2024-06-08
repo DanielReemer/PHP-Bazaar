@@ -21,6 +21,7 @@ return [
         "primary-light" => "Primair licht",
         "primary-dark" => "Primair donker",
         "save" => "Opslaan",
+        "preview"=> "Voorbeeld",
     ],
     "construct" => [
         "text"=> "Tekst",

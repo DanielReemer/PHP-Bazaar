@@ -1,4 +1,4 @@
-<div class="w-2/3 mt-14">
+<div class="w-2/3 my-14">
     <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
         {{ $page->user->name }}
     </h1>
