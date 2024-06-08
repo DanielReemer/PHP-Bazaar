@@ -13,6 +13,6 @@
         <p class="mt-4 font-bold">{{ __('products.from') }}</p>
         <p>{{ $product->from }}</p>
         <p class="mt-4 font-bold">{{ __('products.to') }}</p>
-        <p>{{ $product->to }}</p>
+        <p>{{ $product->to->format('d-m-Y') }}</p>
     </div>
 </a>

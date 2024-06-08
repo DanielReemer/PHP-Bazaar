@@ -14,6 +14,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function ($user) {
+            if ($user->role->value == Role::ROLE_BUSINESS_ADVERTISER) {
+                $user->is_admin = true;
+            }
+        });
+    }
+
+    public static function generateApiKey() : string
+    {
+        return bin2hex(random_bytes(30));
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -25,6 +41,8 @@ class User extends Authenticatable
         'password',
         'role_id',
         'landing_page_id',
+        'api_key',
+        'is_admin',
     ];
 
     /**
@@ -35,6 +53,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'api_key',
+        'is_admin',
     ];
 
     /**

@@ -22,25 +22,28 @@ class AdvertFormTest extends DuskTestCase
     protected $submitButtonName;
     protected $dashboardRouteName;
     protected $loginRouteName;
+    protected $disableClientSideValidationScript;
 
     public function setUp() : void
     {
         parent::setUp();
-        $this->testUser = User::find(2);
-        $this->maximumNumberOfPostReachMessage = 'Maximum number of ads have been posted.';
-        $this->newAdvertPath = '/new-advert';
+        $this->testUser = User::factory()->create();
+        $this->maximumNumberOfPostReachMessage = 'Reached Maximum.';
+        $this->newAdvertPath = 'new-advert';
         $this->descriptionFieldName = 'description';
         $this->titleFieldName = 'title';
         $this->submitButtonName = 'submitAdvertForm';
         $this->dashboardRouteName = 'dashboard';
         $this->loginRouteName = 'login';
+        $this->disableClientSideValidationScript = "document.querySelector('form').noValidate = true";
     }
+
 
     public function testRedirectedToDashboard()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->testUser)
-                ->visit($this->newAdvertPath)
+                ->visitRoute($this->newAdvertPath)
                 ->type($this->titleFieldName, 'This is my title')
                 ->type($this->descriptionFieldName, 'This is my description')
                 ->press($this->submitButtonName)
@@ -52,10 +55,11 @@ class AdvertFormTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->testUser)
-                ->visit($this->newAdvertPath)
-                ->type($this->descriptionFieldName, 'this is my description')
+                ->visitRoute($this->newAdvertPath);
+            $browser->script($this->disableClientSideValidationScript);
+            $browser->type($this->descriptionFieldName, 'this is my description')
                 ->press($this->submitButtonName)
-                ->assertPathIs($this->newAdvertPath);
+                ->assertRouteIs($this->newAdvertPath);
         });
     }
 
@@ -63,10 +67,10 @@ class AdvertFormTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->testUser)
-                ->visit($this->newAdvertPath)
+                ->visitRoute($this->newAdvertPath)
                 ->type($this->titleFieldName, 'this is my title')
                 ->press($this->submitButtonName)
-                ->assertPathIs($this->newAdvertPath);
+                ->assertRouteIs($this->newAdvertPath);
         });
     }
 
@@ -81,7 +85,7 @@ class AdvertFormTest extends DuskTestCase
 
         $this->browse(function (Browser $browser) use ($testCase, $titleInput) {
             $browser->loginAs($this->testUser)
-                ->visit($this->newAdvertPath)
+                ->visitRoute($this->newAdvertPath)
                 ->type($this->titleFieldName, $titleInput)
                 ->type($this->descriptionFieldName, "This is my description")
                 ->press($this->submitButtonName)
@@ -117,15 +121,14 @@ class AdvertFormTest extends DuskTestCase
 
     public function testStillPostRentalAfterReachingNormalPostLimit()
     {
-        $testCase = $this->maximumNumberOfPostReachMessage;
         $numberOfNormalPosts = AdvertController::MAX_ADVERT_NUM;
 
         $this->makeSureUserDoesntHaveAnyPosts($this->testUser);
-        $this->browse(function (Browser $browser) use ($testCase, $numberOfNormalPosts) {
+        $this->browse(function (Browser $browser) use ($numberOfNormalPosts) {
             $this->makeValidPost($numberOfNormalPosts, false);
             $this->makeValidPost(1, true);
 
-            $browser->assertDontSee($testCase);
+            $browser->assertRouteIs($this->dashboardRouteName);
         });
     }
 
@@ -133,7 +136,7 @@ class AdvertFormTest extends DuskTestCase
     {
         $testCase = $this->maximumNumberOfPostReachMessage;
         $numberOfRentalPosts = AdvertController::MAX_ADVERT_NUM;
-        
+
         $this->makeSureUserDoesntHaveAnyPosts($this->testUser);
         $this->browse(function (Browser $browser) use ($testCase, $numberOfRentalPosts) {
             $this->makeValidPost($numberOfRentalPosts, true);
@@ -147,7 +150,7 @@ class AdvertFormTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->testUser);
             $browser->logout();
-            $browser->visit($this->newAdvertPath)
+            $browser->visitRoute($this->newAdvertPath)
                 ->assertRouteIs('login');
         });
     }
@@ -157,14 +160,14 @@ class AdvertFormTest extends DuskTestCase
         for ($i = 0; $i < $amount; $i++) {
             $this->browse(function (Browser $browser) use ($isRental) {
                 $browser->loginAs($this->testUser)
-                    ->visit($this->newAdvertPath)
+                    ->visitRoute($this->newAdvertPath)
                     ->type($this->titleFieldName, 'This is my title')
                     ->type($this->descriptionFieldName, 'This is my description');
 
                 if ($isRental) {
                     $browser->check('rental');
                 }
-                
+
                 $browser->press($this->submitButtonName);
             });
         }

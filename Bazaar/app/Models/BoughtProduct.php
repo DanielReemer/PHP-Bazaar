@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BoughtProduct extends Model
 {
@@ -11,12 +12,12 @@ class BoughtProduct extends Model
         'user_id',
     ];
 
-    public function advert()
+    public function advert() : BelongsTo
     {
         return $this->belongsTo(Advert::class);
     }
 
-    public function user()
+    public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
     }
