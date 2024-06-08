@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth', 'admin')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/contract', [ContractController::class, 'show'])->name('admin.contract.show');
     Route::POST('/admin/contract', [ContractController::class, 'store'])->name('admin.contract.store');
     Route::get('/admin/contract/{rawFile}', [ContractController::class, 'downloadFile'])->name('admin.contract.download');

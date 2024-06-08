@@ -128,7 +128,7 @@ class AdvertController extends Controller
             $landingPageUrl->save();
         }
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('success', __('advert.sucess'));
     }
 
     public function storeCsv(Request $request)
@@ -149,7 +149,7 @@ class AdvertController extends Controller
             $this->advertQueue->reset();
         }
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('success', __('advert.successMultiple'));
     }
 
     /**
