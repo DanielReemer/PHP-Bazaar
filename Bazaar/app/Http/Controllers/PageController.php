@@ -124,6 +124,10 @@ class PageController extends Controller
             return;
         }
 
+        $request->validate([
+            $key => 'image|mimes:jpeg,jpg,png,gif|max:10000',
+        ]);
+
         $component = Component::where('id', $id)->first();
         $landing_page = $component->landing_page;
         $file = $request->file($key);
