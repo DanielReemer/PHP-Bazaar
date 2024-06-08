@@ -2,56 +2,39 @@
 
 namespace Tests\Browser;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
-use App\Models\User;
 use App\Models\Role;
+use App\Models\User;
+use Tests\DuskTestCase;
+use Laravel\Dusk\Browser;
 use Faker\Factory as Faker;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class HelloTest extends DuskTestCase
+class CsvTest extends DuskTestCase
 {
     use DatabaseMigrations;
-
-    /**
-     * A Dusk test example.
-     */
-    public function testExample() : void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                ->assertSee('Laravel');
-        });
-    }
 
     public function testFlowToUseCsvFile()
     {
         $this->browse(function (Browser $browser) {
             $userData = $this->createUser();
 
-            /*$browser->visitRoute('register')
-                ->assertSee(__('registration.Register')) // Ensure the register form is loaded
+            $browser->visitRoute('register')
+                ->assertSee(__('registration.Register'))
                 ->type('name', $userData['name'])
                 ->type('email', $userData['email'])
-                ->select('role', $userData['role'])// Select the user's role
+                ->select('role', $userData['role_id'])
                 ->type('password', $userData['password'])
                 ->type('password_confirmation', $userData['password'])
-                ->press('registerUser');
-            */
-
-            $user = User::factory()->createOne($userData);
-
-            $browser->loginAs($user)
-                ->visit('/dashboard')
+                ->press('registerUser')
                 ->assertPathIs('/dashboard')
+                
                 ->assertSeeLink('Create New Advert')
-
-                ->visitRoute('new-advert')
-                ->assertRouteIs('new-advert')->screenshot('hey')
+                ->clickLink('Create New Advert')
+                ->assertRouteIs('new-advert')
 
                 ->attach('csv_file', base_path('tests/Data/TestCodeForAdverts.csv'))
                 ->press('submitCsv')
-                ->assertSee(__('advert.successMultiple'))->screenshot("hey");
+                ->assertSee(__('advert.successMultiple'));
         });
     }
 

@@ -15,9 +15,9 @@ return new class extends Migration {
         Schema::create('advert_reviews', function (Blueprint $table) {
             $table->id();
             $table->foreignId('advert_id')
-                ->constrained('adverts');
+                ->constrained('adverts')->onDelete('cascade');
             $table->foreignId('user_id')
-                ->constrained('users');
+                ->constrained('users')->onDelete('cascade');
             $table->string('title')->nullable();
             $table->mediumText('comment')->nullable();
             $table->integer('rating');
