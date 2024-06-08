@@ -15,25 +15,13 @@ class ProfileController extends Controller
 {
     public function show($id): View
     {
-        $userData = User::where('id', $id)
-            ->with('adverts')
+        $user = User::where('id', $id)
             ->first();
 
         $reviews = UserReview::where('user_id', $id)
             ->get();
 
-        $user = [
-            'name' => $userData->name,
-            'id' => $userData->id,
-            'adverts' => $userData->adverts,
-            'reviews' => $reviews,
-        ];
-
-        $data = [
-            'user' => $user,
-        ];
-
-        return view('profile/public-view', compact('data'));
+        return view('profile/public-view', ['user' => $user, 'adverts' => $user->adverts, 'reviews' => $reviews]);
     }
 
     /**

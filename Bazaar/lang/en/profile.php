@@ -13,6 +13,7 @@ return [
     */
 
     "profile"=> "Profile",
+    "edit_business_page"=> "Edit business page",
     "custom_url"=> "Custom URL",
     "custom_url_desc"=> "Change the URL to your business page",
     "url" => "URL",

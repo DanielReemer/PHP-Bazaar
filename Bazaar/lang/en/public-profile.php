@@ -18,5 +18,6 @@ return [
     "login_to_comment"=> "Log in in order to place a review!",
     "title"=> "Title",
     "review"=> "Review",
+    "business_page"=> "Business page",
 ];
 
