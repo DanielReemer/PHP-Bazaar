@@ -150,32 +150,25 @@ class PageController extends Controller
 
         switch ($action) {
             case 'text':
-                 self::addTextComponent($landing_page, $orderNumber);
+                $baseArguments = '{"header":"","body":""}';
+                 self::createComponent($landing_page, $orderNumber, $action, $baseArguments);
                  break;
             case 'image':
-                self::addImageComponent($landing_page, $orderNumber);
+                $baseArguments = '{"url":"","alt":""}';
+                self::createComponent($landing_page, $orderNumber, $action, $baseArguments);
+                break;
+            case 'advertisement':
+                $baseArguments = '{"advert_id":"[]"}';
+                self::createComponent($landing_page, $orderNumber, $action, $baseArguments);
                 break;
         }
     }
 
-    public function addTextComponent($landing_page, $orderNumber)
-    {
+    private function createComponent($landing_page, $orderNumber, $action, $arguments) {
         $component = Component::create([
             'landing_page_id' => $landing_page->id,
-            'type' => 'text',
-            'arguments' => '{"header":"","body":""}',
-            'order' => $orderNumber,
-        ]);
-
-        $component->save();
-    }
-
-    public function addImageComponent($landing_page, $orderNumber)
-    {
-        $component = Component::create([
-            'landing_page_id' => $landing_page->id,
-            'type' => 'image',
-            'arguments' => '{"url":"","alt":""}',
+            'type' => $action,
+            'arguments' => $arguments,
             'order' => $orderNumber,
         ]);
 
