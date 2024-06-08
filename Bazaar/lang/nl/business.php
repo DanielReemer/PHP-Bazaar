@@ -29,6 +29,9 @@ return [
         "image"=> "Afbeelding",
         "upload_file"=> "Bestand uploaden",
         "alt"=> "Alternatieve text",
+        "advertisement"=> "Advertenties",
+        "amount_in_row"=> "Aantal advertenties in een rij",
+        "select_advertisements"=> "Selecteer advertenties",
     ]
 ];
 

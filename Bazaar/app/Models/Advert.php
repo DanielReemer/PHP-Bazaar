@@ -73,4 +73,16 @@ class Advert extends Model
 
         return $posts;
     }
+
+    public static function getByIds($ids) : array
+    {
+        $adverts = [];
+
+        foreach($ids as $id) {
+            $advert = Advert::find($id);
+            array_push($adverts, $advert);
+        }
+
+        return $adverts;
+    }
 }

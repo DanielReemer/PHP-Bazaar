@@ -9,6 +9,15 @@ export default {
         './resources/views/**/*.blade.php',
     ],
 
+    safelist: [
+        {
+            pattern: /grid-cols-(1|2|3|4|5|6|7|8)/,
+        },
+        {
+            pattern: /text-(yellow|gray)-300/,
+        },
+    ],
+
     theme: {
         extend: {
             fontFamily: {

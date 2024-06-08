@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Component;
+use App\Models\Advert;
 use App\Models\LandingPage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use function PHPUnit\Framework\isType;
 
 class PageController extends Controller
 {
@@ -24,7 +23,7 @@ class PageController extends Controller
             $parsedComponent = [
                 'id' => $component->id,
                 'type' => $component->type,
-                'arguments' => json_decode($component->arguments),
+                'arguments' => $component->type === 'advertisement' ? $this->getAdvertisementArguments($component->arguments) : json_decode($component->arguments),
             ];
 
             array_push($components, $parsedComponent);
@@ -33,6 +32,14 @@ class PageController extends Controller
         $public = true;
 
         return view('business-page.page', ['page' => $page, 'components' => $components, 'public' => $public]);
+    }
+
+    public function getAdvertisementArguments($arguments) {
+        $decodedArguments = json_decode($arguments);
+        $adverts = Advert::getByIds($decodedArguments->adverts);
+        $rowLength = $decodedArguments->rowlength;
+
+        return ["adverts" => $adverts, "rowlength" => $rowLength];
     }
 
     public function showEdit($slug)
@@ -54,17 +61,20 @@ class PageController extends Controller
         }
 
         $public = false;
+        $adverts = $page->user->adverts;
 
-        return view('business-page.page-edit', ['page' => $page, 'components' => $components, 'public' => $public]);
+        return view('business-page.page-edit', ['page' => $page, 'components' => $components, 'public' => $public, 'adverts' => $adverts]);
     }
 
     public function update($slug, Request $request) : RedirectResponse
     {
         if(isset($request->action)) {
             $splitAction = explode('-', $request->action);
+
             if($splitAction[0] === 'delete') {
                 self::deleteComponent($splitAction[1]);
             }
+
             self::addComponent($slug, $request->action);
 
             return to_route('page.showEdit', ['slug' => $slug]);
@@ -90,16 +100,32 @@ class PageController extends Controller
     }
 
     private function updateComponents(Request $request, LandingPage $landing_page) {
+        self::emptyAdvertisements($landing_page);
+
         foreach (array_keys($request->all()) as $key) {
             $splitValue = explode('_', $key);
 
             switch ($splitValue[0]) {
                 case 'text':
-                        self::updateValue($splitValue[2], $splitValue[1], $request->get($key));
+                    self::updateValue($splitValue[2], $splitValue[1], $request->get($key));
                     break;
                 case 'image':
                     self::updateImage($splitValue[2], $splitValue[1], $request, $key);
                     break;
+                case 'advertisement':
+                    self::updateAdvertisement($splitValue[2], $splitValue[1], $request, $key);
+                    break;
+            }
+        }
+    }
+
+    private function emptyAdvertisements(LandingPage $landing_page) {
+        $components = $landing_page->components;
+
+        foreach ($components as $component) {
+            if($component->type === 'advertisement') {
+                $component->arguments = '{"adverts":[]}';
+                $component->save();
             }
         }
     }
@@ -141,6 +167,24 @@ class PageController extends Controller
         self::updateValue($id, $type, 'storage/pages/'.$landing_page->id.'/img/'.$file->getClientOriginalName());
     }
 
+    private function updateAdvertisement($id, $type, $request, $key) {
+        if($type != 'adverts') {
+            self::updateValue($id, $type, $request->get($key));
+            return;
+        }
+
+        $value = $request->get($key);
+        $component = Component::where('id', $id)->first();
+        $decodedArgs = json_decode($component->arguments);
+
+        array_push($decodedArgs->$type, $value);
+
+        $encodedArgs = json_encode($decodedArgs);
+        $component->arguments = $encodedArgs;
+
+        $component->save();
+    }
+
     public function addComponent($slug, $action)
     {
         $landing_page = LandingPage::where('url', $slug)
@@ -158,7 +202,7 @@ class PageController extends Controller
                 self::createComponent($landing_page, $orderNumber, $action, $baseArguments);
                 break;
             case 'advertisement':
-                $baseArguments = '{"advert_id":"[]"}';
+                $baseArguments = '{"rowlength":"3","adverts":[]}';
                 self::createComponent($landing_page, $orderNumber, $action, $baseArguments);
                 break;
         }

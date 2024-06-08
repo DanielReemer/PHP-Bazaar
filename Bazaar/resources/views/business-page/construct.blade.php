@@ -23,8 +23,14 @@
                         <hr class="mt-10 w-2/3">
                     @endif
                     @break
-                @case('adverts')
-                    test
+                @case('advertisement')
+                    @if($public)
+                        @include('business-page.partials.advertisement')
+                    @else
+                        @include('business-page.partials.advertisement-edit')
+
+                        <hr class="mt-10 w-2/3">
+                    @endif
                     @break
             @endswitch
         </div>

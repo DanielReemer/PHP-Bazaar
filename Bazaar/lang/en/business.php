@@ -29,6 +29,9 @@ return [
         "image"=> "Image",
         "upload_file"=> "Upload File",
         "alt"=> "Alternative text",
+        "advertisement"=> "Advertisements",
+        "amount_in_row"=> "Amount of advertisements in a row",
+        "select_advertisements"=> "Select advertisements",
     ]
 ];
 
