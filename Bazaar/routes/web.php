@@ -5,6 +5,7 @@ use App\Http\Controllers\AdvertReviewController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\FavoriteAdvertController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserReviewController;
@@ -55,8 +56,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::POST('/admin/contract', [ContractController::class, 'store'])->name('admin.contract.store');
     Route::get('/admin/contract/{rawFile}', [ContractController::class, 'downloadFile'])->name('admin.contract.download');
 });
+
 Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
 Route::post('/profile/{id}', [UserReviewController::class, 'store'])->name('userReview.store');
+
+Route::middleware('auth', 'auth.editor')->group(function () {
+    Route::get('/page/{slug}/edit', [PageController::class, 'showEdit'])->name('page.showEdit');
+    Route::post('/page/{slug}/edit', [PageController::class, 'update'])->name('page.update');
+});
+Route::get('/page/{slug}', [PageController::class, 'show'])->name('page');
+Route::post('/profile', [PageController::class, 'updateURL'])->name('url.update');
 
 
 require __DIR__.'/auth.php';

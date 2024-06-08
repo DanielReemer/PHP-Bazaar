@@ -1,7 +1,7 @@
 <x-app-layout>
-    <div class="flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+    <div class="flex w-full justify-center mt-10 sm:pt-0 bg-gray-100 dark:bg-gray-900">
         <div
-            class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+            class="sm:max-w-md w-1/4 mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg h-fit">
             <header class="mt-6 text-xl font-semibold text-gray-900 dark:text-white w-100 text-center">
                 {{ __('registration.Register') }}
             </header>

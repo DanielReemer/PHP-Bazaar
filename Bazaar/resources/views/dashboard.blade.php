@@ -5,10 +5,10 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div  class="flex w-full flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 mt-10 sm:pt-0">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 flex justify-start align-start flex-col gap-y-10">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+                <div class="p-6 pb-0 text-gray-900 dark:text-gray-100">
                     {{ __("You're logged in!") }}
                 </div>
                 <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -18,7 +18,6 @@
                         Create New Advert
                     </a>
                 </div>
-
             </div>
         </div>
     </div>

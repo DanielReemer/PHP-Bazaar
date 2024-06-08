@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 sm:justify-center sm:pt-0">
+    <div class="flex w-full flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 mt-10 sm:pt-0">
         <header class="w-100 mt-6 text-center text-xl font-semibold text-gray-900 dark:text-white">
             {{ $createLabel }}
         </header>

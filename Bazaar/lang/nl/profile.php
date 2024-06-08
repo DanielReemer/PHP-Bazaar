@@ -12,15 +12,11 @@ return [
     |
     */
 
-    "my_profile"=> "Mijn Poriel",
-    "favorites"=> "Favorieten",
-    "my_products"=> "Mijn Producten",
-    "home"=> "Thuispagina",
-    "dashboard"=> "Dashboard",
-    "login"=> "Inloggen",
-    "register"=> "Registreren",
-    "contract"=> "Contract",
-    "logout"=> "Uitloggen",
     "profile"=> "Profiel",
+    "edit_business_page"=> "Bewerk bedrijfspagina",
+    "custom_url"=> "Aangepaste URL",
+    "custom_url_desc"=> "Verander de URL van jouw bedrijfspagina",
+    "url" => "URL",
+    "save"=> "Opslaan",
 ];
 

@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="max-w-7xl mx-auto p-6 lg:p-8">
+    <div class="w-2/3 mx-auto p-6 lg:p-8">
         <h1 class="text-3xl font-bold text-gray-900 dark:text-white mt-6">
             {{ __('favorite.my_favorite_adverts') }}
         </h1>

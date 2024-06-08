@@ -20,5 +20,7 @@ return [
     "login"=> "Login",
     "register"=> "Register",
     "contract"=> "Contract",
+    "logout"=> "Log Out",
+    "profile"=> "Profile",
 ];
 
