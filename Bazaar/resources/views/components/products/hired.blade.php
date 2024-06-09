@@ -13,9 +13,9 @@
     <div class="border-l-2 border-l-gray-600 dark:border-l-gray-400"></div>
     <div class="w-1/3 text-sm text-gray-600 dark:text-gray-400">
         <p class="mt-4 font-bold">{{ __('products.from') }}</p>
-        <p>{{ $product->from }}</p>
+        <p>{{ $product->formatted_from  }}</p>
         <p class="mt-4 font-bold">{{ __('products.to') }}</p>
-        <p>{{ $product->to }}</p>
+        <p>{{ $product->formatted_to }}</p>
         @if(!$product->returned)
             <a href="{{ route('advert.return', ['id' => $product->id]) }}" class="mt-5 w-fit hover:cursor-pointer bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-300 hover:border-transparent rounded block">{{ __('products.return') }}</a>
         @else
