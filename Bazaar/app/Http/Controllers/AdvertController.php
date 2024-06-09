@@ -7,6 +7,7 @@ use App\Abstracts\AbstractQueue;
 use App\Interfaces\ICsvHandler;
 use App\Models\Advert;
 use App\Models\HiredProduct;
+use App\Models\ReturnImages;
 use App\Models\User;
 
 use App\Models\AdvertReview;
@@ -97,6 +98,40 @@ class AdvertController extends Controller
         }
 
         return false;
+    }
+
+    public function returnShow ($id) {
+        $advert = Advert::where('id', $id)->first();
+
+        return view('adverts.return-advert', ['advert' => $advert]);
+    }
+
+    public function return ($id, Request $request) {
+        $request->validate([
+            'images' => 'required|array',
+            'images.*' => 'required|image|mimes:jpeg,jpg,png,gif|max:10000',
+        ]);
+
+        $hired_advert = HiredProduct::where('id', $id)->first();
+        $advert = $hired_advert->advert;
+
+        foreach($request->file('images') as $image) {
+            $originalFileName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $newFileName = $originalFileName.'.'.$image->getClientOriginalExtension();
+            $storePath = 'public/adverts/return/'.$id;
+
+            $image->storeAs($storePath, $newFileName, 'local');
+
+            ReturnImages::create([
+                'hired_product_id' => $id,
+                'url' => $storePath.'/'.$newFileName,
+            ]);
+        }
+
+        $hired_advert->returned = true;
+        $hired_advert->save();
+
+        return to_route('products.show', ['type' => 'hired']);
     }
 
     /**

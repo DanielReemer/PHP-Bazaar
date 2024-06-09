@@ -23,5 +23,15 @@ return [
     "since"=> "Since",
     "successMultiple" => "Successfully created your adverts",
     "sucess" => "Sucessfully created you advert",
+    "rent" => "Rent",
+    "hire" => "Submit",
+    "start_date" => "Start date",
+    "end_date" => "End date",
+
+    "return" => [
+        "return_advert"=> "Return product",
+        "upload_images"=> "Upload images",
+        "submit"=> "Submit",
+    ]
 ];
 

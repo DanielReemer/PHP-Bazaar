@@ -23,5 +23,15 @@ return [
     "since"=> "Sinds",
     "successMultiple" => "Uw advertenties zijn aangemaakt",
     "sucess" => "Uw advertentie is aangemaakt",
+    "rent" => "Huur",
+    "hire" => "Bevestig",
+    "start_date" => "Start datum",
+    "end_date" => "Eind datum",
+
+    "return" => [
+        "return_advert"=> "Product inleveren",
+        "upload_images"=> "Afbeeldingen uploaden",
+        "submit"=> "Bevestigen",
+    ]
 ];
 

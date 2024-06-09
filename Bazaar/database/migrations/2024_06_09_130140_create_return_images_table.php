@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hired_products', function (Blueprint $table) {
+        Schema::create('return_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('advert_id')
-                ->constrained('adverts');
-            $table->foreignId('user_id')
-                ->constrained('users');
-            $table->date('from');
-            $table->date('to');
-            $table->boolean('returned')->default(false);
+            $table->foreignId('hired_product_id')->constrained('hired_products');
+            $table->string('url')->unique();
             $table->timestamps();
         });
     }
@@ -29,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hired_products');
+        Schema::dropIfExists('return_images');
     }
 };

@@ -27,6 +27,7 @@ return [
     "my_product_products" => "My products",
     "hired_out_products" => "Hired out products",
     "hired_by" => "Hired by",
+    "return" => "Return",
 
     "false" => "False",
     "true" => "True",
@@ -40,9 +41,8 @@ return [
     "non_rentals" => "Non-rentals",
     "filter" => "Filter",
 
-    "past" => "Past",
-    "current" => "Current",
-    "future" => "Future",
+    "returned" => "Returned",
+    "not_returned" => "Not returned",
 
     "bought_date_desc" => "Purchased date: Descending",
     "bought_date_asc" => "Purchased date: Ascending",

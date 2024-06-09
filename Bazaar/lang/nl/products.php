@@ -26,6 +26,7 @@ return [
     "my_product_products" => "Mijn producten",
     "hired_out_products" => "Verhuurde producten",
     "hired_by" => "Gehuurd door",
+    "return" => "Inleveren",
 
     "false" => "Nee",
     "True" => "Ja",
@@ -39,9 +40,8 @@ return [
     "non_rentals" => "Niet verhuurbarde producten",
     "filter" => "Filter",
 
-    "past" => "Verleden",
-    "current" => "Huidig",
-    "future" => "Toekomst",
+    "returned" => "Ingeleverd",
+    "not_returned" => "Niet ingeleverd",
 
     "bought_date_desc" => "Gekochte datum: aflopend",
     "bought_date_asc" => "Gekochte datun: oplopend",

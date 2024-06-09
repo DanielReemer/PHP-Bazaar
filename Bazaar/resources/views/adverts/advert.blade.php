@@ -88,10 +88,7 @@
                                 <input type="date" name="rent_end" id="rent_end" class="w-fit bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
                                 <x-input-error :messages="$errors->get('rent_end')" class="mt-2"/>
                             </div>
-                            <input type="submit" value="{{ __('advert.hire') }}" class="mt-5 w-fit bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-300 hover:border-transparent rounded">
-                            @error('advert.hire')
-                                <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
+                            <input type="submit" value="{{ __('advert.hire') }}" class="mt-5 hover:cursor-pointer w-fit bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-300 hover:border-transparent rounded">
                         </form>
                     @else
                         <h2 class="text-base font-bold text-gray-800 dark:text-gray-200">{{ __('advert.buy') }}</h2>
