@@ -6,6 +6,7 @@ use App\Abstracts\AbstractAdvertCsvHandler;
 use App\Abstracts\AbstractQueue;
 use App\Interfaces\ICsvHandler;
 use App\Models\Advert;
+use App\Models\Bids;
 use App\Models\HiredProduct;
 use App\Models\ReturnImages;
 use App\Models\User;
@@ -42,6 +43,8 @@ class AdvertController extends Controller
             ->with('owner')
             ->first();
 
+        $bids = Bids::where('advert_id', $id)->orderBy('created_at', 'desc')->get();
+
         $qrCode = QrCode::size(200)
             ->generate(route('advert.show', ['id' => $id]));
 
@@ -58,6 +61,7 @@ class AdvertController extends Controller
             'qrcode' => $qrCode,
             'reviews' => $reviews,
             'favorited' => $favoritedColor,
+            'bids' => $bids,
         ];
 
         return view('adverts.advert', compact('data'));
@@ -97,6 +101,43 @@ class AdvertController extends Controller
         }
 
         return false;
+    }
+
+    public function bid($id, Request $request) {
+        $request->validate([
+            'money' => 'required|numeric',
+        ]);
+
+        $bids = Bids::where('user_id', Auth::id())->get();
+        $amountOfValidBids = 0;
+        $largerThanTop = true;
+        $userIsTopBid = false;
+
+        foreach ($bids as $bid) {
+            $topBidOnPost = Bids::where('advert_id', $id)->orderBy('money', 'desc')->first();
+
+            if($topBidOnPost != null && $topBidOnPost->money > $request->money) {
+                $largerThanTop = false;
+            }
+            if($bid->advert->post_status_id != 4 || $topBidOnPost->user_id == Auth::id()) {
+                $amountOfValidBids++;
+            }
+            if($topBidOnPost != null && $topBidOnPost->user_id == Auth::id()) {
+                $amountOfValidBids++;
+            }
+        }
+
+        if($amountOfValidBids >= self::MAX_ADVERT_NUM || !$largerThanTop || $userIsTopBid) {
+            return to_route('advert.show', ['id' => $id]);
+        }
+
+        Bids::create([
+            'user_id' => Auth::id(),
+            'advert_id' => $id,
+            'money' => $request->input('money'),
+        ]);
+
+        return to_route('advert.show', ['id' => $id]);
     }
 
     public function returnShow ($id) {

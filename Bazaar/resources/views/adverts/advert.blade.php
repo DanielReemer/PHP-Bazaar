@@ -74,26 +74,51 @@
                     <p class="text-base text-gray-700 dark:text-gray-300">
                         <a href="{{ route('profile.show', ['id' => $data['advert']->owner->id]) }}">{{ $data['advert']->owner->name }}</a>
                     </p>
-{{--                    @dd($data)--}}
-                    @if($data['advert']->is_rental === 1)
-                        <form method="post" action="{{ route('advert.hire', ['id' => $data['advert']->id]) }}" class="mt-5">
-                            @csrf
-                            <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200">{{ __('advert.rent') }}</h2>
-                            <div class="flex flex-col">
-                                <label for="rent_start" class="w-full py-2 text-base font-medium text-gray-900 dark:text-gray-300">{{ __('advert.start_date') }}</label>
-                                <input type="date" name="rent_start" id="rent_start" class="w-fit bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
-                                <x-input-error :messages="$errors->get('rent_start')" class="mt-2"/>
-                            </div>
-                            <div class="flex flex-col">
-                                <label for="rent_end-end" class="w-full py-2 text-base font-medium text-gray-900 dark:text-gray-300">{{ __('advert.end_date') }}</label>
-                                <input type="date" name="rent_end" id="rent_end" class="w-fit bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
-                                <x-input-error :messages="$errors->get('rent_end')" class="mt-2"/>
-                            </div>
-                            <input type="submit" value="{{ __('advert.hire') }}" class="mt-5 hover:cursor-pointer w-fit bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-300 hover:border-transparent rounded">
-                        </form>
-                    @else
-                        <h2 class="text-base font-bold text-gray-800 dark:text-gray-200">{{ __('advert.buy') }}</h2>
-                    @endif
+                        @if($data['advert']->is_rental === 1)
+                            @if(auth()->user())
+                                <form method="post" action="{{ route('advert.hire', ['id' => $data['advert']->id]) }}" class="mt-5">
+                                    @csrf
+                                    <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200">{{ __('advert.rent') }}</h2>
+                                    <div class="flex flex-col">
+                                        <label for="rent_start" class="w-full py-2 text-base font-medium text-gray-900 dark:text-gray-300">{{ __('advert.start_date') }}</label>
+                                        <input type="date" name="rent_start" id="rent_start" class="w-fit bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                        <x-input-error :messages="$errors->get('rent_start')" class="mt-2"/>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <label for="rent_end-end" class="w-full py-2 text-base font-medium text-gray-900 dark:text-gray-300">{{ __('advert.end_date') }}</label>
+                                        <input type="date" name="rent_end" id="rent_end" class="w-fit bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                        <x-input-error :messages="$errors->get('rent_end')" class="mt-2"/>
+                                    </div>
+                                    <input type="submit" value="{{ __('advert.hire') }}" class="mt-5 hover:cursor-pointer w-fit bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-300 hover:border-transparent rounded">
+                                </form>
+                            @endif
+                        @else
+                            @if(auth()->user())
+                                <form method="post" action="{{ route('advert.bid', ['id' => $data['advert']->id]) }}" class="mt-5">
+                                    @csrf
+                                    <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200">{{ __('advert.buy') }}</h2>
+                                    <div class="flex flex-col">
+                                        <label for="money" class="w-full py-2 text-base font-medium text-gray-900 dark:text-gray-300">{{ __('advert.amount') }}</label>
+                                        <input type="number" name="money" id="money" step=".01" class="w-fit bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <x-input-error :messages="$errors->get('bid')" class="mt-2"/>
+                                    </div>
+                                    <input type="submit" value="{{ __('advert.bid') }}" class="mt-5 hover:cursor-pointer w-fit bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-300 hover:border-transparent rounded">
+                                </form>
+                            @endif
+                            <h2 class="text-lg mt-10 font-bold text-gray-800 dark:text-gray-200">{{ __('advert.bids') }}</h2>
+                            @foreach($data['bids'] as $bid)
+                                    <li class="p-3 list-none border-y-gray-500 border-y">
+                                        <div class="flex justify-between items-center space-x-4 rtl:space-x-reverse">
+                                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                {{ $bid->user->name }}
+                                            </p>
+                                            <div class="pr-4 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                €{{ $bid->money }}
+                                            </div>
+                                        </div>
+                                    </li>
+                            @endforeach
+                        @endif
                 </div>
             </div>
         </div>
