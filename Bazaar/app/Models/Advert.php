@@ -52,16 +52,6 @@ class Advert extends Model
         return $this->belongsTo(User::class, 'current_borrower_id');
     }
 
-    public function hasCustomUrl() : bool
-    {
-        return $this->landingspageUrl()->exists();
-    }
-
-    public function landingspageUrl() : HasOne
-    {
-        return $this->hasOne(LandingspageUrl::class);
-    }
-
     public function postStatus() : BelongsTo
     {
         return $this->belongsTo(PostStatus::class);

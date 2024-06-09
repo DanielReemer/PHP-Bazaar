@@ -32,16 +32,6 @@
                     <x-input-error class="mt-2" :messages="$errors->get('rental')" />
                 </div>
 
-                @if($isBusiness)
-                    <!-- Custom url -->
-                    <div>
-                        <x-input-label for="customUrl" :value="__('advertPostForm.customUrl')" />
-                        <x-text-input class="mt-1 block w-full" id="customUrl" name="customUrl" type="text"
-                            :value="old('customUrl')" autofocus autocomplete="customUrl" />
-                        <x-input-error class="mt-2" :messages="$errors->get('customUrl')" />
-                    </div>
-                @endif
-
                 <!-- submit -->
                 <div class="mt-4 flex items-center justify-start">
                     <x-primary-button class="" name="submitAdvertForm">

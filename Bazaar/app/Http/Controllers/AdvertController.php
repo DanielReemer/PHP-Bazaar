@@ -121,13 +121,6 @@ class AdvertController extends Controller
         $advert = $this->createNewAdvert($request->title, $request->description, (int) $isRental);
         $advert->save();
 
-        if ($request->customUrl && Auth::user()->role()->value('value') === Role::ROLE_BUSINESS_ADVERTISER) {
-            $landingPageUrl = new LandingspageUrl();
-            $landingPageUrl->url = $request->customUrl;
-            $landingPageUrl->advert()->associate($advert);
-            $landingPageUrl->save();
-        }
-
         return redirect()->route('dashboard')->with('success', __('advert.sucess'));
     }
 
