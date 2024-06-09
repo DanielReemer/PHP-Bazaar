@@ -1,4 +1,4 @@
-<?php 
+<?php
 
     return [
 
@@ -23,4 +23,5 @@
     "maximumReached" => "Reached Maximum.",
     "uploadFailed"=> "The upload has failed.",
     "invalidHeaders"=> "Csv file headers do not match expected format",
+    "link_adverts"=> "Link advertisements",
     ];

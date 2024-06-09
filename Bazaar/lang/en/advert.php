@@ -21,6 +21,7 @@ return [
     "login_to_comment"=> "Log in in order to place a review!",
     "advert_by"=> "Advertisement by",
     "since"=> "Since",
+    "also_bought_together"=> "Also bought together with",
 
     "success" => "Success: Your advert has been created",
     "successMultiple" => "Success: Your adverts have been created",
