@@ -54,6 +54,11 @@ class Advert extends Model
         return $this->hasMany(Bids::class);
     }
 
+    public function linked() : HasMany
+    {
+        return $this->hasMany(LinkedAdvert::class);
+    }
+
     public function currentBorrower() : BelongsTo
     {
         return $this->belongsTo(User::class, 'current_borrower_id');

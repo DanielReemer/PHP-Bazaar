@@ -9,6 +9,7 @@ use App\Models\Advert;
 use App\Models\Bids;
 use App\Models\BoughtProduct;
 use App\Models\HiredProduct;
+use App\Models\LinkedAdvert;
 use App\Models\ReturnImages;
 use App\Models\User;
 
@@ -201,6 +202,7 @@ class AdvertController extends Controller
     {
         $account = Auth::user();
         $isBusinessAccount = $account->role()->value('value') === Role::ROLE_BUSINESS_ADVERTISER;
+        $adverts = Advert::where('owner_id', Auth::id())->get();
 
         $data = [
             'createLabel' => trans()->get('advertPostForm.create'),
@@ -211,6 +213,7 @@ class AdvertController extends Controller
             'uploadFileLabel' => trans()->get('advertPostForm.csvFile'),
             'uploadButtonText' => trans()->get('advertPostForm.upload'),
             'isBusiness' => $isBusinessAccount,
+            'adverts' => $adverts,
         ];
 
         return view('adverts.new-advert', $data);
@@ -253,6 +256,13 @@ class AdvertController extends Controller
         }
         $advert = $this->createNewAdvert($request->title, $request->description, (int) $isRental);
         $advert->save();
+
+        foreach($request->linked_advert as $advertId) {
+            LinkedAdvert::create([
+                'advert_id' => $advert->id,
+                'linked_id' => $advertId,
+            ]);
+        }
 
         return redirect()->route('dashboard')->with('success', __('advert.success'));
     }

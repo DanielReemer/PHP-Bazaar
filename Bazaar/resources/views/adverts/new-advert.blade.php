@@ -32,6 +32,17 @@
                     <x-input-error class="mt-2" :messages="$errors->get('rental')" />
                 </div>
 
+                <!-- Link advertisements -->
+                <div>
+                    <p class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('advertPostForm.link_adverts') }}</p>
+                    @for($i = 0; $i < count($adverts); $i++)
+                        <div class="flex w-3/4 items-center ps-4">
+                            <input id="linked_advert" type="checkbox" value="{{ $adverts[$i]->id }}" name="linked_advert[]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="linked_advert[]" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $adverts[$i]->title }}</label>
+                        </div>
+                    @endfor
+                </div>
+
                 <!-- submit -->
                 <div class="mt-4 flex items-center justify-start">
                     <x-primary-button class="" name="submitAdvertForm">

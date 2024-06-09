@@ -23,6 +23,20 @@
             <p class="mt-4 text-base text-gray-600 dark:text-gray-400">
                 {{ $data['advert']->description }}
             </p>
+
+
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mt-6">
+                {{ __('advert.also_bought_together') }}
+            </h2>
+
+            <div class="flex flex-col">
+                @foreach($data['advert']->linked as $link)
+                    <a href="{{ route('advert.show', ['id' => $link->linked->id]) }}" class="my-1 text-base text-gray-600 dark:text-gray-400">
+                        {{ $link->linked->title }}
+                    </a>
+                @endforeach
+            </div>
+
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mt-6">
                 {{ __('advert.reviews') }}
             </h2>
