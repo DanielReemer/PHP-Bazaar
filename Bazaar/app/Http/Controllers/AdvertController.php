@@ -7,6 +7,7 @@ use App\Abstracts\AbstractQueue;
 use App\Interfaces\ICsvHandler;
 use App\Models\Advert;
 use App\Models\Bids;
+use App\Models\BoughtProduct;
 use App\Models\HiredProduct;
 use App\Models\ReturnImages;
 use App\Models\User;
@@ -138,6 +139,20 @@ class AdvertController extends Controller
         ]);
 
         return to_route('advert.show', ['id' => $id]);
+    }
+
+    public function accept($id) {
+        $bid = Bids::where('id', $id)->first();
+
+        BoughtProduct::create([
+            'advert_id' => $bid->advert->id,
+            'user_id' => $bid->user_id,
+        ]);
+
+        $bid->advert->post_status_id = 4;
+        $bid->advert->save();
+
+        return to_route('advert.show', ['id' => $bid->advert->id]);
     }
 
     public function returnShow ($id) {

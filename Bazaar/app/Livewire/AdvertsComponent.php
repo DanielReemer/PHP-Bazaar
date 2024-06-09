@@ -40,7 +40,7 @@ class AdvertsComponent extends Component
 
     private function getAdverts() : LengthAwarePaginator
     {
-        $query = Advert::with('owner');
+        $query = Advert::where('post_status_id', '!=', 4)->with('owner');
 
         $sorts = [
             ['type' => 'asc', 'row' => 'created_at', 'direction' => 'asc'],

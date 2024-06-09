@@ -93,7 +93,7 @@
                                 </form>
                             @endif
                         @else
-                            @if(auth()->user())
+                            @if(auth()->user() && $data['advert']->post_status_id != 4)
                                 <form method="post" action="{{ route('advert.bid', ['id' => $data['advert']->id]) }}" class="mt-5">
                                     @csrf
                                     <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200">{{ __('advert.buy') }}</h2>
@@ -107,16 +107,26 @@
                             @endif
                             <h2 class="text-lg mt-10 font-bold text-gray-800 dark:text-gray-200">{{ __('advert.bids') }}</h2>
                             @foreach($data['bids'] as $bid)
-                                    <li class="p-3 list-none border-y-gray-500 border-y">
-                                        <div class="flex justify-between items-center space-x-4 rtl:space-x-reverse">
-                                            <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                                {{ $bid->user->name }}
-                                            </p>
-                                            <div class="pr-4 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                                                €{{ $bid->money }}
+                                    @if(auth()->user() && $data['advert']->post_status_id != 4)
+                                        <form method="post" action="{{ route('advert.accept', ['id' => $bid->id]) }}">
+                                            @csrf
+                                    @endif
+                                        <li class="p-3 list-none border-y-gray-500 border-y">
+                                            <div class="flex justify-between items-center space-x-4 rtl:space-x-reverse">
+                                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                                    {{ $bid->user->name }}
+                                                </p>
+                                                <div class="pr-4 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                                                    €{{ $bid->money }}
+                                                </div>
+                                                @if(auth()->user() && $data['advert']->post_status_id != 4)
+                                                    <input type="submit" class="hover:cursor-pointer w-fit bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 p-1 border border-gray-300 hover:border-transparent rounded" value="{{ __('advert.accept') }}">
+                                                @endif
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
+                                    @if(auth()->user() && $data['advert']->post_status_id != 4)
+                                        </form>
+                                    @endif
                             @endforeach
                         @endif
                 </div>

@@ -28,6 +28,7 @@ Route::prefix('advert')->group(function () {
     Route::get('{id}', [AdvertController::class, 'show'])->name('advert.show');
     Route::post('{id}/hire', [AdvertController::class, 'hire'])->name('advert.hire');
     Route::post('{id}/bid', [AdvertController::class, 'bid'])->name('advert.bid');
+    Route::post('{id}/accept', [AdvertController::class, 'accept'])->name('advert.accept');
     Route::post('{id}/comment', [AdvertReviewController::class, 'store'])->name('advertReview.store');
     Route::post('{id}/favorite', [FavoriteAdvertController::class, 'update'])->name('favoriteAdvert.update');
 });
