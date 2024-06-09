@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create("post_statuses", function (Blueprint $table) {
+        Schema::create('components', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('translation_key');
-            $table->foreignId('advert_id')->nullable()->constrained('adverts');
+            $table->foreignId('landing_page_id')
+                ->constrained('landing_pages');
+            $table->string('type');
+            $table->json('arguments');
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_statuses');
+        Schema::dropIfExists('components');
     }
 };

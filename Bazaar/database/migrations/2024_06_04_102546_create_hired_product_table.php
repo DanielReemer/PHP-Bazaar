@@ -17,8 +17,10 @@ return new class extends Migration
                 ->constrained('adverts');
             $table->foreignId('user_id')
                 ->constrained('users');
-            $table->dateTime('from');
-            $table->dateTime('to');
+            $table->date('from');
+            $table->date('to');
+            $table->boolean('returned')->default(false);
+            $table->double('total_wear_cost')->nullable();
             $table->timestamps();
         });
     }

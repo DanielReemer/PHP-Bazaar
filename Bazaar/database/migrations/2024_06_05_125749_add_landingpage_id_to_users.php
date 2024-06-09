@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create("post_statuses", function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('translation_key');
-            $table->foreignId('advert_id')->nullable()->constrained('adverts');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('landing_page_id')
+                ->nullable()
+                ->constrained('landing_pages');
         });
     }
 
@@ -25,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_statuses');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('landing_page_id');
+        });
     }
 };
