@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('from');
             $table->date('to');
             $table->boolean('returned')->default(false);
+            $table->double('total_wear_cost')->nullable();
             $table->timestamps();
         });
     }

@@ -26,6 +26,7 @@ return [
     "my_product_products" => "Mijn producten",
     "hired_out_products" => "Verhuurde producten",
     "hired_by" => "Gehuurd door",
+    "wear_cost" => "Slijtage kosten",
     "return" => "Inleveren",
 
     "false" => "Nee",

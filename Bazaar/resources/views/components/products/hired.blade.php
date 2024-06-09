@@ -18,6 +18,9 @@
         <p>{{ $product->to }}</p>
         @if(!$product->returned)
             <a href="{{ route('advert.return', ['id' => $product->id]) }}" class="mt-5 w-fit hover:cursor-pointer bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-300 hover:border-transparent rounded block">{{ __('products.return') }}</a>
+        @else
+            <p class="mt-4 font-bold">{{ __('products.wear_cost') }}</p>
+            <p>€{{ $product->total_wear_cost }}</p>
         @endif
     </div>
 </div>

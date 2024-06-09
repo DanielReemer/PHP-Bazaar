@@ -32,6 +32,7 @@ return [
         "return_advert"=> "Product inleveren",
         "upload_images"=> "Afbeeldingen uploaden",
         "submit"=> "Bevestigen",
+        "total_wear_cost"=> "Total wear cost"
     ]
 ];
 

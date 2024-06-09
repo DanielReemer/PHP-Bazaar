@@ -27,6 +27,7 @@ return [
     "my_product_products" => "My products",
     "hired_out_products" => "Hired out products",
     "hired_by" => "Hired by",
+    "wear_cost" => "Wear cost",
     "return" => "Return",
 
     "false" => "False",

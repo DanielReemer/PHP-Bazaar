@@ -15,11 +15,10 @@ use App\Models\FavoriteAdvert;
 use App\Models\Role;
 
 use App\Models\AdvertQueue;
-use App\Rules\valid_time;
+use DateTime;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -101,9 +100,11 @@ class AdvertController extends Controller
     }
 
     public function returnShow ($id) {
-        $advert = Advert::where('id', $id)->first();
+        $hired_advert = HiredProduct::where('id', $id)->first();
+        $advert = $hired_advert->advert;
+        $cost = date_diff(new DateTime($hired_advert->from), new DateTime($hired_advert->to))->days * 1.35;
 
-        return view('adverts.return-advert', ['advert' => $advert]);
+        return view('adverts.return-advert', ['advert' => $advert, 'hired_advert' => $hired_advert, 'cost' => $cost]);
     }
 
     public function return ($id, Request $request) {
@@ -129,6 +130,7 @@ class AdvertController extends Controller
         }
 
         $hired_advert->returned = true;
+        $hired_advert->total_wear_cost = date_diff(new DateTime($hired_advert->from), new DateTime($hired_advert->to))->days * 1.35;
         $hired_advert->save();
 
         return to_route('products.show', ['type' => 'hired']);
