@@ -21,6 +21,7 @@ return [
     "login_to_comment"=> "Log eerst in voordat je een beoordeling kan plaatsen!",
     "advert_by"=> "Advertentie van",
     "since"=> "Sinds",
+    "also_bought_together"=> "Ook samen gekocht met",
 
     "success" => "Succes: Uw advertentie is aangemaakt",
     "successMultiple" => "Succes: Uw advertenties zijn aangemaakt",
@@ -28,6 +29,12 @@ return [
     "hire" => "Bevestig",
     "start_date" => "Start datum",
     "end_date" => "Eind datum",
+
+    "buy" => "Koop",
+    "amount" => "Bieding",
+    "bid" => "Bied",
+    "bids" => "Biedingen",
+    "accept" => "Accepteer",
 
     "return" => [
         "return_advert"=> "Product inleveren",

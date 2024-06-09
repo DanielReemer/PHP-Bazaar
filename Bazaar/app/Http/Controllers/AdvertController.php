@@ -9,6 +9,7 @@ use App\Models\Advert;
 use App\Models\Bids;
 use App\Models\BoughtProduct;
 use App\Models\HiredProduct;
+use App\Models\LinkedAdvert;
 use App\Models\ReturnImages;
 use App\Models\User;
 
@@ -45,6 +46,10 @@ class AdvertController extends Controller
             ->first();
 
         $bids = Bids::where('advert_id', $id)->orderBy('created_at', 'desc')->get();
+        $user = null;
+        if(auth::user()){
+            $user = User::where('id', auth::user()->id)->first();
+        }
 
         $qrCode = QrCode::size(200)
             ->generate(route('advert.show', ['id' => $id]));
@@ -63,6 +68,7 @@ class AdvertController extends Controller
             'reviews' => $reviews,
             'favorited' => $favoritedColor,
             'bids' => $bids,
+            'user' => $user,
         ];
 
         return view('adverts.advert', compact('data'));
@@ -120,7 +126,7 @@ class AdvertController extends Controller
             if($topBidOnPost != null && $topBidOnPost->money > $request->money) {
                 $largerThanTop = false;
             }
-            if($bid->advert->post_status_id != 4 || $topBidOnPost->user_id == Auth::id()) {
+            if($bid->advert->post_status_id != 4 || $topBidOnPost != null && $topBidOnPost->user_id == Auth::id()) {
                 $amountOfValidBids++;
             }
             if($topBidOnPost != null && $topBidOnPost->user_id == Auth::id()) {
@@ -199,6 +205,7 @@ class AdvertController extends Controller
     {
         $account = Auth::user();
         $isBusinessAccount = $account->role()->value('value') === Role::ROLE_BUSINESS_ADVERTISER;
+        $adverts = Advert::where('owner_id', Auth::id())->get();
 
         $data = [
             'createLabel' => trans()->get('advertPostForm.create'),
@@ -209,6 +216,7 @@ class AdvertController extends Controller
             'uploadFileLabel' => trans()->get('advertPostForm.csvFile'),
             'uploadButtonText' => trans()->get('advertPostForm.upload'),
             'isBusiness' => $isBusinessAccount,
+            'adverts' => $adverts,
         ];
 
         return view('adverts.new-advert', $data);
@@ -251,6 +259,13 @@ class AdvertController extends Controller
         }
         $advert = $this->createNewAdvert($request->title, $request->description, (int) $isRental);
         $advert->save();
+
+        foreach($request->linked_advert as $advertId) {
+            LinkedAdvert::create([
+                'advert_id' => $advert->id,
+                'linked_id' => $advertId,
+            ]);
+        }
 
         return redirect()->route('dashboard')->with('success', __('advert.success'));
     }
