@@ -1,9 +1,10 @@
 <x-app-layout>
-    <div class="flex w-full flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 mt-10 sm:pt-0">
+    <div class="mt-10 flex w-full flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 sm:pt-0">
         <header class="w-100 mt-6 text-center text-xl font-semibold text-gray-900 dark:text-white">
             {{ $createLabel }}
         </header>
-        <div class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md dark:bg-gray-800 sm:max-w-md sm:rounded-lg flex justify-start align-center flex-col gap-y-4">
+        <div
+            class="align-center mt-6 flex w-full flex-col justify-start gap-y-4 overflow-hidden bg-white px-6 py-4 shadow-md dark:bg-gray-800 sm:max-w-md sm:rounded-lg">
             <form class="flex flex-col gap-5" method="POST" action="{{ route('new-advert') }}">
                 @csrf
 
@@ -34,14 +35,20 @@
 
                 <!-- Link advertisements -->
                 <div>
-                    <p class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('advertPostForm.link_adverts') }}</p>
-                    @for($i = 0; $i < count($adverts); $i++)
+                    <p class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {{ __('advertPostForm.link_adverts') }}</p>
+                    @for ($i = 0; $i < count($adverts); $i++)
                         <div class="flex w-3/4 items-center ps-4">
-                            <input id="linked_advert" type="checkbox" value="{{ $adverts[$i]->id }}" name="linked_advert[]" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                            <label for="linked_advert[]" class="w-full py-2 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $adverts[$i]->title }}</label>
+                            <input
+                                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                                id="linked_advert_{{ $i }}" name="linked_advert[]" type="checkbox"
+                                value="{{ $adverts[$i]->id }}">
+                            <label class="ms-2 w-full py-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                for="linked_advert_{{ $i }}">{{ $adverts[$i]->title }}</label>
                         </div>
                     @endfor
                 </div>
+
 
                 <!-- submit -->
                 <div class="mt-4 flex items-center justify-start">
@@ -50,8 +57,8 @@
                     </x-primary-button>
                 </div>
             </form>
-            @if($isBusiness)
-                <div class="mx-auto w-full border-t-2 border-white-300 my-4"></div>
+            @if ($isBusiness)
+                <div class="border-white-300 mx-auto my-4 w-full border-t-2"></div>
                 <form class="flex flex-col gap-5" method="POST" action="{{ route('new-advert-csv') }}"
                     enctype="multipart/form-data">
                     @csrf

@@ -260,11 +260,14 @@ class AdvertController extends Controller
         $advert = $this->createNewAdvert($request->title, $request->description, (int) $isRental);
         $advert->save();
 
-        foreach($request->linked_advert as $advertId) {
-            LinkedAdvert::create([
-                'advert_id' => $advert->id,
-                'linked_id' => $advertId,
-            ]);
+        if ($request->linked_advert)
+        {
+            foreach($request->linked_advert as $advertId) {
+                LinkedAdvert::create([
+                    'advert_id' => $advert->id,
+                    'linked_id' => $advertId,
+                ]);
+            }
         }
 
         return redirect()->route('dashboard')->with('success', __('advert.success'));
