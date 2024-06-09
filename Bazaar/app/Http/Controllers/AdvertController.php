@@ -46,7 +46,10 @@ class AdvertController extends Controller
             ->first();
 
         $bids = Bids::where('advert_id', $id)->orderBy('created_at', 'desc')->get();
-        $user = User::where('id', auth::user()->id)->first();
+        $user = null;
+        if(auth::user()){
+            $user = User::where('id', auth::user()->id)->first();
+        }
 
         $qrCode = QrCode::size(200)
             ->generate(route('advert.show', ['id' => $id]));
