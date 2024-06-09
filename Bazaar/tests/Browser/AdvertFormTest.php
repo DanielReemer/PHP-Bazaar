@@ -6,9 +6,9 @@ use App\Http\Controllers\AdvertController;
 use App\Models\Advert;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
+use SebastianBergmann\Type\VoidType;
 use Tests\DuskTestCase;
 use App\Models\User;
-use Faker\Factory as Faker;
 
 class AdvertFormTest extends DuskTestCase
 {
@@ -21,8 +21,7 @@ class AdvertFormTest extends DuskTestCase
     protected $titleFieldName;
     protected $submitButtonName;
     protected $dashboardRouteName;
-
-    protected $faker;
+    protected $loginRouteName;
 
     public function setUp() : void
     {
@@ -34,9 +33,7 @@ class AdvertFormTest extends DuskTestCase
         $this->titleFieldName = 'title';
         $this->submitButtonName = 'submitAdvertForm';
         $this->dashboardRouteName = 'dashboard';
-
-        $this->faker = Faker::create();
-
+        $this->loginRouteName = 'login';
     }
 
     public function testRedirectedToDashboard()
@@ -51,91 +48,146 @@ class AdvertFormTest extends DuskTestCase
         });
     }
 
+    public function testCannotContinueWithEmptyTitle()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->testUser)
+                ->visit($this->newAdvertPath)
+                ->type($this->descriptionFieldName, 'this is my description')
+                ->press($this->submitButtonName)
+                ->assertPathIs($this->newAdvertPath);
+        });
+    }
+
+    public function testCannotContinueWithEmptyDescription()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->loginAs($this->testUser)
+                ->visit($this->newAdvertPath)
+                ->type($this->titleFieldName, 'this is my title')
+                ->press($this->submitButtonName)
+                ->assertPathIs($this->newAdvertPath);
+        });
+    }
+
+    public function testErrorMessageAppearsForCharacterLimitExceededInTitleInputField()
+    {
+        $titleInput = '';
+        for ($i = 0; $i <= 50; $i++) {
+            $titleInput .= (string) $i;
+        }
+
+        $testCase = trans()->get('validation.max.string', ['attribute' => trans()->get('title'), 'max' => AdvertController::MAX_TITLE_LENGHT]);
+
+        $this->browse(function (Browser $browser) use ($testCase, $titleInput) {
+            $browser->loginAs($this->testUser)
+                ->visit($this->newAdvertPath)
+                ->type($this->titleFieldName, $titleInput)
+                ->type($this->descriptionFieldName, "This is my description")
+                ->press($this->submitButtonName)
+                ->assertSee($testCase);
+        });
+    }
+
     public function testCannotCreateMoreThanFourRentalPosts()
     {
         $testCase = $this->maximumNumberOfPostReachMessage;
-        $numberOfPosts = AdvertController::MAX_ADVERT_NUM;
-        $this->makeValidPost($numberOfPosts, true);
+        $numberOfPosts = AdvertController::MAX_ADVERT_NUM + 1;
 
-        $this->browse(function (Browser $browser) use ($testCase) {
-            $browser->loginAs($this->testUser)
-                ->visitRoute($this->newAdvertPath)
-                ->type($this->titleFieldName, 'This is my title')
-                ->type($this->descriptionFieldName, 'This is my description')
-                ->check('rental')
-                ->press($this->submitButtonName)
-                ->assertSee($testCase);
+        $this->makeSureUserDoesntHaveAnyRentalPosts($this->testUser);
+        $this->browse(function (Browser $browser) use ($testCase, $numberOfPosts) {
+            $this->makeValidPost($numberOfPosts, true);
+
+            $browser->assertSee($testCase);
         });
     }
 
     public function testCannotCreateMoreThanFourNormalPosts()
     {
         $testCase = $this->maximumNumberOfPostReachMessage;
-        $numberOfPosts = AdvertController::MAX_ADVERT_NUM;
-        $this->makeValidPost($numberOfPosts, false);
+        $numberOfPosts = AdvertController::MAX_ADVERT_NUM + 1;
 
-        
-        $this->browse(function (Browser $browser) use ($testCase) {
-            $browser->loginAs($this->testUser)
-                ->visitRoute($this->newAdvertPath)
-                ->type($this->titleFieldName, 'This is my title')
-                ->type($this->descriptionFieldName, 'This is my description')
-                ->press($this->submitButtonName)
-                ->assertSee($testCase);
+        $this->makeSureUserDoesntHaveAnyNormalPosts($this->testUser);
+        $this->browse(function (Browser $browser) use ($testCase, $numberOfPosts) {
+            $this->makeValidPost($numberOfPosts, false);
+
+            $browser->assertSee($testCase);
         });
     }
 
     public function testStillPostRentalAfterReachingNormalPostLimit()
     {
-        $numberOfPosts = AdvertController::MAX_ADVERT_NUM;
-        $this->makeValidPost($numberOfPosts, false);
+        $testCase = $this->maximumNumberOfPostReachMessage;
+        $numberOfNormalPosts = AdvertController::MAX_ADVERT_NUM;
 
-        
-        $this->browse(function (Browser $browser) {
-            $browser->loginAs($this->testUser)
-                ->visitRoute($this->newAdvertPath)
-                ->type($this->titleFieldName, 'This is my title')
-                ->type($this->descriptionFieldName, 'This is my description')
-                ->check('rental')
-                ->press($this->submitButtonName)
-                ->assertRouteIs($this->dashboardRouteName);
+        $this->makeSureUserDoesntHaveAnyPosts($this->testUser);
+        $this->browse(function (Browser $browser) use ($testCase, $numberOfNormalPosts) {
+            $this->makeValidPost($numberOfNormalPosts, false);
+            $this->makeValidPost(1, true);
+
+            $browser->assertDontSee($testCase);
         });
     }
 
     public function testStillPostNormalAfterReachingRentalPostLimit()
     {
+        $testCase = $this->maximumNumberOfPostReachMessage;
+        $numberOfRentalPosts = AdvertController::MAX_ADVERT_NUM;
+        
+        $this->makeSureUserDoesntHaveAnyPosts($this->testUser);
+        $this->browse(function (Browser $browser) use ($testCase, $numberOfRentalPosts) {
+            $this->makeValidPost($numberOfRentalPosts, true);
+            $this->makeValidPost(1, false);
+            $browser->assertDontSee($testCase);
+        });
+    }
 
-        $numberOfPosts = AdvertController::MAX_ADVERT_NUM;
-        $this->makeValidPost($numberOfPosts, true);
-
+    public function testRedirectToLoginWhenNotSignedIn()
+    {
         $this->browse(function (Browser $browser) {
-            $browser->loginAs($this->testUser)
-                ->visitRoute($this->newAdvertPath)
-                ->type($this->titleFieldName, 'This is my title')
-                ->type($this->descriptionFieldName, 'This is my description')
-                ->press($this->submitButtonName)
-                ->assertRouteIs($this->dashboardRouteName);
+            $browser->loginAs($this->testUser);
+            $browser->logout();
+            $browser->visit($this->newAdvertPath)
+                ->assertRouteIs('login');
         });
     }
 
     private function makeValidPost(int $amount, bool $isRental) : void
     {
         for ($i = 0; $i < $amount; $i++) {
+            $this->browse(function (Browser $browser) use ($isRental) {
+                $browser->loginAs($this->testUser)
+                    ->visit($this->newAdvertPath)
+                    ->type($this->titleFieldName, 'This is my title')
+                    ->type($this->descriptionFieldName, 'This is my description');
 
-            $this->createAdvert($this->testUser, $isRental);
+                if ($isRental) {
+                    $browser->check('rental');
+                }
+                
+                $browser->press($this->submitButtonName);
+            });
         }
     }
 
-    private function createAdvert(User $user, bool $isRental) : array
+    private function makeSureUserDoesntHaveAnyPosts(User $testUser) : void
     {
+        $testUser->deleteAllAdverts();
 
-        $advert = Advert::create([
-            'Title' => $this->faker->sentence,
-            'Description' => $this->faker->paragraph,
-            'owner_id' => $user->id,
-            'is_rental' => $isRental,
-        ]);
+        return;
+    }
 
-        return $advert->toArray();
+    private function makeSureUserDoesntHaveAnyNormalPosts(User $testUser) : void
+    {
+        $testUser->deleteNormalAdverts();
+
+        return;
+    }
+
+    private function makeSureUserDoesntHaveAnyRentalPosts(User $testUser) : void
+    {
+        $testUser->deleteRentalAdverts();
+
+        return;
     }
 }

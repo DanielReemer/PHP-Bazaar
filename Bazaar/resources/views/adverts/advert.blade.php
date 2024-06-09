@@ -7,7 +7,7 @@
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-white mt-6">
                         {{ $data['advert']->title }}
                         @if(auth()->user())
-                            <button name="favouriteButton" type="submit">
+                            <button type="submit">
                                 <span class="text-yellow-300 text-gray-300"></span> <!-- Render classes -->
 
                                 <svg class="w-6 h-6 text-{{ $data['favorited'] }}-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
