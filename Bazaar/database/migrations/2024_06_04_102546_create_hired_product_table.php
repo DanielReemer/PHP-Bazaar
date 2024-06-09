@@ -17,8 +17,8 @@ return new class extends Migration
                 ->constrained('adverts');
             $table->foreignId('user_id')
                 ->constrained('users');
-            $table->dateTime('from');
-            $table->dateTime('to');
+            $table->date('from');
+            $table->date('to');
             $table->timestamps();
         });
     }

@@ -6,17 +6,19 @@ use App\Abstracts\AbstractAdvertCsvHandler;
 use App\Abstracts\AbstractQueue;
 use App\Interfaces\ICsvHandler;
 use App\Models\Advert;
+use App\Models\HiredProduct;
 use App\Models\User;
 
 use App\Models\AdvertReview;
 use App\Models\FavoriteAdvert;
-use App\Models\LandingspageUrl;
 use App\Models\Role;
 
 use App\Models\AdvertQueue;
+use App\Rules\valid_time;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -59,6 +61,42 @@ class AdvertController extends Controller
         ];
 
         return view('adverts.advert', compact('data'));
+    }
+
+    public function hire($id, Request $request) {
+        $request->validate([
+            'rent_start' => 'required|date|after_or_equal:now',
+            'rent_end' => 'required|date|after:'.$request->input('rent_start'),
+        ]);
+
+        $advert = Advert::where('id', $id)->first();
+        $failed = self::validateAvailability($advert, $request->input('rent_start'), $request->input('rent_end'));
+
+        if($failed) {
+            return to_route('advert.show', ['id' => $id]);
+        }
+
+        HiredProduct::create([
+            'advert_id' => $advert->id,
+            'user_id' => Auth::id(),
+            'from' => $request->input('rent_start'),
+            'to' => $request->input('rent_end'),
+        ]);
+        return to_route('advert.show', ['id' => $id]);
+    }
+
+    private function validateAvailability($advert, $start, $end) {
+        $hires = HiredProduct::where('advert_id', $advert->id)
+            ->get();
+
+        foreach ($hires as $hiredProduct) {
+            if($hiredProduct->from >= $start && $hiredProduct->from <= $end
+            || $hiredProduct->to >= $start && $hiredProduct->to <= $end) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

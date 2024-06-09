@@ -26,6 +26,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('advert')->group(function () {
     Route::get('{id}', [AdvertController::class, 'show'])->name('advert.show');
+    Route::post('{id}/hire', [AdvertController::class, 'hire'])->name('advert.hire');
     Route::post('{id}/comment', [AdvertReviewController::class, 'store'])->name('advertReview.store');
     Route::post('{id}/favorite', [FavoriteAdvertController::class, 'update'])->name('favoriteAdvert.update');
 });
