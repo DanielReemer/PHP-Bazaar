@@ -29,6 +29,12 @@ return [
     "start_date" => "Start datum",
     "end_date" => "Eind datum",
 
+    "buy" => "Koop",
+    "amount" => "Bieding",
+    "bid" => "Bied",
+    "bids" => "Biedingen",
+    "accept" => "Accepteer",
+
     "return" => [
         "return_advert"=> "Product inleveren",
         "upload_images"=> "Afbeeldingen uploaden",

@@ -107,7 +107,7 @@
                             @endif
                             <h2 class="text-lg mt-10 font-bold text-gray-800 dark:text-gray-200">{{ __('advert.bids') }}</h2>
                             @foreach($data['bids'] as $bid)
-                                    @if(auth()->user() && $data['advert']->post_status_id != 4)
+                                    @if(auth()->user() && $data['advert']->post_status_id != 4 && $data['advert']->owner_id == $data['user']->id)
                                         <form method="post" action="{{ route('advert.accept', ['id' => $bid->id]) }}">
                                             @csrf
                                     @endif
@@ -119,12 +119,12 @@
                                                 <div class="pr-4 inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                                                     €{{ $bid->money }}
                                                 </div>
-                                                @if(auth()->user() && $data['advert']->post_status_id != 4)
+                                                @if(auth()->user() && $data['advert']->post_status_id != 4 && $data['advert']->owner_id == $data['user']->id)
                                                     <input type="submit" class="hover:cursor-pointer w-fit bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 p-1 border border-gray-300 hover:border-transparent rounded" value="{{ __('advert.accept') }}">
                                                 @endif
                                             </div>
                                         </li>
-                                    @if(auth()->user() && $data['advert']->post_status_id != 4)
+                                    @if(auth()->user() && $data['advert']->post_status_id != 4 && $data['advert']->owner_id == $data['user']->id)
                                         </form>
                                     @endif
                             @endforeach

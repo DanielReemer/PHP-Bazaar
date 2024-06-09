@@ -29,6 +29,12 @@ return [
     "start_date" => "Start date",
     "end_date" => "End date",
 
+    "buy" => "Buy",
+    "amount" => "Amount",
+    "bid" => "Bid",
+    "bids" => "Bids",
+    "accept" => "Accept",
+
     "return" => [
         "return_advert"=> "Return product",
         "upload_images"=> "Upload images",

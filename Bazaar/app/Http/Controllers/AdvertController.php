@@ -45,6 +45,7 @@ class AdvertController extends Controller
             ->first();
 
         $bids = Bids::where('advert_id', $id)->orderBy('created_at', 'desc')->get();
+        $user = User::where('id', auth::user()->id)->first();
 
         $qrCode = QrCode::size(200)
             ->generate(route('advert.show', ['id' => $id]));
@@ -63,6 +64,7 @@ class AdvertController extends Controller
             'reviews' => $reviews,
             'favorited' => $favoritedColor,
             'bids' => $bids,
+            'user' => $user,
         ];
 
         return view('adverts.advert', compact('data'));
@@ -120,7 +122,7 @@ class AdvertController extends Controller
             if($topBidOnPost != null && $topBidOnPost->money > $request->money) {
                 $largerThanTop = false;
             }
-            if($bid->advert->post_status_id != 4 || $topBidOnPost->user_id == Auth::id()) {
+            if($bid->advert->post_status_id != 4 || $topBidOnPost != null && $topBidOnPost->user_id == Auth::id()) {
                 $amountOfValidBids++;
             }
             if($topBidOnPost != null && $topBidOnPost->user_id == Auth::id()) {
