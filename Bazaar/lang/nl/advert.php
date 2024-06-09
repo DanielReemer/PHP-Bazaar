@@ -21,8 +21,9 @@ return [
     "login_to_comment"=> "Log eerst in voordat je een beoordeling kan plaatsen!",
     "advert_by"=> "Advertentie van",
     "since"=> "Sinds",
-    "successMultiple" => "Uw advertenties zijn aangemaakt",
-    "sucess" => "Uw advertentie is aangemaakt",
+
+    "success" => "Succes: Uw advertentie is aangemaakt",
+    "successMultiple" => "Succes: Uw advertenties zijn aangemaakt",
     "rent" => "Huur",
     "hire" => "Bevestig",
     "start_date" => "Start datum",

@@ -21,6 +21,8 @@ class User extends Authenticatable
         static::creating(function ($user) {
             if ($user->role->value == Role::ROLE_BUSINESS_ADVERTISER) {
                 $user->is_admin = true;
+                $landing_page = LandingPage::create([]);
+                $user->landing_page_id = $landing_page->id;
             }
         });
     }

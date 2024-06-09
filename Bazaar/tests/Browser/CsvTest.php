@@ -18,24 +18,37 @@ class CsvTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $userData = $this->createUser();
 
-            $browser->visitRoute('register')
-                ->assertSee(__('registration.Register'))
-                ->type('name', $userData['name'])
-                ->type('email', $userData['email'])
-                ->select('role', $userData['role_id'])
-                ->type('password', $userData['password'])
-                ->type('password_confirmation', $userData['password'])
-                ->press('registerUser')
-                ->assertPathIs('/dashboard')
-                
-                ->assertSeeLink('Create New Advert')
-                ->clickLink('Create New Advert')
-                ->assertRouteIs('new-advert')
-
-                ->attach('csv_file', base_path('tests/Data/TestCodeForAdverts.csv'))
-                ->press('submitCsv')
-                ->assertSee(__('advert.successMultiple'));
+            $this->registerUser($browser, $userData);
+            $this->navigateToNewAdvertPage($browser);
+            $this->submitCsvFile($browser);
         });
+    }
+
+    private function registerUser(Browser $browser, array $userData) : Browser
+    {
+        return $browser->visitRoute('register')
+            ->assertSee(__('registration.Register'))
+            ->type('name', $userData['name'])
+            ->type('email', $userData['email'])
+            ->select('role', $userData['role_id'])
+            ->type('password', $userData['password'])
+            ->type('password_confirmation', $userData['password'])
+            ->press('registerUser')
+            ->assertPathIs('/dashboard');
+    }
+
+    private function navigateToNewAdvertPage(Browser $browser) : Browser
+    {
+        return $browser->assertSeeLink('Create New Advert')
+            ->clickLink('Create New Advert')
+            ->assertRouteIs('new-advert');
+    }
+
+    private function submitCsvFile(Browser $browser) : Browser
+    {
+        return $browser->attach('csv_file', base_path('tests/Data/TestCodeForAdverts.csv'))
+            ->press('submitCsv')
+            ->assertSee(__('advert.successMultiple'));
     }
 
     private function createUser() : array

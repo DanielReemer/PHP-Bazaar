@@ -196,7 +196,7 @@ class AdvertController extends Controller
         $advert = $this->createNewAdvert($request->title, $request->description, (int) $isRental);
         $advert->save();
 
-        return redirect()->route('dashboard')->with('success', __('advert.sucess'));
+        return redirect()->route('dashboard')->with('success', __('advert.success'));
     }
 
     public function storeCsv(Request $request)

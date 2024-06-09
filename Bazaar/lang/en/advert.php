@@ -21,8 +21,9 @@ return [
     "login_to_comment"=> "Log in in order to place a review!",
     "advert_by"=> "Advertisement by",
     "since"=> "Since",
-    "successMultiple" => "Successfully created your adverts",
-    "sucess" => "Sucessfully created you advert",
+
+    "success" => "Success: Your advert has been created",
+    "successMultiple" => "Success: Your adverts have been created",
     "rent" => "Rent",
     "hire" => "Submit",
     "start_date" => "Start date",
