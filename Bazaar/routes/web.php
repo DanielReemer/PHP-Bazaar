@@ -26,6 +26,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('advert')->group(function () {
     Route::get('{id}', [AdvertController::class, 'show'])->name('advert.show');
+    Route::post('{id}/hire', [AdvertController::class, 'hire'])->name('advert.hire');
     Route::post('{id}/comment', [AdvertReviewController::class, 'store'])->name('advertReview.store');
     Route::post('{id}/favorite', [FavoriteAdvertController::class, 'update'])->name('favoriteAdvert.update');
 });
@@ -33,6 +34,8 @@ Route::prefix('advert')->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::get('products/{type?}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('advert/{id}/return', [AdvertController::class, 'returnShow'])->name('advert.return');
+    Route::post('advert/{id}', [AdvertController::class, 'return'])->name('advert.return.submit');
     Route::get('favorites', [FavoriteAdvertController::class, 'show'])->name('favorites.show');
     Route::get('new-advert', [AdvertController::class, 'create'])->middleware('postingRights')->name('new-advert');
     Route::post('new-advert', [AdvertController::class, 'store']);

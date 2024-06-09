@@ -24,17 +24,11 @@ class AdvertFilter
             case 'recieving':
                 $query->recieving();
                 break;
-            case 'past':
-                $query->where('from', '<', $date)
-                    ->where('to', '<', $date);
+            case 'returned':
+                $query->where('returned', true);
                 break;
-            case 'current':
-                $query->where('from', '<', $date)
-                    ->where('to', '>', $date);
-                break;
-            case 'future':
-                $query->where('from', '>', $date)
-                    ->where('to', '>', $date);
+            case 'not_returned':
+                $query->where('returned', false);
                 break;
         }
     }

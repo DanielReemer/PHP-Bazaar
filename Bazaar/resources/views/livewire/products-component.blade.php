@@ -9,9 +9,8 @@
                     class="rounded-md border-gray-300 shadow-sm hover:cursor-pointer focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-indigo-600 dark:focus:ring-indigo-600"
                     id="filter" name="filter" wire:click="$refresh" wire:model.live="filter">
                     <option value="">{{ __('products.all') }}</option>
-                    <option value="past">{{ __('products.past') }}</option>
-                    <option value="current">{{ __('products.current') }}</option>
-                    <option value="future">{{ __('products.future') }}</option>
+                    <option value="returned">{{ __('products.returned') }}</option>
+                    <option value="not_returned">{{ __('products.not_returned') }}</option>
                 </select>
             </div>
 
