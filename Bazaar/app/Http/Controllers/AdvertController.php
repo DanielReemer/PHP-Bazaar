@@ -86,8 +86,8 @@ class AdvertController extends Controller
     public function getAdvertsInJson(Request $request, $key) : JsonResponse
     {
         $apiKey = $key;
-        
-        // Valideer de API key
+
+        // Validate the API key
         $user = User::where('api_key', $apiKey)->first();
         if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -114,7 +114,7 @@ class AdvertController extends Controller
 
         $isRental = filter_var($request->rental, FILTER_VALIDATE_BOOLEAN);
 
-        // Check wheter Post Limit Has Been reached;
+        // Check whether Post Limit Has Been reached;
         if (! ($this->limitCheck($isRental))) {
             return redirect()->back()->with('error', trans()->get('advertPostForm.maximumReached'));
         }
@@ -150,30 +150,6 @@ class AdvertController extends Controller
         }
 
         return redirect()->route('dashboard')->with('success', __('advert.successMultiple'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Advert $advert) : View
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Advert $advert)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Advert $advert)
-    {
-        //
     }
 
     private function limitCheck(bool $isRental)

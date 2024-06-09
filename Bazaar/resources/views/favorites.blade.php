@@ -9,9 +9,7 @@
                     {{ __('favorite.no_favorite') }}
                 </p>
             @else
-                @foreach ($data['favorites'] as $favorite)
-                    <x-advert-card :advert="$favorite->advert"></x-advert-card>
-                @endforeach
+                @livewire('favorites-component', ['data' => $data['favorites']->toJson()])
             @endif
         </div>
     </div>

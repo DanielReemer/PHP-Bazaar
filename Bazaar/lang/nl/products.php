@@ -35,8 +35,19 @@ return [
 
     "all" => "Alle producten",
     "rentals" => "Verhuurbare producten",
+    "purchasable" => "Te koop",
     "non_rentals" => "Niet verhuurbarde producten",
     "filter" => "Filter",
+
+    "past" => "Verleden",
+    "current" => "Huidig",
+    "future" => "Toekomst",
+
+    "bought_date_desc" => "Gekochte datum: aflopend",
+    "bought_date_asc" => "Gekochte datun: oplopend",
+
+    "ascending" => "Oplopend",
+    "descending" => "Aflopend",
 
     "ex_date_desc" => "Vervaldatum: aflopend",
     "ex_date_asc" => "Expire date: oplopend",

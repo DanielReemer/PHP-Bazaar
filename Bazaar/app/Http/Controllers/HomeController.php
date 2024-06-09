@@ -8,8 +8,7 @@ class HomeController extends Controller
 {
     public function index() {
         $adverts = Advert::orderBy('created_at', 'desc')
-            ->take(3)
-            ->get();
+            ->paginate(10);
 
         return view('home', compact('adverts'));
     }
