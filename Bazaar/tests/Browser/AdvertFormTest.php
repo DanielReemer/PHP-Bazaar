@@ -28,8 +28,8 @@ class AdvertFormTest extends DuskTestCase
     {
         parent::setUp();
         $this->testUser = User::find(2);
-        $this->maximumNumberOfPostReachMessage = 'Maximum number of ads have been posted.';
-        $this->newAdvertPath = '/new-advert';
+        $this->maximumNumberOfPostReachMessage = 'Reached Maximum.';
+        $this->newAdvertPath = 'new-advert';
         $this->descriptionFieldName = 'description';
         $this->titleFieldName = 'title';
         $this->submitButtonName = 'submitAdvertForm';

@@ -21,5 +21,8 @@ return [
     "login_to_comment"=> "Log eerst in voordat je een beoordeling kan plaatsen!",
     "advert_by"=> "Advertentie van",
     "since"=> "Sinds",
+
+    "success" => "Succes: Uw advertentie is aangemaakt",
+    "successMultiple" => "Succes: Uw advertenties zijn aangemaakt"
 ];
 
