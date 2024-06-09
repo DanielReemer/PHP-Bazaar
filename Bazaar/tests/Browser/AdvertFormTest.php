@@ -27,23 +27,22 @@ class AdvertFormTest extends DuskTestCase
     public function setUp() : void
     {
         parent::setUp();
-        $this->testUser = User::find(2);
+        $this->testUser = User::factory()->create();
         $this->maximumNumberOfPostReachMessage = 'Reached Maximum.';
         $this->newAdvertPath = 'new-advert';
         $this->descriptionFieldName = 'description';
         $this->titleFieldName = 'title';
         $this->submitButtonName = 'submitAdvertForm';
         $this->dashboardRouteName = 'dashboard';
-
         $this->faker = Faker::create();
-
     }
+
 
     public function testRedirectedToDashboard()
     {
         $this->browse(function (Browser $browser) {
             $browser->loginAs($this->testUser)
-                ->visit($this->newAdvertPath)
+                ->visitRoute($this->newAdvertPath)
                 ->type($this->titleFieldName, 'This is my title')
                 ->type($this->descriptionFieldName, 'This is my description')
                 ->press($this->submitButtonName)
@@ -63,6 +62,7 @@ class AdvertFormTest extends DuskTestCase
                 ->type($this->titleFieldName, 'This is my title')
                 ->type($this->descriptionFieldName, 'This is my description')
                 ->check('rental')
+
                 ->press($this->submitButtonName)
                 ->assertSee($testCase);
         });
@@ -104,7 +104,6 @@ class AdvertFormTest extends DuskTestCase
 
     public function testStillPostNormalAfterReachingRentalPostLimit()
     {
-
         $numberOfPosts = AdvertController::MAX_ADVERT_NUM;
         $this->makeValidPost($numberOfPosts, true);
 
@@ -121,7 +120,6 @@ class AdvertFormTest extends DuskTestCase
     private function makeValidPost(int $amount, bool $isRental) : void
     {
         for ($i = 0; $i < $amount; $i++) {
-
             $this->createAdvert($this->testUser, $isRental);
         }
     }

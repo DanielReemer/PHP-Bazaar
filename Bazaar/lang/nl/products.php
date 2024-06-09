@@ -26,6 +26,8 @@ return [
     "my_product_products" => "Mijn producten",
     "hired_out_products" => "Verhuurde producten",
     "hired_by" => "Gehuurd door",
+    "wear_cost" => "Slijtage kosten",
+    "return" => "Inleveren",
 
     "false" => "Nee",
     "True" => "Ja",
@@ -35,8 +37,18 @@ return [
 
     "all" => "Alle producten",
     "rentals" => "Verhuurbare producten",
+    "purchasable" => "Te koop",
     "non_rentals" => "Niet verhuurbarde producten",
     "filter" => "Filter",
+
+    "returned" => "Ingeleverd",
+    "not_returned" => "Niet ingeleverd",
+
+    "bought_date_desc" => "Gekochte datum: aflopend",
+    "bought_date_asc" => "Gekochte datun: oplopend",
+
+    "ascending" => "Oplopend",
+    "descending" => "Aflopend",
 
     "ex_date_desc" => "Vervaldatum: aflopend",
     "ex_date_asc" => "Expire date: oplopend",

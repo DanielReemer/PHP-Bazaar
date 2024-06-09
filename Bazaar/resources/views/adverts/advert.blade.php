@@ -1,6 +1,6 @@
 <x-app-layout>
-    <div class="max-w-7xl mx-auto p-6 lg:p-8 flex gap-20">
-        <div class="flex-1">
+    <div class="w-3/4 mx-auto p-6 lg:p-8 flex gap-20">
+        <div class="w-3/5">
             <div class="flex">
                 <form method="POST" action="{{ route('favoriteAdvert.update', ['id' => $data['advert']->id]) }}">
                     @csrf
@@ -9,7 +9,6 @@
                         @if(auth()->user())
                             <button name="favouriteButton" type="submit">
                                 <span class="text-yellow-300 text-gray-300"></span> <!-- Render classes -->
-
                                 <svg class="w-6 h-6 text-{{ $data['favorited'] }}-300 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
                                     <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
                                 </svg>
@@ -29,7 +28,7 @@
             </h2>
 
             @if(auth()->user())
-                <form method="POST" action="{{ route('advertReview.store', ['id' => $data['advert']->id]) }}">
+                <form method="POST" action="{{ route('advertReview.store', ['id' => $data['advert']->id]) }}" class="w-3/4">
                     @csrf
                     <div class="flex mt-3 mb-3 gap-5">
                         <div class="basis-5/6">
@@ -64,8 +63,8 @@
                 @endif
             </div>
         </div>
-        <div class="flex-1">
-            <div class="w-1/2 p-5">
+        <div class="w-2/5">
+            <div class="p-5 w-3/4">
                 <div class="flex justify-center">
                     {{ $data['qrcode'] }}
                 </div>
@@ -75,7 +74,26 @@
                     <p class="text-base text-gray-700 dark:text-gray-300">
                         <a href="{{ route('profile.show', ['id' => $data['advert']->owner->id]) }}">{{ $data['advert']->owner->name }}</a>
                     </p>
-                    {{-- Add buttons like hire or something here --}}
+{{--                    @dd($data)--}}
+                    @if($data['advert']->is_rental === 1)
+                        <form method="post" action="{{ route('advert.hire', ['id' => $data['advert']->id]) }}" class="mt-5">
+                            @csrf
+                            <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200">{{ __('advert.rent') }}</h2>
+                            <div class="flex flex-col">
+                                <label for="rent_start" class="w-full py-2 text-base font-medium text-gray-900 dark:text-gray-300">{{ __('advert.start_date') }}</label>
+                                <input type="date" name="rent_start" id="rent_start" class="w-fit bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                <x-input-error :messages="$errors->get('rent_start')" class="mt-2"/>
+                            </div>
+                            <div class="flex flex-col">
+                                <label for="rent_end-end" class="w-full py-2 text-base font-medium text-gray-900 dark:text-gray-300">{{ __('advert.end_date') }}</label>
+                                <input type="date" name="rent_end" id="rent_end" class="w-fit bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
+                                <x-input-error :messages="$errors->get('rent_end')" class="mt-2"/>
+                            </div>
+                            <input type="submit" value="{{ __('advert.hire') }}" class="mt-5 hover:cursor-pointer w-fit bg-transparent hover:bg-gray-200 text-gray-300 font-semibold hover:text-gray-700 py-2 px-4 border border-gray-300 hover:border-transparent rounded">
+                        </form>
+                    @else
+                        <h2 class="text-base font-bold text-gray-800 dark:text-gray-200">{{ __('advert.buy') }}</h2>
+                    @endif
                 </div>
             </div>
         </div>

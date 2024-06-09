@@ -24,5 +24,16 @@ return [
 
     "success" => "Succes: Uw advertentie is aangemaakt",
     "successMultiple" => "Succes: Uw advertenties zijn aangemaakt"
+    "rent" => "Huur",
+    "hire" => "Bevestig",
+    "start_date" => "Start datum",
+    "end_date" => "Eind datum",
+
+    "return" => [
+        "return_advert"=> "Product inleveren",
+        "upload_images"=> "Afbeeldingen uploaden",
+        "submit"=> "Bevestigen",
+        "total_wear_cost"=> "Total wear cost"
+    ]
 ];
 

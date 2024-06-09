@@ -21,12 +21,14 @@ return [
     "to"=> "To",
     "is_rental" => "Is a rentable product",
 
-    
+
     "bought_products"=> "Purchased products",
     "hired_products"=> "Hired products",
     "my_product_products" => "My products",
     "hired_out_products" => "Hired out products",
     "hired_by" => "Hired by",
+    "wear_cost" => "Wear cost",
+    "return" => "Return",
 
     "false" => "False",
     "true" => "True",
@@ -36,8 +38,18 @@ return [
 
     "all" => "All products",
     "rentals" => "Rentals",
+    "purchasable" => "Purchasable",
     "non_rentals" => "Non-rentals",
     "filter" => "Filter",
+
+    "returned" => "Returned",
+    "not_returned" => "Not returned",
+
+    "bought_date_desc" => "Purchased date: Descending",
+    "bought_date_asc" => "Purchased date: Ascending",
+
+    "ascending" => "Ascending",
+    "descending" => "Descending",
 
     "ex_date_desc" => "Expire date: Descending",
     "ex_date_asc" => "Expire date: Ascending",
@@ -47,7 +59,7 @@ return [
     "recieving" => "Recieving from",
     "from_date_asc" => "'From'-date: ascending",
     "from_date_desc" => "'From'-date: descending",
-    "to_date_asc" => "'To'-date: descending",
+    "to_date_asc" => "'To'-date: ascending",
     "to_date_desc" => "'To'-date: descending",
 ];
 

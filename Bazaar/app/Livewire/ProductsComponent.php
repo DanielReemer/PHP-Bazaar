@@ -42,60 +42,71 @@ class ProductsComponent extends Component
 
     private function getProducts() : LengthAwarePaginator
     {
-        $products = null;
         $user = Auth::user();
 
         switch ($this->data['type']) {
             case 'hired':
-                $products = HiredProduct::where('user_id', Auth::id())
+                $query = HiredProduct::where('user_id', Auth::id())
                     ->with('user')
-                    ->with('advert')
-                    ->paginate(ProductsComponent::NUMBER_OF_ADVERTS);
+                    ->with('advert');
+
+                $sorts = [
+                    ['type' => 'from_asc', 'row' => 'from', 'direction' => 'asc'],
+                    ['type' => 'from_desc', 'row' => 'from', 'direction' => 'desc'],
+                    ['type' => 'to_desc', 'row' => 'to', 'direction' => 'desc'],
+                    ['type' => 'to', 'row' => 'to', 'direction' => 'desc']
+                ];
                 break;
             case 'bought':
-                $products = BoughtProduct::where('user_id', Auth::id())
+                $query = BoughtProduct::where('user_id', Auth::id())
                     ->with('user')
-                    ->with('advert')
-                    ->paginate(ProductsComponent::NUMBER_OF_ADVERTS);
+                    ->with('advert');
+
+                $sorts = [
+                    ['type' => 'asc', 'row' => 'created_at', 'direction' => 'asc'],
+                    ['type' => 'desc', 'row' => 'created_at', 'direction' => 'desc']
+                ];
                 break;
             case 'hired_out':
-                $products = HiredProduct::whereHas('advert', function ($advert) use ($user) {
+                $query = HiredProduct::whereHas('advert', function ($advert) use ($user) {
                     $advert->whereBelongsTo($user, 'owner');
                 })
                     ->with('user')
                     ->with('advert');
 
-                AdvertFilter::apply($products, $this->filter);
-
-                
-                if ($this->myProductsSort == 'from_asc') {
-                    $products->orderBy('from', 'asc');
-                } elseif ($this->myProductsSort == 'from_desc') {
-                    $products->orderBy('from', 'desc');
-                } elseif ($this->myProductsSort == 'to_desc') {
-                    $products->orderBy('to', 'desc');
-                } elseif ($this->myProductsSort == 'to') {
-                    $products->orderBy('to', 'desc');
-                } 
-
-                $products = $products->paginate(ProductsComponent::NUMBER_OF_ADVERTS);
+                $sorts = [
+                    ['type' => 'from_asc', 'row' => 'from', 'direction' => 'asc'],
+                    ['type' => 'from_desc', 'row' => 'from', 'direction' => 'desc'],
+                    ['type' => 'to_desc', 'row' => 'to', 'direction' => 'desc'],
+                    ['type' => 'to', 'row' => 'to', 'direction' => 'desc']
+                ];
                 break;
             case 'my_product':
                 $query = Advert::whereBelongsTo($user, 'owner')->with('owner');
-                AdvertFilter::apply($query, $this->filter);
 
-                if ($this->myProductsSort == 'asc') {
-                    $query->orderBy('expiration_date', 'asc');
-                } elseif ($this->myProductsSort == 'desc') {
-                    $query->orderBy('expiration_date', 'desc');
-                }
-
-                $products = $query->paginate(ProductsComponent::NUMBER_OF_ADVERTS);
+                $sorts = [
+                    ['type' => 'asc', 'row' => 'created_at', 'direction' => 'asc'],
+                    ['type' => 'desc', 'row' => 'created_at', 'direction' => 'desc']
+                ];
                 break;
             default:
                 abort(404);
         }
 
+        AdvertFilter::apply($query, $this->filter);
+
+        self::applyOrdering($query, $sorts);
+
+        $products = $query->paginate(ProductsComponent::NUMBER_OF_ADVERTS);
+
         return $products;
+    }
+
+    private function applyOrdering($query, $sorts) {
+        foreach($sorts as $sort) {
+            if ($this->myProductsSort == $sort['type']) {
+                $query->orderBy($sort['row'], $sort['direction']);
+            }
+        }
     }
 }

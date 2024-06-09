@@ -8,14 +8,28 @@ class AdvertFilter
 {
     public static function apply(Builder $query, $filter)
     {
-        if ($filter === 'rentals') {
-            $query->where('is_rental', 1);
-        } elseif ($filter === 'non_rentals') {
-            $query->where('is_rental', 0);
-        } elseif ($filter === 'giving') {
-            $query->giving();
-        } elseif ($filter == 'recieving') {
-            $query->recieving();
+        date_default_timezone_set('Europe/Amsterdam');
+        $date = date('Y/m/d h:i:s', time());
+
+        switch($filter) {
+            case 'rentals':
+                $query->where('is_rental', 1);
+                break;
+            case 'non_rentals':
+                $query->where('is_rental', 0);
+                break;
+            case 'giving':
+                $query->giving();
+                break;
+            case 'recieving':
+                $query->recieving();
+                break;
+            case 'returned':
+                $query->where('returned', true);
+                break;
+            case 'not_returned':
+                $query->where('returned', false);
+                break;
         }
     }
 }

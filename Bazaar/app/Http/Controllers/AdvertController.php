@@ -6,14 +6,16 @@ use App\Abstracts\AbstractAdvertCsvHandler;
 use App\Abstracts\AbstractQueue;
 use App\Interfaces\ICsvHandler;
 use App\Models\Advert;
+use App\Models\HiredProduct;
+use App\Models\ReturnImages;
 use App\Models\User;
 
 use App\Models\AdvertReview;
 use App\Models\FavoriteAdvert;
-use App\Models\LandingspageUrl;
 use App\Models\Role;
 
 use App\Models\AdvertQueue;
+use DateTime;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -61,6 +63,79 @@ class AdvertController extends Controller
         return view('adverts.advert', compact('data'));
     }
 
+    public function hire($id, Request $request) {
+        $request->validate([
+            'rent_start' => 'required|date|after_or_equal:now',
+            'rent_end' => 'required|date|after:'.$request->input('rent_start'),
+        ]);
+
+        $advert = Advert::where('id', $id)->first();
+        $failed = self::validateAvailability($advert, $request->input('rent_start'), $request->input('rent_end'));
+
+        if($failed) {
+            return to_route('advert.show', ['id' => $id]);
+        }
+
+        HiredProduct::create([
+            'advert_id' => $advert->id,
+            'user_id' => Auth::id(),
+            'from' => $request->input('rent_start'),
+            'to' => $request->input('rent_end'),
+        ]);
+        return to_route('advert.show', ['id' => $id]);
+    }
+
+    private function validateAvailability($advert, $start, $end) {
+        $hires = HiredProduct::where('advert_id', $advert->id)
+            ->get();
+
+        foreach ($hires as $hiredProduct) {
+            if($hiredProduct->from >= $start && $hiredProduct->from <= $end
+            || $hiredProduct->to >= $start && $hiredProduct->to <= $end) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function returnShow ($id) {
+        $hired_advert = HiredProduct::where('id', $id)->first();
+        $advert = $hired_advert->advert;
+        $cost = date_diff(new DateTime($hired_advert->from), new DateTime($hired_advert->to))->days * 1.35;
+
+        return view('adverts.return-advert', ['advert' => $advert, 'hired_advert' => $hired_advert, 'cost' => $cost]);
+    }
+
+    public function return ($id, Request $request) {
+        $request->validate([
+            'images' => 'required|array',
+            'images.*' => 'required|image|mimes:jpeg,jpg,png,gif|max:10000',
+        ]);
+
+        $hired_advert = HiredProduct::where('id', $id)->first();
+        $advert = $hired_advert->advert;
+
+        foreach($request->file('images') as $image) {
+            $originalFileName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $newFileName = $originalFileName.'.'.$image->getClientOriginalExtension();
+            $storePath = 'public/adverts/return/'.$id;
+
+            $image->storeAs($storePath, $newFileName, 'local');
+
+            ReturnImages::create([
+                'hired_product_id' => $id,
+                'url' => $storePath.'/'.$newFileName,
+            ]);
+        }
+
+        $hired_advert->returned = true;
+        $hired_advert->total_wear_cost = date_diff(new DateTime($hired_advert->from), new DateTime($hired_advert->to))->days * 1.35;
+        $hired_advert->save();
+
+        return to_route('products.show', ['type' => 'hired']);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -86,8 +161,8 @@ class AdvertController extends Controller
     public function getAdvertsInJson(Request $request, $key) : JsonResponse
     {
         $apiKey = $key;
-        
-        // Valideer de API key
+
+        // Validate the API key
         $user = User::where('api_key', $apiKey)->first();
         if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -114,19 +189,12 @@ class AdvertController extends Controller
 
         $isRental = filter_var($request->rental, FILTER_VALIDATE_BOOLEAN);
 
-        // Check wheter Post Limit Has Been reached;
+        // Check whether Post Limit Has Been reached;
         if (! ($this->limitCheck($isRental))) {
             return redirect()->back()->with('error', trans()->get('advertPostForm.maximumReached'));
         }
         $advert = $this->createNewAdvert($request->title, $request->description, (int) $isRental);
         $advert->save();
-
-        if ($request->customUrl && Auth::user()->role()->value('value') === Role::ROLE_BUSINESS_ADVERTISER) {
-            $landingPageUrl = new LandingspageUrl();
-            $landingPageUrl->url = $request->customUrl;
-            $landingPageUrl->advert()->associate($advert);
-            $landingPageUrl->save();
-        }
 
         return redirect()->route('dashboard')->with('success', __('advert.success'));
     }
@@ -150,30 +218,6 @@ class AdvertController extends Controller
         }
 
         return redirect()->route('dashboard')->with('success', __('advert.successMultiple'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Advert $advert) : View
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Advert $advert)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Advert $advert)
-    {
-        //
     }
 
     private function limitCheck(bool $isRental)

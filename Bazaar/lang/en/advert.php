@@ -24,5 +24,16 @@ return [
 
     "success" => "Success: Your advert has been created",
     "successMultiple" => "Success: Your adverts have been created",
+    "rent" => "Rent",
+    "hire" => "Submit",
+    "start_date" => "Start date",
+    "end_date" => "End date",
+
+    "return" => [
+        "return_advert"=> "Return product",
+        "upload_images"=> "Upload images",
+        "submit"=> "Submit",
+        "total_wear_cost"=> "Total wear cost"
+    ]
 ];
 

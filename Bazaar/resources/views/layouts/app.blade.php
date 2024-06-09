@@ -14,12 +14,13 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/flash-message.js'])
+
     @livewireStyles
     @livewireScripts
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
         @include('layouts.navigation')
 
         <!-- Page Heading -->
@@ -32,9 +33,15 @@
         @endif
 
         <!-- Page Content -->
-        <main>
+        <main class="flex flex-grow">
             {{ $slot }}
         </main>
+        @if (session('success'))
+            <div class="fixed bottom-4 right-4 rounded-md bg-green-500 px-4 py-2 text-white shadow-md"
+                id="flash-message">
+                {{ session('success') }}
+            </div>
+        @endif
     </div>
 </body>
 

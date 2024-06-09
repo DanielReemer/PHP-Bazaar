@@ -18,5 +18,6 @@ return [
     "login_to_comment"=> "Log eerst in voordat je een beoordeling kan plaatsen!",
     "title"=> "Titel",
     "review"=> "Review",
+    "business_page"=> "Bedrijfspagina",
 ];
 

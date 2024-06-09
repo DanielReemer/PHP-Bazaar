@@ -20,5 +20,7 @@ return [
     "login"=> "Inloggen",
     "register"=> "Registreren",
     "contract"=> "Contract",
+    "logout"=> "Uitloggen",
+    "profile"=> "Profiel",
 ];
 

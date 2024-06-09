@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="flex min-h-screen flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 sm:justify-center sm:pt-0">
+    <div class="flex w-full flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 mt-10 sm:pt-0">
         <header class="w-100 mt-6 text-center text-xl font-semibold text-gray-900 dark:text-white">
             {{ $createLabel }}
         </header>
@@ -31,16 +31,6 @@
                         id="rental" name="rental" type="checkbox" value='1' />
                     <x-input-error class="mt-2" :messages="$errors->get('rental')" />
                 </div>
-
-                @if($isBusiness)
-                    <!-- Custom url -->
-                    <div>
-                        <x-input-label for="customUrl" :value="__('advertPostForm.customUrl')" />
-                        <x-text-input class="mt-1 block w-full" id="customUrl" name="customUrl" type="text"
-                            :value="old('customUrl')" autofocus autocomplete="customUrl" />
-                        <x-input-error class="mt-2" :messages="$errors->get('customUrl')" />
-                    </div>
-                @endif
 
                 <!-- submit -->
                 <div class="mt-4 flex items-center justify-start">

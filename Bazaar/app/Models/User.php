@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -39,6 +40,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
+        'landing_page_id',
         'api_key',
         'is_admin',
     ];
@@ -112,5 +114,10 @@ class User extends Authenticatable
     public function userReviews()
     {
         return $this->hasMany(UserReview::class);
+    }
+
+    public function landing_page() : BelongsTo
+    {
+        return $this->belongsTo(LandingPage::class);
     }
 }

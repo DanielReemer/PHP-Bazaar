@@ -53,16 +53,6 @@ class Advert extends Model
         return $this->belongsTo(User::class, 'current_borrower_id');
     }
 
-    public function hasCustomUrl() : bool
-    {
-        return $this->landingspageUrl()->exists();
-    }
-
-    public function landingspageUrl() : HasOne
-    {
-        return $this->hasOne(LandingspageUrl::class);
-    }
-
     public function postStatus() : BelongsTo
     {
         return $this->belongsTo(PostStatus::class);
@@ -73,5 +63,17 @@ class Advert extends Model
         $posts = Advert::all()->where('expiratio_date' , '===', now()->toDate())->where('name','===', 'available');
 
         return $posts;
+    }
+
+    public static function getByIds($ids) : array
+    {
+        $adverts = [];
+
+        foreach($ids as $id) {
+            $advert = Advert::find($id);
+            array_push($adverts, $advert);
+        }
+
+        return $adverts;
     }
 }
