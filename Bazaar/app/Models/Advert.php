@@ -24,6 +24,7 @@ class Advert extends Model
         'Description',
         'owner_id',
         'current_borrower_id',
+        'is_rental',
         'expiration_date'
     ];
 
