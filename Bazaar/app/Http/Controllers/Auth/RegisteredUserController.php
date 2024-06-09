@@ -44,11 +44,6 @@ class RegisteredUserController extends Controller
 
         $user = $this->createUser($request);
 
-        if($user->role_id == 3) {
-            $landing_page = LandingPage::create([]);
-            $user->landing_page_id = $landing_page->id;
-        }
-
         $user->save();
 
         event(new Registered($user));

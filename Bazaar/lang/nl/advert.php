@@ -23,7 +23,7 @@ return [
     "since"=> "Sinds",
 
     "success" => "Succes: Uw advertentie is aangemaakt",
-    "successMultiple" => "Succes: Uw advertenties zijn aangemaakt"
+    "successMultiple" => "Succes: Uw advertenties zijn aangemaakt",
     "rent" => "Huur",
     "hire" => "Bevestig",
     "start_date" => "Start datum",
